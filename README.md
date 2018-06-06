@@ -1,4 +1,4 @@
 # SoftwarePraktikum
 
 
-Hi, I added the Interface. It shoud be finished.
+Hi, I added the Interface called graph.java. It shoud be finished.
