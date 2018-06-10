@@ -83,7 +83,7 @@ public class UndirectedGraph implements Graph {
 		if (vertexName == null) {
     		throw new NullPointerException();
     	}
-		if (startpoints.containsKey(vertexName)) {
+		if (!startpoints.containsKey(vertexName)) {
 			return false;
 		}
 		/* iterate through all adjacent vertices of vertexName,
