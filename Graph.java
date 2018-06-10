@@ -7,13 +7,15 @@
 public interface Graph {
 	
 	/**
-	 * Adds a new vertex with default name (i.e. number) to this graph.
+	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
+	 * 
+	 * @return default name of the new vertex.
 	 */
-	void addVertex();
+	Integer addVertex();
 	
 	/**
 	 * Adds a new vertex with specified name to this graph if not already present. 
-	 * If this graph  already contains a vertex with this name, the call
+	 * If this graph already contains a vertex with this name, the call
      * leaves this graph unchanged and returns <tt>false</tt>.
      * 
 	 * @param vertexName specified name of the vertex to be added to the graph.
@@ -198,3 +200,4 @@ public interface Graph {
 	void setEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeightNew);
 	
 }
+
