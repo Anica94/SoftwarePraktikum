@@ -177,17 +177,7 @@ public class UndirectedGraph implements Graph {
 		}
 		return false;
 	}
-	/**
-	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
-	 * especially the vertices vertexNameStart and vertexNameEnd will be unchanged.
-     * If the specified edge is not found, the call leaves the graph unchanged.
-     * Returns <tt>true</tt> if the graph contained the specified edge. 
-     * (The graph will not contain the specified edge once the call returns).
 
-	 * 
-	 * @return <code>true</code> if the graph contained the specified edge;
-     * <code>false</code> otherwise.
-	 */
 	@Override
 	public boolean deleteEdge(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
