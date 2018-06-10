@@ -2,6 +2,8 @@
  * Interface of a general Graph <tt>G<V, E></tt> contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
  * of edges.  Each edge e=<v, u> in E connects v to u. In this case the vertices are only named by numbers 
  * and the edges are specified by their start- and endpoints.
+ * 
+ * @author Sonja
  */
 
 public interface Graph {
@@ -139,7 +141,7 @@ public interface Graph {
 	/**
 	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
 	 * especially the vertices vertexNameStart and vertexNameEnd will be unchanged.
-     * If the specified edge is found, the call leaves the graph unchanged.
+     * If the specified edge is not found, the call leaves the graph unchanged.
      * Returns <tt>true</tt> if the graph contained the specified edge. 
      * (The graph will not contain the specified edge once the call returns).
 	 * 
@@ -200,4 +202,3 @@ public interface Graph {
 	void setEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeightNew);
 	
 }
-
