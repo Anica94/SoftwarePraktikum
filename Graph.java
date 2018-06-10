@@ -182,7 +182,6 @@ public interface Graph {
 	Integer getEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd);
 	
 	/**
-	
 	 * Changes the weight of the edge specified by their start- and endpoint.
 	 * 
 	 * <p>If the edge does not exist NoSuchElementException is thrown.
