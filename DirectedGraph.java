@@ -27,7 +27,7 @@ public class DirectedGraph implements Graph {
 	private int highestVertexName;
 	
 	/*
-	 * Produces a new empty undirected graph.
+	 * Produces a new empty directed graph.
 	 */
 	public DirectedGraph() {
 		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
@@ -36,9 +36,10 @@ public class DirectedGraph implements Graph {
 	}
 
 	@Override
-	public void addVertex() {
-		// TODO Auto-generated method stub
-
+	public Integer addVertex() {
+		Integer vertexNameDefault = new Integer(highestVertexName+1);
+		this.addVertex(vertexNameDefault);
+		return vertexNameDefault;
 	}
 
 	@Override
@@ -102,3 +103,4 @@ public class DirectedGraph implements Graph {
 	}
 
 }
+
