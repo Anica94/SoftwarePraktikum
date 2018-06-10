@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 
 
 /*
- * The graph being implemented is undirected meaning that <v,> in E does mean that <u,v> in E.
+ * The graph being implemented is undirected meaning that <v,> in E does mean that <u,v> in E. 
+ *  
+ * @author Sonja
  */
 public class UndirectedGraph implements Graph {
 	
@@ -27,12 +29,21 @@ public class UndirectedGraph implements Graph {
 	 * Produces a new empty undirected graph.
 	 */
 	public UndirectedGraph() {
+		/*
+		 * produce hashmap of vertices
+		 * produce counter for names
+		 */
 		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
 		highestVertexName = 0;
 	}
 
 	@Override
 	public Integer addVertex() {
+		/*
+		 * produce default name
+		 * add vertex
+		 * return default name
+		 */
 		Integer vertexNameDefault = new Integer(highestVertexName+1);
 		this.addVertex(vertexNameDefault);
 		return vertexNameDefault;
@@ -46,6 +57,9 @@ public class UndirectedGraph implements Graph {
 		if (startpoints.containsKey(vertexName)) {
 			return false;
 		}
+		/*
+		 * add new vertex with empty adjacent treemap
+		 */
 		startpoints.put(vertexName, new TreeMap<Integer, Integer>());
 		return true;
 	}
@@ -55,6 +69,9 @@ public class UndirectedGraph implements Graph {
 		if (vertexName == null) {
     		throw new NullPointerException();
     	}
+		/*
+		 * check hashmap for vertex
+		 */
 		if (startpoints.containsKey(vertexName)) {
 			return true;
 		}
@@ -69,19 +86,16 @@ public class UndirectedGraph implements Graph {
 		if (startpoints.containsKey(vertexName)) {
 			return false;
 		}
-		/* iterate through all adjacent vertices of vertexName, 
-		 * 		in each case remove vertexName from the respective adjacent vertices, 
+		/* iterate through all adjacent vertices of vertexName,
+		 * 		in each case remove vertexName from the respective adjacent vertices
 		 * remove vertexName
 		 */
 		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexName);
 		Collection c = adjacent.values();
 	    Iterator itr = c.iterator();
-
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	TreeMap<Integer, Integer> currentAdjacent = startpoints.get(currentVertex);
-	    	currentAdjacent.remove(vertexName);
-	    	startpoints.put(currentVertex, currentAdjacent);
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
 	    }
 	    startpoints.remove(vertexName);
 		return true;
@@ -95,7 +109,9 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		// check adjacent vertices of vertexNameStart
+		/*
+		 *  check adjacent vertices of vertexNameStart
+		 */
 		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexNameStart);
 		if (adjacent.containsKey(vertexNameEnd))
 		{
@@ -103,7 +119,7 @@ public class UndirectedGraph implements Graph {
 		}
 		return false;
 	}
-// TODO ///////////
+
 	@Override
 	public boolean addEdge(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
@@ -112,11 +128,14 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		
-		// TODO Auto-generated method stub
-		return false;
+		/*
+		 * produce default weight
+		 * add Edge
+		 */
+		Integer edgeWeightDefault = new Integer(1);
+		return this.addEdge(vertexNameStart, vertexNameEnd, edgeWeightDefault);
 	}
-
+	
 	@Override
 	public boolean addEdge(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeight) {
 		if (vertexNameStart == null || vertexNameEnd == null || edgeWeight == null) {
@@ -125,9 +144,22 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		
-		// TODO Auto-generated method stub
-		return false;
+		if (this.isAdjacentTo(vertexNameStart, vertexNameEnd)) {
+			return false;
+		}
+		/*
+		 * add endpoint to adjacent of vertexNameStart
+		 */
+		TreeMap<Integer, Integer> startAdjacent = startpoints.get(vertexNameStart);
+		startAdjacent.put(vertexNameEnd, edgeWeight);
+		startpoints.put(vertexNameStart, startAdjacent);
+		/*
+		 * add startpoint to adjacent of vertexNameEnd
+		 */
+		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
+		endAdjacent.put(vertexNameStart, edgeWeight);
+		startpoints.put(vertexNameEnd, endAdjacent);
+		return true;
 	}
 
 	@Override
@@ -138,11 +170,25 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		
-		// TODO Auto-generated method stub
+		/*
+		 * check if start- and endpoint are adjacent
+		 */
+		if(this.isAdjacentTo(vertexNameStart, vertexNameEnd)) {
+			return true;
+		}
 		return false;
 	}
+	/**
+	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
+	 * especially the vertices vertexNameStart and vertexNameEnd will be unchanged.
+     * If the specified edge is not found, the call leaves the graph unchanged.
+     * Returns <tt>true</tt> if the graph contained the specified edge. 
+     * (The graph will not contain the specified edge once the call returns).
 
+	 * 
+	 * @return <code>true</code> if the graph contained the specified edge;
+     * <code>false</code> otherwise.
+	 */
 	@Override
 	public boolean deleteEdge(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
@@ -151,9 +197,22 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		
-		// TODO Auto-generated method stub
-		return false;
+		if(!this.containsEdge(vertexNameStart, vertexNameEnd)) {
+			return false;
+		}
+		/*
+		 * remove endpoint in adjacent of vertexNameStart
+		 */
+		TreeMap<Integer, Integer> startAdjacent = startpoints.get(vertexNameStart);
+		startAdjacent.remove(vertexNameEnd);
+		startpoints.put(vertexNameStart, startAdjacent);
+		/*
+		 * remove startpoint in adjacent of vertexNameEnd
+		 */
+		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
+		endAdjacent.remove(vertexNameStart);
+		startpoints.put(vertexNameEnd, endAdjacent);
+		return true;
 	}
 
 	@Override
@@ -164,12 +223,15 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		if (!isAdjacentTo(vertexNameStart, vertexNameEnd)) {
+		if (!this.isAdjacentTo(vertexNameStart, vertexNameEnd)) {
     		throw new NoSuchElementException();
     	}
-			
-		// TODO Auto-generated method stub
-		return null;
+		/*
+		 * find edge
+		 * return its weight
+		 */
+		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexNameStart);
+		return adjacent.get(vertexNameEnd);
 	}
 
 	@Override
@@ -180,13 +242,23 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
-		if (!isAdjacentTo(vertexNameStart, vertexNameEnd)) {
+		if (!this.isAdjacentTo(vertexNameStart, vertexNameEnd)) {
     		throw new NoSuchElementException();
     	}
-		
-		// TODO Auto-generated method stub
-
+		/*
+		 * find edge in adjacent of vertexNameStart
+		 * 	change its weight
+		 */
+		TreeMap<Integer, Integer> startAdjacent = startpoints.get(vertexNameStart);
+		startAdjacent.put(vertexNameEnd, edgeWeightNew);
+		startpoints.put(vertexNameStart, startAdjacent);
+		/*
+		 * find edge in adjacent of vertexNameEnd
+		 * 	change its weight
+		 */
+		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
+		endAdjacent.put(vertexNameStart, edgeWeightNew);
+		startpoints.put(vertexNameEnd, endAdjacent);
 	}
 
 }
-
