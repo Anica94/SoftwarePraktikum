@@ -1,8 +1,12 @@
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 /*
  * The graph being implemented is directed meaning that <v,u> in E does not necessarily mean that <u,v> in E.
+ * 
+ * @author Sonja
  */
 public class DirectedGraph implements Graph {
 	
@@ -30,6 +34,11 @@ public class DirectedGraph implements Graph {
 	 * Produces a new empty directed graph.
 	 */
 	public DirectedGraph() {
+		/*
+		 * produce hashmap of vertices (outgoing edges)
+		 * produce hashmap of vertices (ingoing edges)
+		 * produce counter for names
+		 */
 		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
 		endpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
 		highestVertexName = 0;
@@ -37,6 +46,11 @@ public class DirectedGraph implements Graph {
 
 	@Override
 	public Integer addVertex() {
+		/*
+		 * produce default name
+		 * add vertex
+		 * return default name
+		 */
 		Integer vertexNameDefault = new Integer(highestVertexName+1);
 		this.addVertex(vertexNameDefault);
 		return vertexNameDefault;
@@ -44,20 +58,68 @@ public class DirectedGraph implements Graph {
 
 	@Override
 	public boolean addVertex(Integer vertexName) {
-		// TODO Auto-generated method stub
-		return false;
+		if (vertexName == null) {
+    		throw new NullPointerException();
+    	}
+		if (startpoints.containsKey(vertexName)) {
+			return false;
+		}
+		/*
+		 * add new vertex with empty adjacent treemap for outgoing
+		 * add new vertex with empty adjacent treemap for ingoing
+		 */
+		startpoints.put(vertexName, new TreeMap<Integer, Integer>());
+		endpoints.put(vertexName, new TreeMap<Integer, Integer>());
+		return true;
 	}
 
 	@Override
 	public boolean containsVertex(Integer vertexName) {
-		// TODO Auto-generated method stub
+		if (vertexName == null) {
+    		throw new NullPointerException();
+    	}
+		/*
+		 * check outgoing hashmap for vertex
+		 */
+		if (startpoints.containsKey(vertexName)) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deleteVertex(Integer vertexName) {
-		// TODO Auto-generated method stub
-		return false;
+		if (vertexName == null) {
+    		throw new NullPointerException();
+    	}
+		if (!startpoints.containsKey(vertexName)) {
+			return false;
+		}
+		/* iterate through all adjacent vertices of vertexName for outgoing,
+		 * 		in each case remove vertexName from the respective adjacent vertices
+		 * remove vertexName
+		 */
+		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexName);
+		Collection c = adjacent.values();
+	    Iterator itr = c.iterator();
+	    while (itr.hasNext()){
+	    	Integer  currentVertex = (Integer) itr.next();
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    }
+	    startpoints.remove(vertexName);
+	    /* iterate through all adjacent vertices of vertexName for ingoing,
+		 * 		in each case remove vertexName from the respective adjacent vertices
+		 * remove vertexName
+		 */
+		adjacent = endpoints.get(vertexName);
+		c = adjacent.values();
+	    itr = c.iterator();
+	    while (itr.hasNext()){
+	    	Integer  currentVertex = (Integer) itr.next();
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    }
+	    endpoints.remove(vertexName);
+		return true;
 	}
 
 	@Override
@@ -103,4 +165,3 @@ public class DirectedGraph implements Graph {
 	}
 
 }
-
