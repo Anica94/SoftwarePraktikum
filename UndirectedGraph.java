@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -106,6 +107,15 @@ public class UndirectedGraph implements Graph {
 		return true;
 	}
 
+	@Override
+	public ArrayList<Integer> getVertices(){
+		/*
+		 * produce and return all vertices
+		 */ 
+		ArrayList<Integer> vertices = new ArrayList<>(startpoints.keySet());
+		return vertices;
+	}
+	
 	@Override
 	public boolean isAdjacentTo(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
