@@ -36,6 +36,24 @@ public class UndirectedGraph implements Graph {
 		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
 		highestVertexName = new Integer(0);
 	}
+	
+	/**
+	 * Getter for the highest number of a vertex.
+	 * 
+	 * @return highest number of all vertices.
+	 */
+	public Integer getHighestVertexName() {
+		return highestVertexName;
+	}
+	
+	/**
+	 * Getter for the hashmap of all vertices and their respective edges.
+	 * 
+	 * @return hashmap of all vertices and their respective edges.
+	 */
+	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints(){
+		return startpoints;
+	}
 
 	@Override
 	public Integer addVertex() {
@@ -47,6 +65,7 @@ public class UndirectedGraph implements Graph {
 		 */
 		Integer vertexNameDefault = highestVertexName+1;
 		this.addVertex(vertexNameDefault);
+		highestVertexName +=1;
 		return vertexNameDefault;
 	}
 
