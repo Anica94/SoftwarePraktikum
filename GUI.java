@@ -33,8 +33,8 @@ import java.awt.Color;
 public class GUI {
 
 	private JFrame frame;
+	private static Status status;
 	private static DrawPanel drawPanel;
-	public static String status;
 
 	/**
 	 * Launch the application.
@@ -56,6 +56,7 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
+		status = new Status();
 		initialize();
 	}
 
@@ -84,7 +85,7 @@ public class GUI {
 		drawPanel.setSize(784,514);
 		frame.getContentPane().add(drawPanel);
 		
-		JLabel lblStatus = new JLabel("Status");
+		JLabel lblStatus = new JLabel(status.getStatus(0));
 		lblStatus.setBounds(0, 515, 784, 25);
 		frame.getContentPane().add(lblStatus);
 		
@@ -100,8 +101,7 @@ public class GUI {
 		mntmBreadthFirstSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs Breadth-First Search";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(1));
 			}
 		});
 		
@@ -110,8 +110,7 @@ public class GUI {
 		mntmDepthfirstsearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs Depth-First Search";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(2));
 			}
 		});
 		
@@ -120,8 +119,7 @@ public class GUI {
 		mntmTopologicalSort.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs Topological Sort";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(3));
 			}
 		});
 		
@@ -130,8 +128,7 @@ public class GUI {
 		mntmMinimumSpanningTree.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs Minimum Spanning Tree";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(4));
 			}
 		});
 		
@@ -140,8 +137,7 @@ public class GUI {
 		mntmMaximalMatching.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs Maximal Matching";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(5));
 			}
 		});
 		
@@ -150,8 +146,7 @@ public class GUI {
 		mntmBuild.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Runs BUILD";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(6));
 			}
 		});
 		
@@ -161,26 +156,21 @@ public class GUI {
 		JMenu mnAdd = new JMenu("add");
 		mnEdit.add(mnAdd);
 		
-		JMenuItem mntmVertexdraw = new JMenuItem("vertex (draw)");
+		JMenuItem mntmVertexdraw = new JMenuItem("vertex");
 		mnAdd.add(mntmVertexdraw);
 		mntmVertexdraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Add Vertex";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(7));
 			}
 		});
-		
-		JMenuItem mntmVertexspecify = new JMenuItem("vertex (specify)");
-		mnAdd.add(mntmVertexspecify);
 		
 		JMenuItem mntmEdgedraw = new JMenuItem("edge (draw)");
 		mnAdd.add(mntmEdgedraw);
 		mntmEdgedraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Add Edge";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(8));
 			}
 		});
 		
@@ -189,9 +179,8 @@ public class GUI {
 		mntmEdgespecify.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "add Edge";
 				createAddLineFrame();
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(9));
 			}
 		});
 		
@@ -200,13 +189,18 @@ public class GUI {
 		mntmDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				status = "Delete";
-				lblStatus.setText(status);
+				lblStatus.setText(status.getStatus(10));
 			}
 		});
 		
 		JMenuItem mntmMove = new JMenuItem("move");
 		mnEdit.add(mntmMove);
+		mntmMove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(11));
+			}
+		});
 		
 		JMenuItem mntmSetVertexProperties = new JMenuItem("set vertex properties");
 		mnEdit.add(mntmSetVertexProperties);
@@ -263,14 +257,14 @@ public class GUI {
 			}
 		});
 		
-		JButton btnAddLine = new JButton("add");
-		btnAddLine.addActionListener(new ActionListener() {
+		JButton btnAddEdge = new JButton("add");
+		btnAddEdge.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int cid1 = Integer.parseInt(txtC1.getText());
 				int cid2 = Integer.parseInt(txtC2.getText());
-				drawPanel.addLine(cid1, cid2);
+				drawPanel.addEdge(cid1, cid2);
 				frame.dispose();
 			}
 		});
@@ -278,8 +272,12 @@ public class GUI {
 		frame.getContentPane().add(txtC1);
 		frame.getContentPane().add(txtC2);
 		frame.getContentPane().add(btnCancel);
-		frame.getContentPane().add(btnAddLine);
+		frame.getContentPane().add(btnAddEdge);
 		frame.setVisible(true);
+	}
+	
+	public static int getStatusNumber() {
+		return status.getStatusNumber();
 	}
 }
 
