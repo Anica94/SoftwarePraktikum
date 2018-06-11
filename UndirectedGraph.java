@@ -47,7 +47,6 @@ public class UndirectedGraph implements Graph {
 		 */
 		Integer vertexNameDefault = highestVertexName+1;
 		this.addVertex(vertexNameDefault);
-		highestVertexName +=1;
 		return vertexNameDefault;
 	}
 
