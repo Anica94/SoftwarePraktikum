@@ -33,6 +33,15 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		highestVertexName = 0;
 	}
 	
+	/**
+	 * Getter for the hashmap of all vertices and their respective ingoing edges.
+	 * 
+	 * @return hashmap of all vertices and their respective edges.
+	 */
+	public HashMap<Integer, TreeMap<Integer, Integer>> getEndpoints(){
+		return endpoints;
+	}
+	
 	@Override
 	public boolean addVertex(Integer vertexName) {
 		if (vertexName == null) {
@@ -195,4 +204,3 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		endpoints.put(vertexNameEnd, endAdjacent);
 	}
 }
-
