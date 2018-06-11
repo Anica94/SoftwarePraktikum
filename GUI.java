@@ -34,6 +34,7 @@ public class GUI {
 
 	private JFrame frame;
 	private static DrawPanel drawPanel;
+	public static String status;
 
 	/**
 	 * Launch the application.
@@ -68,6 +69,15 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		JCheckBox chckbxUndirected = new JCheckBox("undirected");
+		chckbxUndirected.setSelected(true);
+		chckbxUndirected.setBounds(700, 0, 95, 15);
+		frame.getContentPane().add(chckbxUndirected);
+		
+		JCheckBox chckbxDirected = new JCheckBox("directed");
+		chckbxDirected.setBounds(700, 15, 95, 15);
+		frame.getContentPane().add(chckbxDirected);
+		
 		drawPanel = new DrawPanel();
 		drawPanel.setBorder(null);
 		drawPanel.setLocation(0,0);
@@ -90,7 +100,8 @@ public class GUI {
 		mntmBreadthFirstSearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs Breadth-First Search");
+				status = "Runs Breadth-First Search";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -99,7 +110,8 @@ public class GUI {
 		mntmDepthfirstsearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs Depth-First Search");
+				status = "Runs Depth-First Search";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -108,7 +120,8 @@ public class GUI {
 		mntmTopologicalSort.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs Topological Sort");
+				status = "Runs Topological Sort";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -117,7 +130,8 @@ public class GUI {
 		mntmMinimumSpanningTree.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs Minimum Spanning Tree");
+				status = "Runs Minimum Spanning Tree";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -126,7 +140,8 @@ public class GUI {
 		mntmMaximalMatching.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs Maximal Matching");
+				status = "Runs Maximal Matching";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -135,7 +150,8 @@ public class GUI {
 		mntmBuild.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Runs BUILD");
+				status = "Runs BUILD";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -150,7 +166,8 @@ public class GUI {
 		mntmVertexdraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Add Vertex");
+				status = "Add Vertex";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -162,7 +179,8 @@ public class GUI {
 		mntmEdgedraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Add Edge");
+				status = "Add Edge";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -171,8 +189,9 @@ public class GUI {
 		mntmEdgespecify.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				status = "add Edge";
 				createAddLineFrame();
-				lblStatus.setText("add Edge");
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -181,7 +200,8 @@ public class GUI {
 		mntmDelete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText("Delete");
+				status = "Delete";
+				lblStatus.setText(status);
 			}
 		});
 		
@@ -228,7 +248,7 @@ public class GUI {
 	
 	public static void createAddLineFrame() {
 		JFrame frame = new JFrame();
-		frame.setLayout(new FlowLayout());
+		frame.getContentPane().setLayout(new FlowLayout());
 		frame.setBounds(100, 150, 200, 75);
 		
 		JTextField txtC1 = new JTextField(1);
@@ -255,10 +275,10 @@ public class GUI {
 			}
 		});
 		
-		frame.add(txtC1);
-		frame.add(txtC2);
-		frame.add(btnCancel);
-		frame.add(btnAddLine);
+		frame.getContentPane().add(txtC1);
+		frame.getContentPane().add(txtC2);
+		frame.getContentPane().add(btnCancel);
+		frame.getContentPane().add(btnAddLine);
 		frame.setVisible(true);
 	}
 }
