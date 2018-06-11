@@ -44,9 +44,13 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		/*
 		 * add new vertex with empty adjacent treemap for outgoing
 		 * add new vertex with empty adjacent treemap for ingoing
+		 * update highest vertex name
 		 */
 		startpoints.put(vertexName, new TreeMap<Integer, Integer>());
 		endpoints.put(vertexName, new TreeMap<Integer, Integer>());
+		if (highestVertexName < vertexName) {
+			highestVertexName = vertexName;
+		}
 		return true;
 	}
 	
@@ -67,7 +71,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    Iterator itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    startpoints.remove(vertexName);
 	    /* iterate through all adjacent vertices of vertexName for ingoing,
@@ -79,7 +83,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    endpoints.remove(vertexName);
 		return true;
@@ -191,3 +195,4 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		endpoints.put(vertexNameEnd, endAdjacent);
 	}
 }
+
