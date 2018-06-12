@@ -250,10 +250,10 @@ public class GUI {
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show/ hide names");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show edge weights");
 		mnView.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmShowHideLabel = new JMenuItem("show/ hide label");
+		JMenuItem mntmShowHideLabel = new JMenuItem("hide edge weights");
 		mnView.add(mntmShowHideLabel);
 		
 		JMenu mnHelp = new JMenu("Help");
