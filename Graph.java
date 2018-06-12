@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 /*
  * Interface of a general Graph <tt>G<V, E></tt> contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
@@ -9,6 +11,13 @@ import java.util.ArrayList;
  */
 
 public interface Graph {
+	
+	/**
+	 * Getter for the hashmap of all vertices and their respective edges.
+	 * 
+	 * @return hashmap of all vertices and their respective edges.
+	 */
+	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints();
 	
 	/**
 	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
