@@ -32,7 +32,7 @@ public class Status {
 		//11
 		status.add("Move");
 		//12
-		status.add("Open file")
+		status.add("Open file");
 	}
 	
 	public String getStatus(int number) {
