@@ -1,19 +1,34 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
+
 /*
  * Interface of a general Graph <tt>G<V, E></tt> contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
  * of edges.  Each edge e=<v, u> in E connects v to u. In this case the vertices are only named by numbers 
  * and the edges are specified by their start- and endpoints.
+ * 
+ * @author Sonja
  */
 
 public interface Graph {
 	
 	/**
-	 * Adds a new vertex with default name (i.e. number) to this graph.
+	 * Getter for the hashmap of all vertices and their respective edges.
+	 * 
+	 * @return hashmap of all vertices and their respective edges.
 	 */
-	void addVertex();
+	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints();
+	
+	/**
+	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
+	 * 
+	 * @return default name of the new vertex.
+	 */
+	Integer addVertex();
 	
 	/**
 	 * Adds a new vertex with specified name to this graph if not already present. 
-	 * If this graph  already contains a vertex with this name, the call
+	 * If this graph already contains a vertex with this name, the call
      * leaves this graph unchanged and returns <tt>false</tt>.
      * 
 	 * @param vertexName specified name of the vertex to be added to the graph.
@@ -52,6 +67,13 @@ public interface Graph {
 	 * @throws NullPointerException if the specified name is <code> null</code>.
 	 */
 	boolean deleteVertex(Integer vertexName);
+	
+	/**
+	 * Returns an arraylist of all vertices.
+	 * 
+	 * @return arraylist of all vertices.
+	 */
+	ArrayList<Integer> getVertices();
 	
 	/**
 	 * Returns <tt>true</tt> if both specified vertices are adjacent. More formally, if there exists an
@@ -137,7 +159,7 @@ public interface Graph {
 	/**
 	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
 	 * especially the vertices vertexNameStart and vertexNameEnd will be unchanged.
-     * If the specified edge is found, the call leaves the graph unchanged.
+     * If the specified edge is not found, the call leaves the graph unchanged.
      * Returns <tt>true</tt> if the graph contained the specified edge. 
      * (The graph will not contain the specified edge once the call returns).
 	 * 
@@ -178,7 +200,6 @@ public interface Graph {
 	Integer getEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd);
 	
 	/**
-	
 	 * Changes the weight of the edge specified by their start- and endpoint.
 	 * 
 	 * <p>If the edge does not exist NoSuchElementException is thrown.
