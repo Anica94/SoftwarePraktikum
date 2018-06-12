@@ -28,8 +28,9 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		 * produce hashmap of vertices (ingoing edges)
 		 * produce counter for names
 		 */
-		super();
+		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
 		endpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
+		highestVertexName = new Integer(0);
 	}
 	
 	/**
@@ -79,7 +80,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    Iterator itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    startpoints.remove(vertexName);
 	    /* iterate through all adjacent vertices of vertexName for ingoing,
@@ -91,7 +92,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    endpoints.remove(vertexName);
 		return true;
