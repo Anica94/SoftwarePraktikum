@@ -31,6 +31,8 @@ public class Status {
 		status.add("Delete");
 		//11
 		status.add("Move");
+		//12
+		status.add("Open file")
 	}
 	
 	public String getStatus(int number) {
