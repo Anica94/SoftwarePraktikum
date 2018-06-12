@@ -113,12 +113,12 @@ public class UndirectedGraph implements Graph {
 		 * 		in each case remove vertexName from the respective adjacent vertices
 		 * remove vertexName
 		 */
-		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexName);
-		Collection c = adjacent.values();
+		TreeMap<Integer, Integer> adjacent = new TreeMap<Integer, Integer>(startpoints.get(vertexName));
+		Collection c = adjacent.keySet();
 	    Iterator itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex);
 	    }
 	    startpoints.remove(vertexName);
 		return true;
