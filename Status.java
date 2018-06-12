@@ -33,6 +33,8 @@ public class Status {
 		status.add("Move");
 		//12
 		status.add("Open file");
+		//13
+		status.add("Save file");
 	}
 	
 	public String getStatus(int number) {
