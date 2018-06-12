@@ -46,11 +46,7 @@ public class UndirectedGraph implements Graph {
 		return highestVertexName;
 	}
 	
-	/**
-	 * Getter for the hashmap of all vertices and their respective edges.
-	 * 
-	 * @return hashmap of all vertices and their respective edges.
-	 */
+	@Override
 	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints(){
 		return startpoints;
 	}
