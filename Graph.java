@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*
  * Interface of a general Graph <tt>G<V, E></tt> contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
  * of edges.  Each edge e=<v, u> in E connects v to u. In this case the vertices are only named by numbers 
@@ -56,6 +58,13 @@ public interface Graph {
 	 * @throws NullPointerException if the specified name is <code> null</code>.
 	 */
 	boolean deleteVertex(Integer vertexName);
+	
+	/**
+	 * Returns an arraylist of all vertices.
+	 * 
+	 * @return arraylist of all vertices.
+	 */
+	ArrayList<Integer> getVertices();
 	
 	/**
 	 * Returns <tt>true</tt> if both specified vertices are adjacent. More formally, if there exists an
@@ -133,7 +142,7 @@ public interface Graph {
 	 * @return <tt>true</tt> if this graph contains the specified edge.
 	 *
 	 * @throws IllegalArgumentException if start or end vertices are not
-     * found in the graph or if start- and endpoint are the same.
+    	 * found in the graph or if start- and endpoint are the same.
 	 * @throws NullPointerException if any of the specified vertices is <code> null</code>.
 	 */
 	boolean containsEdge(Integer vertexNameStart, Integer vertexNameEnd);

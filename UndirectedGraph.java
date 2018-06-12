@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -17,12 +18,12 @@ public class UndirectedGraph implements Graph {
 	 * organized in a treemap (or red-black-tree) where the endpoints of an edge are the keys 
 	 * and the weight of this edge is the respective value. Note all edges are saved twice.
 	 */
-	private HashMap<Integer, TreeMap<Integer, Integer>> startpoints;
+	protected HashMap<Integer, TreeMap<Integer, Integer>> startpoints;
 	
 	/*
 	 * Saves the highest number a vertex ever had so the default name of a new vertex will be bigger by one.
 	 */
-	private int highestVertexName;
+	protected Integer highestVertexName;
 	
 	/*
 	 * Produces a new empty undirected graph.
@@ -33,7 +34,25 @@ public class UndirectedGraph implements Graph {
 		 * produce counter for names
 		 */
 		startpoints = new HashMap<Integer, TreeMap<Integer, Integer>>();
-		highestVertexName = 0;
+		highestVertexName = new Integer(0);
+	}
+	
+	/**
+	 * Getter for the highest number of a vertex.
+	 * 
+	 * @return highest number of all vertices.
+	 */
+	public Integer getHighestVertexName() {
+		return highestVertexName;
+	}
+	
+	/**
+	 * Getter for the hashmap of all vertices and their respective edges.
+	 * 
+	 * @return hashmap of all vertices and their respective edges.
+	 */
+	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints(){
+		return startpoints;
 	}
 
 	@Override
@@ -41,9 +60,10 @@ public class UndirectedGraph implements Graph {
 		/*
 		 * produce default name
 		 * add vertex
+		 * update highest vertex name
 		 * return default name
 		 */
-		Integer vertexNameDefault = new Integer(highestVertexName+1);
+		Integer vertexNameDefault = highestVertexName+1;
 		this.addVertex(vertexNameDefault);
 		return vertexNameDefault;
 	}
@@ -58,8 +78,12 @@ public class UndirectedGraph implements Graph {
 		}
 		/*
 		 * add new vertex with empty adjacent treemap
+		 * update highest vertex name
 		 */
 		startpoints.put(vertexName, new TreeMap<Integer, Integer>());
+		if (highestVertexName < vertexName) {
+			highestVertexName = vertexName;
+		}
 		return true;
 	}
 
@@ -100,6 +124,15 @@ public class UndirectedGraph implements Graph {
 		return true;
 	}
 
+	@Override
+	public ArrayList<Integer> getVertices(){
+		/*
+		 * produce and return all vertices
+		 */ 
+		ArrayList<Integer> vertices = new ArrayList<>(startpoints.keySet());
+		return vertices;
+	}
+	
 	@Override
 	public boolean isAdjacentTo(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
@@ -177,7 +210,7 @@ public class UndirectedGraph implements Graph {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean deleteEdge(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
