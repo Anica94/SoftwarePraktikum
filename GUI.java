@@ -222,7 +222,7 @@ public class GUI {
 				 * read file
 				 * produce graph
 				 */
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
