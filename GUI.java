@@ -10,14 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.io.IOException;
 import javax.swing.JFileChooser;
+import java.util.Locale;
 
 
 
@@ -226,6 +227,9 @@ public class GUI {
 				 */
 				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
+			chooser.setDefaultLocale(Locale.ENGLISH); 
+		        chooser.setLocale(Locale.ENGLISH);
+		        chooser.updateUI();
 		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
 		        	String fileName = chooser.getSelectedFile().getName();
