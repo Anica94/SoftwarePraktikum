@@ -156,6 +156,13 @@ public interface Graph {
 	 */
 	boolean containsEdge(Integer vertexNameStart, Integer vertexNameEnd);
 	
+	// TODO
+	/**
+	 * 
+	 * @return
+	 */
+	boolean containsEdges();
+	
 	/**
 	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
 	 * especially the vertices vertexNameStart and vertexNameEnd will be unchanged.
