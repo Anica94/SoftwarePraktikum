@@ -207,6 +207,22 @@ public class UndirectedGraph implements Graph {
 		return false;
 	}
 	
+	// TODO directed???!!!!
+	// nicht leer wie? getVertices -> für alle Knoten, schau, ob es eine Kante=Adjazenz gibt
+	@Override
+	public boolean containsEdges() {
+		ArrayList<Integer> vertices = this.getVertices();
+		Integer currentVertex;
+		for(int i = 0; i < vertices.size(); i++) {
+			currentVertex = vertices.get(i);
+			if (startpoints.containsKey(currentVertex)) // also gibt es einen adjazenten Knoten
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean deleteEdge(Integer vertexNameStart, Integer vertexNameEnd) {
 		if (vertexNameStart == null || vertexNameEnd == null) {
