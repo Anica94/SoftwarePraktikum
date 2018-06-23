@@ -4,14 +4,14 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.NoSuchElementException;
 
-/*
+/**
  * The graph being implemented is directed meaning that <v,u> in E does not necessarily mean that <u,v> in E.
  * Now, the hashmap startpoints, inherited from UndirectedGraph, maintains all outgoing edges.
  * 
  * @author Sonja
  */
 public class DirectedGraph extends UndirectedGraph implements Graph {
-	/*
+	/**
 	 * Hashmap containing all vertices as keys and their respective incident edges as elements 
 	 * organized in a treemap (or red-black-tree) where the startpoints of an edge are the keys 
 	 * and the weight of this edge is the respective value.
@@ -19,7 +19,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	 */
 	private HashMap<Integer, TreeMap<Integer, Integer>> endpoints;
 	
-	/*
+	/**
 	 * Produces a new empty directed graph.
 	 */
 	public DirectedGraph() {
@@ -42,6 +42,11 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		return endpoints;
 	}
 	
+	@Override
+	public String typeOfGraph() {
+		return "directed";
+	}
+
 	@Override
 	public boolean addVertex(Integer vertexName) {
 		if (vertexName == null) {
@@ -71,7 +76,8 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexName)) {
 			return false;
 		}
-		/* iterate through all adjacent vertices of vertexName for outgoing,
+		/* 
+		 * iterate through all adjacent vertices of vertexName for outgoing,
 		 * 		in each case remove vertexName from the respective adjacent vertices
 		 * remove vertexName
 		 */
@@ -83,7 +89,8 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
 	    }
 	    startpoints.remove(vertexName);
-	    /* iterate through all adjacent vertices of vertexName for ingoing,
+	    /* 
+	     * iterate through all adjacent vertices of vertexName for ingoing,
 		 * 		in each case remove vertexName from the respective adjacent vertices
 		 * remove vertexName
 		 */
@@ -190,14 +197,14 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
     	}
 		/*
 		 * find edge in adjacent of vertexNameStart (outgoing)
-		 * 	change its weight
+		 * change its weight
 		 */
 		TreeMap<Integer, Integer> startAdjacent = startpoints.get(vertexNameStart);
 		startAdjacent.put(vertexNameEnd, edgeWeightNew);
 		startpoints.put(vertexNameStart, startAdjacent);
 		/*
 		 * find edge in adjacent of vertexNameEnd (ingoing)
-		 * 	change its weight
+		 * change its weight
 		 */
 		TreeMap<Integer, Integer> endAdjacent = endpoints.get(vertexNameEnd);
 		endAdjacent.put(vertexNameStart, edgeWeightNew);
