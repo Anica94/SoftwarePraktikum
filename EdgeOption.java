@@ -1,14 +1,29 @@
-
+/**
+ * The option being implemented symbolizes an effect on a graph concerning an edge.
+ * 
+ * @author Sonja
+ */
 public class EdgeOption implements Option {
 	
-	private String optionName; // can be for general "add", "delete", "move", and for algs "consider", "choose" 
+	/**
+	 * String containing the name of the option which can be "add", "delete", "move" in general or "consider", "choose" concerning algorithms.
+	 */
+	private String optionName;
+	/**
+	 * Integer that encodes the name of the startpoint of the edge in question.
+	 */
 	private Integer startVertexName;
+	/**
+	 * Integer that encodes the name of the endpoint of the edge in question.
+	 */
 	private Integer endVertexName;
 
 	/**
-	 * @param optionName
-	 * @param startVertexName
-	 * @param endVertexName
+	 * Produces a new type of option for a specified edge.
+	 *  
+	 * @param optionName type of which the option shall be
+	 * @param startVertexName startpoint of the specified edge
+	 * @param endVertexName endpoint of the specified edge
 	 */
 	public EdgeOption(String optionName, Integer startVertexName, Integer endVertexName) {
 		this.optionName = optionName;
@@ -16,6 +31,11 @@ public class EdgeOption implements Option {
 		this.endVertexName = endVertexName;
 	}
 	
+	/**
+	 * Returns the endpoint of the edge concerned by the option.
+	 * 
+	 * @return name of the endpoint of the edge in question
+	 */
 	public Integer getEndVertexName() {
 		return endVertexName;
 	}
@@ -25,6 +45,11 @@ public class EdgeOption implements Option {
 		return optionName;
 	}
 
+	/**
+	 * Returns the startpoint of the edge concerned by the option.
+	 * 
+	 * @return name of the startpoint of the edge in question
+	 */
 	public Integer getStartVertexName() {
 		return startVertexName;
 	}
