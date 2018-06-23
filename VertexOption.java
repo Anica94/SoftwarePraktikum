@@ -1,12 +1,24 @@
-
-public class VertexOption implements Option {
+/**
+ * The option being implemented symbolizes an effect on a graph concerning a vertex.
+ * 
+ * @author Sonja
+ */
+public class VertexOption implements Option { // TODO besserer Name: Operation ?!!
 	
-	private String optionName; // can be for general "add", "delete", "move", and for algs "consider", "choose"
+	/**
+	 * String containing the name of the option which can be "add", "delete", "move" in general or "consider", "choose" concerning algorithms.
+	 */
+	private String optionName;
+	/**
+	 * Integer that encodes the name of the vertex in question.
+	 */
 	private Integer vertexName;
 	
 	/**
-	 * @param optionName
-	 * @param vertexName
+	 * Produces a new type of option for a specified vertex.
+	 *  
+	 * @param optionName type of which the option shall be
+	 * @param vertexName name of the specified vertex
 	 */
 	public VertexOption(String optionName, Integer vertexName) {
 		this.optionName = optionName;
@@ -18,6 +30,11 @@ public class VertexOption implements Option {
 		return optionName;
 	}
 
+	/**
+	 * Returns the name of the vertex concerned by the option.
+	 * 
+	 * @return name of the vertex in question
+	 */
 	public Integer getVertexName() {
 		return vertexName;
 	}
