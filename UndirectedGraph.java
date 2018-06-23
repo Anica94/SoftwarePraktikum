@@ -5,27 +5,26 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.NoSuchElementException;
 
-
-/*
+/**
  * The graph being implemented is undirected meaning that <v,> in E does mean that <u,v> in E. 
  *  
  * @author Sonja
  */
 public class UndirectedGraph implements Graph {
 	
-	/*
+	/**
 	 * Hashmap containing all vertices as keys and their respective incident edges as elements 
 	 * organized in a treemap (or red-black-tree) where the endpoints of an edge are the keys 
 	 * and the weight of this edge is the respective value. Note all edges are saved twice.
 	 */
 	protected HashMap<Integer, TreeMap<Integer, Integer>> startpoints;
 	
-	/*
+	/**
 	 * Saves the highest number a vertex ever had so the default name of a new vertex will be bigger by one.
 	 */
 	protected Integer highestVertexName;
 	
-	/*
+	/**
 	 * Produces a new empty undirected graph.
 	 */
 	public UndirectedGraph() {
@@ -49,6 +48,11 @@ public class UndirectedGraph implements Graph {
 	@Override
 	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints(){
 		return startpoints;
+	}
+
+	@Override
+	public String typeOfGraph() {
+		return "undirected";
 	}
 
 	@Override
@@ -105,7 +109,8 @@ public class UndirectedGraph implements Graph {
 		if (!startpoints.containsKey(vertexName)) {
 			return false;
 		}
-		/* iterate through all adjacent vertices of vertexName,
+		/*
+		 * iterate through all adjacent vertices of vertexName,
 		 * 		in each case remove vertexName from the respective adjacent vertices
 		 * remove vertexName
 		 */
@@ -207,15 +212,17 @@ public class UndirectedGraph implements Graph {
 		return false;
 	}
 	
-	// TODO directed???!!!!
-	// nicht leer wie? getVertices -> für alle Knoten, schau, ob es eine Kante=Adjazenz gibt
 	@Override
 	public boolean containsEdges() {
+		/*
+		 * consider any vertex 
+		 *  	check if there is any vertex adjacent to the current one
+		 */
 		ArrayList<Integer> vertices = this.getVertices();
 		Integer currentVertex;
 		for(int i = 0; i < vertices.size(); i++) {
 			currentVertex = vertices.get(i);
-			if (startpoints.containsKey(currentVertex)) // also gibt es einen adjazenten Knoten
+			if (startpoints.containsKey(currentVertex))
 			{
 				return true;
 			}
@@ -281,14 +288,14 @@ public class UndirectedGraph implements Graph {
     	}
 		/*
 		 * find edge in adjacent of vertexNameStart
-		 * 	change its weight
+		 * change its weight
 		 */
 		TreeMap<Integer, Integer> startAdjacent = startpoints.get(vertexNameStart);
 		startAdjacent.put(vertexNameEnd, edgeWeightNew);
 		startpoints.put(vertexNameStart, startAdjacent);
 		/*
 		 * find edge in adjacent of vertexNameEnd
-		 * 	change its weight
+		 * change its weight
 		 */
 		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
 		endAdjacent.put(vertexNameStart, edgeWeightNew);
