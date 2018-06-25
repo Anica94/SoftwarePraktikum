@@ -17,14 +17,14 @@ public class MaximalMatching implements Algorithm {
 
 
 	@Override
-	public ArrayList<Option> execute(Graph graph) {
+	public ArrayList<Operation> execute(Graph graph) {
 		if (graph == null) {
     		throw new NullPointerException();
     	}
 		/*
 		 * make copy of the graph to work on (contains E')
 		 * produce container of variables to use later
-		 * produce arraylist of options that will be done by the algorithm
+		 * produce arraylist of operations that will be done by the algorithm
 		 */
 		Graph copyGraph = graph;
 		ArrayList<Integer> copyVertices = copyGraph.getVertices();
@@ -32,7 +32,7 @@ public class MaximalMatching implements Algorithm {
 		Integer currentVertex;
 		Integer startVertexName = null;
 		Integer endVertexName = null;
-		ArrayList<Option> changes = new ArrayList<Option>();
+		ArrayList<Operation> changes = new ArrayList<Operation>();
 		/*
 		 * produce the empty matching (M) as graph without any edges
 		 */
@@ -48,7 +48,7 @@ public class MaximalMatching implements Algorithm {
 		}
 		/*
 		 * do maximal matching
-		 * return arraylist of options
+		 * return arraylist of operations
 		 */
 		while (copyGraph.containsEdges()) {
 			/*
@@ -57,7 +57,7 @@ public class MaximalMatching implements Algorithm {
 			 * 		if there is an adjacent vertex
 			 * 			choose the corresponding edge
 			 * delete this edge in the copyGraph (update E')
-			 * memorize this step as an option 
+			 * memorize this step as an operation 
 			 */
 			for(int i = 0; i < copyVertices.size(); i++) {
 				currentVertex = copyVertices.get(i);
@@ -69,13 +69,13 @@ public class MaximalMatching implements Algorithm {
 				}
 			}
 			copyGraph.deleteEdge(startVertexName, endVertexName);
-			changes.add(new EdgeOption("consider", startVertexName, endVertexName));
+			changes.add(new EdgeOperation("consider", startVertexName, endVertexName));
 			/*
 			 * add this edge to the matching / result to be (update M)
-			 * memorize this step as an option
+			 * memorize this step as an operation
 			 */  			
 			result.addEdge(startVertexName, endVertexName);
-			changes.add(new EdgeOption("choose", startVertexName, endVertexName));
+			changes.add(new EdgeOperation("choose", startVertexName, endVertexName));
 			/*
 			 * delete all edges that are incident:
 			 * for all vertices
