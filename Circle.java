@@ -1,6 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * 
+ * @author Anica
+ *
+ */
+
 public class Circle {
 	private Integer name;
 	private int x, y, r;
@@ -12,8 +18,8 @@ public class Circle {
 		this.r = r;
 	}
 	
-	public void draw(Graphics g) {
-		g.setColor(Color.BLUE);
+	public void draw(Graphics g, Color c) {
+		g.setColor(c);
 		g.fillOval(x-r, y-r, r*2, r*2);
 		g.setColor(Color.WHITE);
 		g.drawString(String.valueOf(name), x-3, y+3);
