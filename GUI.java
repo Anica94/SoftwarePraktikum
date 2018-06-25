@@ -116,6 +116,7 @@ public class GUI {
 		menuBar.add(mnAlgorithm);
 		
 		JMenuItem mntmBreadthFirstSearch = new JMenuItem("Breadth-First Search");
+		mntmBreadthFirstSearch.setEnabled(false);
 		mnAlgorithm.add(mntmBreadthFirstSearch);
 		mntmBreadthFirstSearch.addActionListener(new ActionListener() {
 			@Override
@@ -125,6 +126,7 @@ public class GUI {
 		});
 		
 		JMenuItem mntmDepthfirstsearch = new JMenuItem("Depth-First Search");
+		mntmDepthfirstsearch.setEnabled(false);
 		mnAlgorithm.add(mntmDepthfirstsearch);
 		mntmDepthfirstsearch.addActionListener(new ActionListener() {
 			@Override
@@ -134,6 +136,7 @@ public class GUI {
 		});
 		
 		JMenuItem mntmTopologicalSort = new JMenuItem("Topological Sort");
+		mntmTopologicalSort.setEnabled(false);
 		mnAlgorithm.add(mntmTopologicalSort);
 		mntmTopologicalSort.addActionListener(new ActionListener() {
 			@Override
@@ -143,6 +146,7 @@ public class GUI {
 		});
 		
 		JMenuItem mntmMinimumSpanningTree = new JMenuItem("Minimum Spanning Tree");
+		mntmMinimumSpanningTree.setEnabled(false);
 		mnAlgorithm.add(mntmMinimumSpanningTree);
 		mntmMinimumSpanningTree.addActionListener(new ActionListener() {
 			@Override
@@ -157,6 +161,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(5));
+				startAlgorithm();
 			}
 		});
 		
@@ -181,6 +186,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(7));
+				startEdit();
 			}
 		});
 		
@@ -190,6 +196,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(8));
+				startEdit();
 			}
 		});
 		
@@ -200,6 +207,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				createAddLineFrame();
 				lblStatus.setText(status.getStatus(9));
+				startEdit();
 			}
 		});
 		
@@ -212,6 +220,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(10));
+				startEdit();
 			}
 		});
 		
@@ -221,6 +230,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(11));
+				startEdit();
 			}
 		});
 		
@@ -231,6 +241,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(0));
 				createDeleteGraphFrame();
+				startEdit();
 			}
 		});
 		
@@ -240,6 +251,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(12));
+				startEdit();
 			}
 		});
 		
@@ -247,6 +259,7 @@ public class GUI {
 		//mnEdit.add(mntmSetVertexProperties);
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
+		mntmUndo.setEnabled(false);
 		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\img\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
@@ -292,12 +305,15 @@ public class GUI {
 		
 		
 		JMenuItem mntmSaveas = new JMenuItem("save (as)");
+		mntmSaveas.setEnabled(false);
 		mnFile.add(mntmSaveas);
 		
 		JMenuItem mntmShow = new JMenuItem("show");
+		mntmShow.setEnabled(false);
 		mnFile.add(mntmShow);
 		
 		JMenu mnView = new JMenu("View");
+		mnView.setEnabled(false);
 		menuBar.add(mnView);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show edge weights");
@@ -384,6 +400,16 @@ public class GUI {
 	
 	public static int getStatusNumber() {
 		return status.getStatusNumber();
+	}
+	
+	public void startAlgorithm() {
+		drawPanel.vertexColor = Color.GRAY;
+		drawPanel.edgeColor = Color.GRAY;
+	}
+	
+	public void startEdit() {
+		drawPanel.vertexColor = Color.BLUE;
+		drawPanel.edgeColor = Color.BLACK;
 	}
 }
 
