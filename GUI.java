@@ -307,6 +307,23 @@ public class GUI {
 		JMenuItem mntmSaveas = new JMenuItem("save (as)");
 		mntmSaveas.setEnabled(false);
 		mnFile.add(mntmSaveas);
+		mntmSaveas.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(13));
+				/*
+				 * produce save dialog
+				 * write file
+				 */
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+		        JFileChooser chooser = new JFileChooser(directoryName);
+		        if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
+		        {
+		        	String fileName = chooser.getSelectedFile().getName();
+		        	
+		        }
+			}
+		});
 		
 		JMenuItem mntmShow = new JMenuItem("show");
 		mntmShow.setEnabled(false);
