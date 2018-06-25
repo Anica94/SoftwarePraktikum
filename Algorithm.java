@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * Interface of a general algorithm. An algorithm can be executed which delivers a list of all options done by this algorithm 
- * where an option is a step of the algorithm that directly concerns the graph on which the algorithm is performed. 
+ * Interface of a general algorithm. An algorithm can be executed which delivers a list of all operations done by this algorithm 
+ * where an operation is a step of the algorithm that directly concerns the graph on which the algorithm is performed. 
  * Furthermore, it can be asked for the result which is saved as a graph.
  * 
  * @author Sonja
@@ -10,17 +10,16 @@ import java.util.ArrayList;
 public interface Algorithm {
 
 	/**
-	 * Executes an algorithm on the specified graph and returns a list of the options made by this algorithm. 
+	 * Executes an algorithm on the specified graph and returns a list of the operations made by this algorithm. 
 	 * 
 	 * @param graph on which the algorithm shall be executed. 
 	 * 
-	 * @return list of options made by the algorithm.
+	 * @return list of operations made by the algorithm.
 	 * 
 	 * @throws NullPointerException if the specified graph is <code> null</code>.
 	 */
-	public ArrayList<Option> execute(Graph graph);
+	public ArrayList<Operation> execute(Graph graph);
 	
-	// TODO NULLPOINTER???????????????
 	/**
 	 * Executes the algorithm and returns a graph that contains the result of the respective algorithm.
 	 * 
