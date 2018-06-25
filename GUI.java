@@ -3,25 +3,18 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
 import java.awt.BorderLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JCheckBox;
-import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
+import java.util.Locale;
+
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
-import javax.swing.JSlider;
-import javax.swing.JScrollBar;
-import javax.swing.JTextPane;
-import javax.swing.JList;
-import javax.swing.JToggleButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -35,6 +28,9 @@ public class GUI {
 	private JFrame frame;
 	private static Status status;
 	private static DrawPanel drawPanel;
+	private Reader reader;
+	private static Graph graph;
+	private static String typeOfGraph;
 
 	/**
 	 * Launch the application.
@@ -56,7 +52,10 @@ public class GUI {
 	 * Create the application.
 	 */
 	public GUI() {
+		graph = new UndirectedGraph();
+		typeOfGraph = "u";
 		status = new Status();
+		reader = new Reader();
 		initialize();
 	}
 
@@ -74,11 +73,31 @@ public class GUI {
 		chckbxUndirected.setSelected(true);
 		chckbxUndirected.setBounds(700, 0, 95, 15);
 		frame.getContentPane().add(chckbxUndirected);
-		
+			
 		JCheckBox chckbxDirected = new JCheckBox("directed");
 		chckbxDirected.setBounds(700, 15, 95, 15);
 		frame.getContentPane().add(chckbxDirected);
-		
+		/*
+		chckbxUndirected.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxUndirected.isSelected()) {
+					typeOfGraph = "u";
+					chckbxDirected.setSelected(false);
+				}
+			}
+		});
+		chckbxDirected.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxDirected.isSelected()) {
+					typeOfGraph = "d";
+					chckbxUndirected.setSelected(false);
+				}
+			}
+		});
+		*/
+		//drawPanel = new DrawPanel(graph, typeOfGraph);
 		drawPanel = new DrawPanel();
 		drawPanel.setBorder(null);
 		drawPanel.setLocation(0,0);
@@ -184,12 +203,34 @@ public class GUI {
 			}
 		});
 		
-		JMenuItem mntmDelete = new JMenuItem("delete");
-		mnEdit.add(mntmDelete);
-		mntmDelete.addActionListener(new ActionListener() {
+		JMenu mnDelete = new JMenu("delete");
+		mnEdit.add(mnDelete);
+		
+		JMenuItem mntmDeleteVertex = new JMenuItem("delete vertex");
+		mnDelete.add(mntmDeleteVertex);
+		mntmDeleteVertex.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(10));
+			}
+		});
+		
+		JMenuItem mntmDeleteEdge = new JMenuItem("delete edge");
+		mnDelete.add(mntmDeleteEdge);
+		mntmDeleteEdge.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(11));
+			}
+		});
+		
+		JMenuItem mntmDeleteGraph = new JMenuItem("delete graph");
+		mnDelete.add(mntmDeleteGraph);
+		mntmDeleteGraph.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(0));
+				createDeleteGraphFrame();
 			}
 		});
 		
@@ -198,12 +239,12 @@ public class GUI {
 		mntmMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText(status.getStatus(11));
+				lblStatus.setText(status.getStatus(12));
 			}
 		});
 		
-		JMenuItem mntmSetVertexProperties = new JMenuItem("set vertex properties");
-		mnEdit.add(mntmSetVertexProperties);
+		//JMenuItem mntmSetVertexProperties = new JMenuItem("set vertex properties");
+		//mnEdit.add(mntmSetVertexProperties);
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\img\\Undo-icon.png"));
@@ -220,6 +261,35 @@ public class GUI {
 		
 		JMenuItem mntmFile = new JMenuItem("file");
 		mnOpen.add(mntmFile);
+		mntmFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(13));
+				/*
+				 * produce open dialog
+				 * read file
+				 * produce and draw graph
+				 */
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+		        JFileChooser chooser = new JFileChooser(directoryName);
+		        chooser.setDefaultLocale(Locale.ENGLISH); 
+		        chooser.setLocale(Locale.ENGLISH);
+		        chooser.updateUI();
+		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+		        {
+		        	String fileName = chooser.getSelectedFile().getName();
+		           	try {
+					graph = reader.read(directoryName + "\\" + fileName);
+					typeOfGraph = reader.typeOfGraph();
+					drawPanel.changeGraph(graph, typeOfGraph);
+				} catch (IOException e1) {
+					//System.out.println("Error concerning file:\\n");
+					e1.printStackTrace();
+				}   
+		        }
+		}
+		});
+		
 		
 		JMenuItem mntmSaveas = new JMenuItem("save (as)");
 		mnFile.add(mntmSaveas);
@@ -230,10 +300,10 @@ public class GUI {
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show/ hide names");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show edge weights");
 		mnView.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmShowHideLabel = new JMenuItem("show/ hide label");
+		JMenuItem mntmShowHideLabel = new JMenuItem("hide edge weights");
 		mnView.add(mntmShowHideLabel);
 		
 		JMenu mnHelp = new JMenu("Help");
@@ -273,6 +343,42 @@ public class GUI {
 		frame.getContentPane().add(txtC2);
 		frame.getContentPane().add(btnCancel);
 		frame.getContentPane().add(btnAddEdge);
+		frame.setVisible(true);
+	}
+	
+	public static void createDeleteGraphFrame() {
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(390, 375, 220, 60);
+		frame.getContentPane().setBackground(new Color(0, 204, 204));
+		frame.setUndecorated(true);
+		
+		JLabel lblText = new JLabel("Do you really want to delete the graph?");
+		
+		JButton btnYes = new JButton("Yes");
+		btnYes.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				graph = new UndirectedGraph();
+				typeOfGraph = "u";
+				drawPanel.changeGraph(graph, typeOfGraph);
+				frame.dispose();
+			}
+		});
+		
+		JButton btnNo = new JButton("No");
+		btnNo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		
+		frame.getContentPane().add(lblText);
+		frame.getContentPane().add(btnYes);
+		frame.getContentPane().add(btnNo);
 		frame.setVisible(true);
 	}
 	
