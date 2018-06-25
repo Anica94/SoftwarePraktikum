@@ -2,10 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-/*
- * Interface of a general Graph <tt>G<V, E></tt> contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
- * of edges.  Each edge e=<v, u> in E connects v to u. In this case the vertices are only named by numbers 
- * and the edges are specified by their start- and endpoints.
+
+/**
+ * Interface of a general Graph <tt>G<V, E></tt> that contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
+ * of edges. Each edge e=<v, u> in E connects v to u.
+ * In this case the vertices are only named by numbers and the edges are specified by their start- and endpoints.
  * 
  * @author Sonja
  */
@@ -20,6 +21,11 @@ public interface Graph {
 	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints();
 	
 	/**
+	 * Returns the type of the graph as a string. To be exact, the type can be "undirected" or "directed".
+	 *  
+	 * @return type of graph which is undirected or directed
+	 */
+
 	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
 	 * 
 	 * @return default name of the new vertex.
@@ -155,6 +161,13 @@ public interface Graph {
 	 * @throws NullPointerException if any of the specified vertices is <code> null</code>.
 	 */
 	boolean containsEdge(Integer vertexNameStart, Integer vertexNameEnd);
+	
+	/**
+	 * Checks if the graph contains any edges. Returns <tt>false</tt> if the graph contains only isolated vertices.
+	 * 
+	 * @return true if the graph contains at least one edge.
+	 */
+	boolean containsEdges();
 	
 	/**
 	 * Deletes the edge specified by their start- and endpoint from this graph. All incident vertices
