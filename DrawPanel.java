@@ -1,4 +1,11 @@
 import java.awt.BorderLayout;
+
+/**
+ * 
+ * 
+ * @author Anica
+ */
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -27,18 +34,22 @@ public class DrawPanel extends JPanel {
 	private Integer startpoint;
 	private Circle c;
 	private int status;
-	//private Graphics g;
+	public Color vertexColor;
+	public Color edgeColor;
 	
 	private int mouseX, mouseY;
 	private JLabel lblMouseCoords;
 	
-	public DrawPanel(Graph graph, String typeOfGraph) {
-		this.graph = graph;
-		this.typeOfGraph = typeOfGraph;
+	public DrawPanel() {
+		//this.graph = graph;
+		//this.typeOfGraph = typeOfGraph;
+		graph = new UndirectedGraph();
 		vertexCoordinates = new HashMap<Integer, Pair<Integer, Integer> >();
 		coordinates = new Pair<Integer, Integer>(0, 0);
 		coordinates2 = new Pair<Integer, Integer>(0, 0);
 		startpoint = null;
+		vertexColor = Color.BLUE;
+		edgeColor = Color.BLACK;
 /*
 		System.out.println("number of vertices " + graph.getVertices().size());
 		if(!graph.getVertices().isEmpty() && vertexCoordinates.isEmpty()) {
@@ -67,8 +78,8 @@ public class DrawPanel extends JPanel {
 			public void mouseMoved(MouseEvent e) {
 				mouseX = e.getX();
 				mouseY = e.getY();
-				lblMouseCoords.setText("coords: (" + mouseX + ", " + mouseY + ")");
-				lblMouseCoords.repaint();
+				//lblMouseCoords.setText("coords: (" + mouseX + ", " + mouseY + ")");
+				//lblMouseCoords.repaint();
 			}
 			
 		});		
@@ -87,13 +98,13 @@ public class DrawPanel extends JPanel {
             	 * add vertex
             	 */
 				case 7:
-					System.out.println("case addVertex");
+					//System.out.println("case addVertex");
 					newVertex = graph.addVertex();
-					System.out.println("newVertex = "+ newVertex);
-					System.out.println("number of vertices " + graph.getVertices().size());
+					//System.out.println("newVertex = "+ newVertex);
+					//System.out.println("number of vertices " + graph.getVertices().size());
             		coordinates = new Pair<Integer, Integer>(mouseX, mouseY);
             		vertexCoordinates.put(newVertex, coordinates);
-            		System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
+            		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 					break;
 				/*
             	 * add edge by drawing
@@ -178,7 +189,7 @@ public class DrawPanel extends JPanel {
 			x = coordinates.getFirst();
 			y = coordinates.getSecond();
 			distance = distance(x1, y1, x, y);
-			if(distance < 10) {
+			if(distance < 15) {
 				if(distance < shortestDistance) {
 					v = vertex;
 				}
@@ -210,14 +221,14 @@ public class DrawPanel extends JPanel {
 	public void changeGraph(Graph graph, String typeOfGraph) {
 		this.graph = graph;
 		this.typeOfGraph = typeOfGraph;
-		System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
+		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		vertexCoordinates.clear();
-		System.out.println("number of vertices " + this.graph.getVertices().size());
-		System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
+		//System.out.println("number of vertices " + this.graph.getVertices().size());
+		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		if(!graph.getVertices().isEmpty() && vertexCoordinates.isEmpty()) {
 			createDefaultCoordinates();
 		}
-		System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
+		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		repaint();
 	}
 	
@@ -261,21 +272,18 @@ public class DrawPanel extends JPanel {
 		repaint();
     }
 */	
-	@Override
-    protected void paintComponent (Graphics g) {
-		super.paintComponent(g);
-		
+	
+	public void drawCompleteGraph(Graphics g, Color vertexColor, Color edgeColor) {
 		Integer vertex;
 		Pair<Integer, Integer> coordinates;
-		
 		vertices = graph.getVertices();
-		System.out.println("number of vertices = " + vertices.size());
+		//System.out.println("number of vertices = " + vertices.size());
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
 			coordinates = vertexCoordinates.get(vertex);
 			x = coordinates.getFirst();
 			y = coordinates.getSecond();
-			g.setColor(Color.BLACK);
+			g.setColor(edgeColor);
 			TreeMap<Integer, Integer> startAdjacent =graph.getStartpoints().get(vertex);
 			Set<Integer> set = startAdjacent.keySet();
 			java.util.Iterator<Integer> itr = set.iterator();
@@ -286,11 +294,15 @@ public class DrawPanel extends JPanel {
 		    	g.drawLine(x, y, x2, y2);
 		    }
 			c = new Circle(vertex, 10, x, y);
-			c.draw(g);
-		    //drawPoint(vertex, x, y);
-			
+			c.draw(g, vertexColor);
 		}
+	}
+	
+	@Override
+    protected void paintComponent (Graphics g) {
+		super.paintComponent(g);
 		
+		drawCompleteGraph(g, vertexColor, edgeColor);
 	}
 	
 }
