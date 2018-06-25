@@ -211,3 +211,4 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 		endpoints.put(vertexNameEnd, endAdjacent);
 	}
 }
+
