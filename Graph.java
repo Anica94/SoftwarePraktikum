@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
+
 /**
  * Interface of a general Graph <tt>G<V, E></tt> that contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
  * of edges. Each edge e=<v, u> in E connects v to u.
@@ -24,9 +25,7 @@ public interface Graph {
 	 *  
 	 * @return type of graph which is undirected or directed
 	 */
-	public String typeOfGraph();
-	
-	/**
+
 	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
 	 * 
 	 * @return default name of the new vertex.
