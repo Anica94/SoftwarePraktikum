@@ -2,7 +2,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.PatternSyntaxException;
 import java.io.BufferedReader;
-
+/**
+ * This class takes care of reading a graph from a text file.
+ * 
+ * @author Sonja
+ *
+ */
 public class Reader {
 	
 	private BufferedReader bReader;
