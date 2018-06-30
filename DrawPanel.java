@@ -66,10 +66,7 @@ public class DrawPanel extends JPanel {
 				 * move
 				 */
 				if(GUI.getStatusNumber()==12) {
-					//vertex = findVertex(x, y);
 					changeCoordinates(vertex, e.getX(), e.getY());
-					//coordinates = new Pair<Integer, Integer>(mouseX, mouseY);
-					//vertexCoordinates.replace(vertex, coordinates);
 				}
 				repaint();
 			}
@@ -84,8 +81,8 @@ public class DrawPanel extends JPanel {
 			
 		});		
 		
-		lblMouseCoords = new JLabel("TEST");
-		this.add(lblMouseCoords, BorderLayout.NORTH);
+		//lblMouseCoords = new JLabel("TEST");
+		//this.add(lblMouseCoords, BorderLayout.NORTH);
 		
 		this.addMouseListener(new MouseAdapter() {
         //    private Color background;
@@ -240,7 +237,7 @@ public class DrawPanel extends JPanel {
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
 			int x = (int)(Math.random() * ((784) + 1));
-			int y = (int)(Math.random() * ((514) + 1));
+			int y = (int)(Math.random() * ((491) + 1));
 			coordinates = new Pair<Integer, Integer>(x, y);
 			vertexCoordinates.put(vertex, coordinates);
 		}
@@ -273,6 +270,13 @@ public class DrawPanel extends JPanel {
     }
 */	
 	
+	/**
+	 * Draws the complete graph.
+	 * 
+	 * @param g graphical object
+	 * @param vertexColor color in which the vertices should be drawn.
+	 * @param edgeColor color in which the edges should be drawn.
+	 */
 	public void drawCompleteGraph(Graphics g, Color vertexColor, Color edgeColor) {
 		Integer vertex;
 		Pair<Integer, Integer> coordinates;
@@ -298,11 +302,66 @@ public class DrawPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Draws the specified vertex in the specified color.
+	 * 
+	 * @param vertexName name of the vertex that should be drawn.
+	 * @param color
+	 */
+	public void drawVertex(Integer vertexName, Color color) {
+		Graphics g = this.getGraphics();	
+		Pair<Integer, Integer> coordinates;
+		coordinates = vertexCoordinates.get(vertexName);
+		x = coordinates.getFirst();
+		y = coordinates.getSecond();
+		c = new Circle(vertexName, 10, x, y);
+		c.draw(g, color);
+	}
+	
+	/**
+	 * Draws the specified edge in the specified color.
+	 * 
+	 * @param vertexNameStart start-vertex of the edge to be drawn.
+	 * @param vertexNameEnd end-vertex of the edge to be drawn.
+	 * @param color
+	 */
+	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Color color) {
+		Graphics g = this.getGraphics();
+		Pair<Integer, Integer> coordinates1;
+		Pair<Integer, Integer> coordinates2;
+		int x1, x2, y1, y2;
+		coordinates1 = vertexCoordinates.get(vertexNameStart);
+		x1 = coordinates1.getFirst();
+		y1 = coordinates1.getSecond();
+		coordinates2 = vertexCoordinates.get(vertexNameEnd);
+		x2 = coordinates2.getFirst();
+		y2 = coordinates2.getSecond();
+		g.setColor(color);
+		g.drawLine(x1, y1, x2, y2);		
+	}
+		
+	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeight, Color color) {
+		Graphics g = this.getGraphics();
+		Pair<Integer, Integer> coordinates1;
+		Pair<Integer, Integer> coordinates2;
+		int x1, x2, y1, y2;
+		coordinates1 = vertexCoordinates.get(vertexNameStart);
+		x1 = coordinates1.getFirst();
+		y1 = coordinates1.getSecond();
+		coordinates2 = vertexCoordinates.get(vertexNameEnd);
+		x2 = coordinates2.getFirst();
+		y2 = coordinates2.getSecond();
+		g.setColor(color);
+		g.drawLine(x1, y1, x2, y2);
+		g.drawString(String.valueOf(edgeWeight), 1/2*(x1+x2), 1/2*(y1+y2));
+	}
+	
 	@Override
-    protected void paintComponent (Graphics g) {
+    public void paintComponent (Graphics g) {
 		super.paintComponent(g);
 		
 		drawCompleteGraph(g, vertexColor, edgeColor);
+		System.out.println("repainted");
 	}
 	
 }
