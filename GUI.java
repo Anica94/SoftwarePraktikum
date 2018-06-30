@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
+
+import java.util.ArrayList;
 import java.util.Locale;
 
 import java.awt.event.ActionListener;
@@ -21,7 +23,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JLabel;
 import java.awt.Color;
 
-
+/**
+ * 
+ * 
+ * @author Anica
+ *
+ */
 
 public class GUI {
 
@@ -31,6 +38,12 @@ public class GUI {
 	private Reader reader;
 	private static Graph graph;
 	private static String typeOfGraph;
+	private static Graph resultGraph;
+	private ArrayList<Operation> operations;
+	private Operation operation;
+	private EdgeOperation edgeOperation;
+	private VertexOperation vertexOperation;
+	private MaximalMatching maximalMatching;
 
 	/**
 	 * Launch the application.
@@ -64,18 +77,17 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("GraphGUI");
-		//frame.getContentPane().setBackground(new Color(224, 255, 255));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JCheckBox chckbxUndirected = new JCheckBox("undirected");
 		chckbxUndirected.setSelected(true);
-		chckbxUndirected.setBounds(700, 0, 95, 15);
+		chckbxUndirected.setBounds(592, 0, 95, 15);
 		frame.getContentPane().add(chckbxUndirected);
 			
 		JCheckBox chckbxDirected = new JCheckBox("directed");
-		chckbxDirected.setBounds(700, 15, 95, 15);
+		chckbxDirected.setBounds(689, 0, 95, 15);
 		frame.getContentPane().add(chckbxDirected);
 		/*
 		chckbxUndirected.addActionListener(new ActionListener() {
@@ -97,16 +109,39 @@ public class GUI {
 			}
 		});
 		*/
-		//drawPanel = new DrawPanel(graph, typeOfGraph);
 		drawPanel = new DrawPanel();
 		drawPanel.setBorder(null);
-		drawPanel.setLocation(0,0);
-		drawPanel.setSize(784,514);
+		drawPanel.setLocation(0,23);
+		drawPanel.setSize(784,491);
 		frame.getContentPane().add(drawPanel);
 		
 		JLabel lblStatus = new JLabel(status.getStatus(0));
 		lblStatus.setBounds(0, 515, 784, 25);
 		frame.getContentPane().add(lblStatus);
+		
+		JButton btnVisualizeAlg = new JButton("visualize Alg");
+		btnVisualizeAlg.setBounds(0, 0, 104, 23);
+		frame.getContentPane().add(btnVisualizeAlg);
+		btnVisualizeAlg.setVisible(false);
+		btnVisualizeAlg.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//drawPanel.repaint();
+				visualizeAlgorithm();
+			}
+		});
+		
+		JButton btnShowResult = new JButton("show result");
+		btnShowResult.setBounds(105, 0, 104, 23);
+		frame.getContentPane().add(btnShowResult);
+		btnShowResult.setVisible(false);
+		btnShowResult.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showResult();
+			}
+		});
+	
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(135, 206, 250));
@@ -160,8 +195,14 @@ public class GUI {
 		mntmMaximalMatching.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				lblStatus.setText(status.getStatus(5));
-				startAlgorithm();
+				startAlgorithm();	
+				maximalMatching = new MaximalMatching();
+				operations = maximalMatching.execute(graph);
+				resultGraph = maximalMatching.getResult(graph);
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -187,6 +228,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(7));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -197,6 +240,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(8));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -208,6 +253,8 @@ public class GUI {
 				createAddLineFrame();
 				lblStatus.setText(status.getStatus(9));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -221,6 +268,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(10));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -231,6 +280,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(11));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -242,6 +293,8 @@ public class GUI {
 				lblStatus.setText(status.getStatus(0));
 				createDeleteGraphFrame();
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -252,6 +305,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(12));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -295,11 +350,14 @@ public class GUI {
 					graph = reader.read(directoryName + "\\" + fileName);
 					typeOfGraph = reader.typeOfGraph();
 					drawPanel.changeGraph(graph, typeOfGraph);
-				} catch (IOException e1) {
+		           	} 
+		           	catch (IOException e1) {
 					//System.out.println("Error concerning file:\\n");
 					e1.printStackTrace();
-				}   
+		           	}   
 		        }
+		        btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 		}
 		});
 		
@@ -322,6 +380,8 @@ public class GUI {
 		        	String fileName = chooser.getSelectedFile().getName();
 		        	
 		        }
+		        btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -341,8 +401,12 @@ public class GUI {
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
+		
 	}
 	
+	/**
+	 * Creates a frame for adding an edge via specifying.
+	 */
 	public static void createAddLineFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
@@ -377,8 +441,13 @@ public class GUI {
 		frame.getContentPane().add(btnCancel);
 		frame.getContentPane().add(btnAddEdge);
 		frame.setVisible(true);
+		frame.validate();
 	}
 	
+	/**
+	 * Creates a frame that appears after clicking on the "delete graph" 
+	 * and asks if the graph should really be deleted.
+	 */
 	public static void createDeleteGraphFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
@@ -415,18 +484,98 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Getter for the statusnumber.
+	 * 
+	 * @return statusnumber
+	 */
 	public static int getStatusNumber() {
 		return status.getStatusNumber();
 	}
 	
+	/**
+	 * Sets the vertex- and edge-color to gray, repaints the graph
+	 * and creates a new empty graph for the result.
+	 */
 	public void startAlgorithm() {
 		drawPanel.vertexColor = Color.GRAY;
 		drawPanel.edgeColor = Color.GRAY;
+		drawPanel.repaint();
+		if(graph.typeOfGraph().equals("undirected")) {
+			resultGraph = new UndirectedGraph();
+		}
+		else {
+			resultGraph = new DirectedGraph();
+		}
 	}
 	
+	/**
+	 * Sets the vertex- and edge-color to the default colors.
+	 */
 	public void startEdit() {
 		drawPanel.vertexColor = Color.BLUE;
 		drawPanel.edgeColor = Color.BLACK;
+	}
+	
+	/**
+	 * Visualizes an algorithm.
+	 */
+	public void visualizeAlgorithm() {
+		drawPanel.repaint();
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				if(operation.getOperationName().equals("consider")) {
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+				}
+				else if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+				}
+				else if(operation.getOperationName().equals("not choose")) {
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				if(operation.getOperationName().equals("consider")) {
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+				}
+				else if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+				}
+				else if(operation.getOperationName().equals("not choose")) {
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+	}
+	
+	/**
+	 * Shows the result of an algorithm.
+	 */
+	public void showResult() {
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+				}
+			}	
+		}
 	}
 }
 
