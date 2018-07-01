@@ -25,7 +25,10 @@ public interface Graph {
 	 *  
 	 * @return type of graph which is undirected or directed
 	 */
+	
+	String typeOfGraph();
 
+	/**
 	 * Adds a new vertex with default name (i.e. number) to this graph and returns this name.
 	 * 
 	 * @return default name of the new vertex.
@@ -230,5 +233,7 @@ public interface Graph {
 	 * @throws NullPointerException if any of the specified vertices or the new weight is <code> null</code>.
 	 */
 	void setEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeightNew);
+	
+	Graph copyGraph();
 	
 }
