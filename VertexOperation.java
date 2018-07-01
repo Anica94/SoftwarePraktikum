@@ -31,7 +31,7 @@ public class VertexOperation implements Operation {
 		if (vertexName == null) {
     		throw new NullPointerException();
     	}
-		if (!operationName.equals("consider") || !operationName.equals("choose") || !operationName.equals("not choose")) {
+		if (!(operationName.equals("consider") || operationName.equals("choose") || operationName.equals("not choose"))) {
     		throw new IllegalArgumentException();
     	}
 		this.operationName = operationName;
