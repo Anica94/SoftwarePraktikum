@@ -139,7 +139,7 @@ public class UndirectedGraph implements Graph {
 		if (vertexNameStart == null || vertexNameEnd == null) {
     		throw new NullPointerException();
     	}
-		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
+		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
 		/*
@@ -200,7 +200,7 @@ public class UndirectedGraph implements Graph {
 		if (vertexNameStart == null || vertexNameEnd == null) {
     		throw new NullPointerException();
     	}
-		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
+		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd)) {
     		throw new IllegalArgumentException();
     	}
 		/*
@@ -222,7 +222,7 @@ public class UndirectedGraph implements Graph {
 		Integer currentVertex;
 		for(int i = 0; i < vertices.size(); i++) {
 			currentVertex = vertices.get(i);
-			if (startpoints.containsKey(currentVertex))
+			if (startpoints.containsKey(currentVertex) && !startpoints.get(currentVertex).isEmpty())
 			{
 				return true;
 			}
@@ -300,6 +300,15 @@ public class UndirectedGraph implements Graph {
 		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
 		endAdjacent.put(vertexNameStart, edgeWeightNew);
 		startpoints.put(vertexNameEnd, endAdjacent);
+	}
+	
+	@Override
+	public Graph copyGraph() {
+		Graph copyGraph = new UndirectedGraph();
+		
+		
+		
+		return copyGraph;
 	}
 
 }
