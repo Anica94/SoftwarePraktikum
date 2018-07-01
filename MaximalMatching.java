@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class MaximalMatching implements Algorithm {
@@ -26,10 +28,34 @@ public class MaximalMatching implements Algorithm {
 		 * produce container of variables to use later
 		 * produce arraylist of operations that will be done by the algorithm
 		 */
-		Graph copyGraph = graph;
+		
+		ArrayList<Integer> vertices = graph.getVertices();
+		HashMap<Integer, TreeMap<Integer, Integer>> startpoints = graph.getStartpoints();
+		Integer currentVertex;
+		Graph copyGraph;
+		if(graph.typeOfGraph().equals("undirected")) {
+			copyGraph = new UndirectedGraph();
+			for(int i = 0; i < vertices.size(); i++) {
+				currentVertex = vertices.get(i);
+				copyGraph.addVertex(currentVertex);
+			}
+			for(int i = 0; i < vertices.size(); i++) {
+				currentVertex = vertices.get(i);
+				TreeMap<Integer, Integer> startAdjacent =graph.getStartpoints().get(currentVertex);
+				Set<Integer> set = startAdjacent.keySet();
+				java.util.Iterator<Integer> itr = set.iterator();
+			    while (itr.hasNext()){
+			    	copyGraph.addEdge(currentVertex, itr.next());
+			    }
+			}
+		}
+		else {
+			copyGraph = new DirectedGraph();
+		}
+		//Graph copyGraph = graph;
 		ArrayList<Integer> copyVertices = copyGraph.getVertices();
 		HashMap<Integer, TreeMap<Integer, Integer>> copyStartpoints = copyGraph.getStartpoints();
-		Integer currentVertex;
+		//Integer currentVertex;
 		Integer startVertexName = null;
 		Integer endVertexName = null;
 		ArrayList<Operation> changes = new ArrayList<Operation>();
@@ -59,9 +85,13 @@ public class MaximalMatching implements Algorithm {
 			 * delete this edge in the copyGraph (update E')
 			 * memorize this step as an operation 
 			 */
+			System.out.println("num vertices copy = "+ copyVertices.size());
 			for(int i = 0; i < copyVertices.size(); i++) {
 				currentVertex = copyVertices.get(i);
-				if (copyStartpoints.containsKey(currentVertex))
+				System.out.println("currentVertex = "+ currentVertex);
+				System.out.println("copyStartpoints.get(currentVertex).firstKey() = "+ copyStartpoints.get(currentVertex));
+
+				if (copyStartpoints.containsKey(currentVertex) && !copyStartpoints.get(currentVertex).isEmpty())
 				{
 					startVertexName = currentVertex;
 					endVertexName = copyStartpoints.get(currentVertex).firstKey();
@@ -84,6 +114,9 @@ public class MaximalMatching implements Algorithm {
 			 */
 			for(int i = 0; i < copyVertices.size(); i++) {
 				currentVertex = copyVertices.get(i);
+				//System.out.println("currentVertex = "+ currentVertex);
+				//System.out.println("startVertex = "+ startVertexName);
+				//System.out.println("endVertex = "+ endVertexName);
 				if (copyGraph.containsEdge(startVertexName, currentVertex) || copyGraph.containsEdge(currentVertex, startVertexName)) {
 					copyGraph.deleteEdge(startVertexName, currentVertex);
 				}
