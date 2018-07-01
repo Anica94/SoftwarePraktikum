@@ -522,30 +522,44 @@ public class GUI {
 	 */
 	public void visualizeAlgorithm() {
 		drawPanel.repaint();
+		System.out.println("HI1");
+		String operationName;
+		System.out.println("HI2");
 		for(int i=0; i<operations.size(); i++) {
 			operation = operations.get(i);
+			
 			if(operation.getOperationType().equals("edge")) {
 				edgeOperation = (EdgeOperation) operation;
-				if(operation.getOperationName().equals("consider")) {
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
 					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
-				}
-				else if(operation.getOperationName().equals("choose")) {
+					break;
+				case "choose":
 					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
-				}
-				else if(operation.getOperationName().equals("not choose")) {
+					break;
+				case "not choose":
 					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
 				}
 			}
 			else {
 				vertexOperation = (VertexOperation) operation;
-				if(operation.getOperationName().equals("consider")) {
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
 					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
-				}
-				else if(operation.getOperationName().equals("choose")) {
+					break;
+				case "choose":
 					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
-				}
-				else if(operation.getOperationName().equals("not choose")) {
+					break;
+				case "not choose":
 					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
 				}
 			}
 			try {
