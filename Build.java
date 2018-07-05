@@ -5,15 +5,13 @@ import java.util.ArrayList;
  * @author Sonja
  *
  */
-public class Build implements Algorithm {
+public class Build {
 
-	private ArrayList<Integer> leaves;
-	private ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples;
-	private UndirectedGraph ahoGraph;
 	/**
 	 * Saves the result of the algorithm as a graph.
 	 */
-	private Graph result;
+	private UndirectedGraph result;
+	// #instanz von find conCom
 
 	/**
 	 * Produces an algorithm for build with an empty result.
@@ -22,49 +20,69 @@ public class Build implements Algorithm {
 		result = null;
 	}
 
-	// Build braucht leafset und triples, nicht graph :@ also muss der graph null sein bzw ist irrelevant
-	@Override
-	public ArrayList<Operation> execute(Graph graph) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-
-	@Override
-	public Graph getResult(Graph graph) {
-		// TODO Auto-generated method stub
-		return result;
-	}
-	
 	/**
 	 * 
 	 */
-	public UndirectedGraph build(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves) {
-		UndirectedGraph tree = null;
+	public Pair<UndirectedGraph, Integer> build(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves) {
+
+		// Aho
+		UndirectedGraph ahoGraph;
+		ArrayList<ArrayList<Integer>> connectedComponents;
 		int numberOfComponents;
+		ArrayList<Integer> newLeaves;
+		ArrayList<Pair<Pair<Integer, Integer>, Integer>> newTriples;
+		
+		// tree
+		Pair<UndirectedGraph, Integer> rootedTree;
+		ArrayList<Pair<UndirectedGraph, Integer>> trees = new ArrayList();
+		UndirectedGraph tree = new UndirectedGraph(); // result
+		UndirectedGraph currentTree;
+		Integer root = new Integer(-1); // result
+		Integer currentRoot;
+		
+		// BUILD
 		ahoGraph = this.computeAhoGraph(triples, leaves);
-		numberOfComponents = this.computeConnectedComponents(ahoGraph); // liste von liste von allen Knoten in einer Component?
-		ArrayList<Integer> newLeaves = leaves;
+		connectedComponents = this.computeConnectedComponents(ahoGraph); // Instanz
+		numberOfComponents = connectedComponents.size();
 		if (numberOfComponents == 1 & leaves.size() == 1) {
-			tree = new UndirectedGraph();
-			tree.addVertex(); // irgendwo noch result produzieren und wenn null ausgeben, dann aufpassen, dass gesamtgraph nicht zerstˆrt wird
-			return tree;
+			root = leaves.get(0);
+			tree.addVertex(root);
+			rootedTree = new Pair(tree, root);
+			return rootedTree;
 		}
 		else if (numberOfComponents == 1 & leaves.size() > 1) {
 			return null;
 		}
 		else {
 			for (int i = 0; i < numberOfComponents; i++) {
-				// tripelmenge einschr‰nken durch AhoGraph
-				ArrayList<Pair<Pair<Integer, Integer>, Integer>> newTriples = this.computeNewTriples(triples, leaves);
-				tree = build(newTriples, leaves); // list of trees???
+				// tripelmenge einschr√§nken durch AhoGraph
+				newLeaves = connectedComponents.get(i);
+				newTriples = this.computeNewTriples(triples, newLeaves);
+				trees.add(build(newTriples, newLeaves));
 			}
-			if ( tree == null) {
-				// do nothing
+			if ( !trees.contains(null)) {
+				//////// unbedingt √ºberpr√ºfen!!!!!!!!!!!
+				// compute root
+				for (int i = 0; i < trees.size(); i++) {
+					currentRoot = trees.get(i).getSecond();
+					if (root <= currentRoot) {
+						root = currentRoot+1;
+					}
+				}
+				// attach all trees
+				tree.addVertex(root);
+				for (int i = 0; i < trees.size(); i++) {
+					currentTree = trees.get(i).getFirst();
+					tree.getStartpoints().putAll(currentTree.getStartpoints());
+					currentRoot = trees.get(i).getSecond();
+					tree.addEdge(root, currentRoot);
+				}
+			rootedTree = new Pair(tree, root);
 			}
 			else {
-				// zusammenf¸gen
+				rootedTree = new Pair(null, null);
 			}
+			return rootedTree;
 		}
 	}
 	
@@ -73,30 +91,37 @@ public class Build implements Algorithm {
 	 */
 	private UndirectedGraph computeAhoGraph(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves) {
 		UndirectedGraph ahoGraph = new UndirectedGraph();
+		Pair<Pair<Integer, Integer>, Integer> currentTriple;
+		Pair<Integer, Integer> currentTripleLeftside;
+		Integer x;
+		Integer y;
 		// add vertices
 		for (int i = 0; i < leaves.size(); i++) {
 			ahoGraph.addVertex(leaves.get(i));
 		}
 		// add edges
 		for(int i = 0; i < triples.size(); i++) {
-			Pair<Pair<Integer, Integer>, Integer> currentTriple = triples.get(i); // woanders deklarieren!!!!!!
-			Pair<Integer, Integer> currentTripleLeftside = currentTriple.getFirst(); // woanders deklarieren!!!
-			Integer x = currentTripleLeftside.getFirst();// woanders deklarieren!!!!!!
-			if(leaves.contains(x)) { // x in leaves
-				Integer y = currentTripleLeftside.getSecond();// woanders deklarieren!!!!!!
-				if(leaves.contains(y)) { // y in leaves
-					ahoGraph.addEdge(x, y);
+			currentTriple = triples.get(i); 
+			//if(leaves.contains(currentTriple.getSecond())) { // z in leaves
+				currentTripleLeftside = currentTriple.getFirst();
+				x = currentTripleLeftside.getFirst();
+				if(leaves.contains(x)) { // x in leaves
+					y = currentTripleLeftside.getSecond();
+					if(leaves.contains(y)) { // y in leaves
+						ahoGraph.addEdge(x, y);
+					}
 				}
-			}
+			//}
 		}
 		return ahoGraph;
 	}
 	
+	// schreibt Anica
 	/**
 	 * 
 	 */
-	private int computeConnectedComponents(UndirectedGraph ahoGraph) {// liste von liste von allen Knoten in einer Component?
-		return 1;
+	private ArrayList<ArrayList<Integer>> computeConnectedComponents(UndirectedGraph ahoGraph) {// liste von liste von allen Knoten in einer Component?
+		return null;
 	}
 	
 	/**
@@ -104,10 +129,12 @@ public class Build implements Algorithm {
 	 */
 	private ArrayList<Pair<Pair<Integer, Integer>, Integer>> computeNewTriples(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves){
 		ArrayList<Pair<Pair<Integer, Integer>, Integer>> newTriples = new ArrayList<>();
+		Pair<Pair<Integer, Integer>, Integer> currentTriple;
+		Pair<Integer, Integer> currentTripleLeftside;
 		for(int i = 0; i < triples.size(); i++) {
-			Pair<Pair<Integer, Integer>, Integer> currentTriple = triples.get(i); // woanders deklarieren!!!!!!
+			currentTriple = triples.get(i);
 			if(leaves.contains(currentTriple.getSecond())) { // z in leaves
-				Pair<Integer, Integer> currentTripleLeftside = currentTriple.getFirst(); // woanders deklarieren!!!
+				currentTripleLeftside = currentTriple.getFirst();
 				if(leaves.contains(currentTripleLeftside.getFirst())) { // x in leaves
 					if(leaves.contains(currentTripleLeftside.getSecond())) { // y in leaves
 						newTriples.add(currentTriple);
@@ -117,19 +144,5 @@ public class Build implements Algorithm {
 		}
 		return newTriples;
 	}
-	/**
-	 * Sets the leafset.
-	 */
-	public void setLeafset(ArrayList<Integer> leaves) {
-		this.leaves = leaves;
-	}
 	
-	/**
-	 * Returns the tripleset.
-	 * 
-	 * @return tripleset
-	 */
-	public void setTripleset(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples) {
-		this.triples = triples;
-	}
 }
