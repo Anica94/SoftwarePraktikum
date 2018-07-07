@@ -29,7 +29,7 @@ import java.awt.Color;
 /**
  * 
  * 
- * @author Anica
+ * @author Anica, Sonja
  *
  */
 
@@ -38,6 +38,7 @@ public class GUI {
 	private JFrame frame;
 	private static Status status;
 	private static DrawPanel drawPanel;
+	private static DrawPanel auxilaryDrawPanel;
 	private Reader reader;
 	private static Graph graph;
 	private static String typeOfGraph;
@@ -48,6 +49,7 @@ public class GUI {
 	private VertexOperation vertexOperation;
 	private MaximalMatching maximalMatching;
 	private DFS dfs;
+	private ConnectedComponents findConCom;
 	private static Build build;
 	private static ReaderBUILD readerBuild;
 
@@ -183,6 +185,22 @@ public class GUI {
 			}
 		});
 		
+		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
+		//mntmFindConnectedComponents.setEnabled(false);
+		mnAlgorithm.add(mntmFindConnectedComponents);
+		mntmFindConnectedComponents.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(2));
+				startAlgorithm();	
+				findConCom = new ConnectedComponents();
+				operations = findConCom.execute(graph);
+				resultGraph = findConCom.getResult(graph);
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
+			}
+		});
+		
 		JMenuItem mntmTopologicalSort = new JMenuItem("Topological Sort");
 		mntmTopologicalSort.setEnabled(false);
 		mnAlgorithm.add(mntmTopologicalSort);
@@ -226,6 +244,10 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
+				System.out.println("wieder zurück");
+				//operations = build.getChanges();
+				//btnShowResult.setVisible(true);
+				//btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -329,7 +351,7 @@ public class GUI {
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
-		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\img\\Undo-icon.png"));
+		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
 		JMenu mnFile = new JMenu("File");
@@ -339,6 +361,7 @@ public class GUI {
 		mnFile.add(mnOpen);
 		
 		JMenuItem mntmNew = new JMenuItem("new");
+		mntmUndo.setEnabled(false);
 		mnOpen.add(mntmNew);
 		
 		JMenuItem mntmFile = new JMenuItem("file");
@@ -352,7 +375,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -536,7 +559,10 @@ public class GUI {
 	 * Visualizes an algorithm.
 	 */
 	public void visualizeAlgorithm() {
+		//System.out.println("in visualize");
+		//System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
+
 		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
 		String operationName;
 		
@@ -608,6 +634,83 @@ public class GUI {
 	}
 	
 	/**
+	 * Visualizes BUILD.
+	 */
+	public void visualizeAlgorithmBuild() {
+		System.out.println("in visualize");
+		System.out.println("number of operations = "+operations.size());
+		Graphics g = this.drawPanel.getGraphics();
+		Graphics auxilaryG = this.auxilaryDrawPanel.getGraphics();
+		UndirectedGraph auxilaryGraph = new UndirectedGraph();
+		//auxilaryDrawPanel.changeGraph(resultGraph, "undirected");
+		//auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+
+		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
+		String operationName;
+		
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+					break;
+				case "not choose":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				case "build add":
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				case "aho add":
+					auxilaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+					break;
+				case "not choose":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					break;
+				case "build add":
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					break;
+				case "aho add":
+					auxilaryGraph.addVertex(vertexOperation.getVertexName());
+					auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+					auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}		
+	}
+	
+	/**
 	 * Creates a frame that shows the helpgraph for BUILD
 	 */
 	public static void createHelpGraphFrame() {
@@ -617,18 +720,30 @@ public class GUI {
 		//frame.getContentPane().setBackground(new Color(0, 204, 204));
 		//frame.setUndecorated(true);
 		
-		drawPanel = new DrawPanel();
-		drawPanel.setBorder(null);
-		drawPanel.setLocation(0,0);
-		drawPanel.setSize(400,400);
-		frame.getContentPane().add(drawPanel);
+		auxilaryDrawPanel = new DrawPanel();
+		auxilaryDrawPanel.setBorder(null);
+		auxilaryDrawPanel.setLocation(910,225);
+		auxilaryDrawPanel.setSize(400,400);
+		frame.getContentPane().add(auxilaryDrawPanel);
 		frame.setVisible(true);
+		// Test, ob auxilaryDrawPanel überhaupt malt.
+		// funktioniert aber nicht :(
+		/*Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
+		UndirectedGraph auxilaryGraph = new UndirectedGraph();
+		auxilaryGraph.addVertex(1);
+		auxilaryGraph.addVertex(2);
+		auxilaryGraph.addEdge(1, 2);
+		
+		auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+		System.out.println("number of vert = " +auxilaryDrawPanel.vertices.size());
+		auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+		*/
 	}
 	
 	/**
 	 * Creates a frame that asks if the graph should really be deleted and the BUILD algorithm started.
 	 */
-	public static void createStartBuildFrame() {
+	public  void createStartBuildFrame() {
 		readerBuild = null;
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
@@ -651,7 +766,7 @@ public class GUI {
 				build = new Build();
 				ArrayList<Integer> leaves = null;
 				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        JComponent.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -674,8 +789,14 @@ public class GUI {
 		        System.out.println("num of leaves= " + leaves.size());
 		        System.out.println("num of triples= " + triples.size());
 		        createHelpGraphFrame();
-		        rootedTree = build.build(triples, leaves);
-		        graph = rootedTree.getFirst();
+		        rootedTree = build.build(triples, leaves, new Integer(-1));
+		        resultGraph = rootedTree.getFirst();
+
+		        operations = build.getChanges();
+		        System.out.println("fertig mit build");
+				drawPanel.changeGraph(resultGraph, "undirected");
+		        visualizeAlgorithmBuild();
+		        /*
 		        ArrayList<Integer> v = graph.getVertices();
 		        System.out.println("number of vertices of result: "+ v.size());
 		        drawPanel.changeGraph(graph, typeOfGraph);
@@ -683,6 +804,7 @@ public class GUI {
 		        drawPanel.drawCompleteGraph(g, Color.CYAN, Color.BLACK);
 		        System.out.println("I'm here");
 		        System.out.println("root= "+ rootedTree.getSecond());
+		        */
 			}
 		});
 		
@@ -699,5 +821,6 @@ public class GUI {
 		frame.getContentPane().add(btnNo);
 		frame.setVisible(true);
 	}
+
 }
 
