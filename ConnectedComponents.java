@@ -14,7 +14,7 @@ public class ConnectedComponents implements Algorithm {
 	private ArrayList<ArrayList<Integer>> connectedComponents;
 
 	public ConnectedComponents() {
-		connectedComponents = new ArrayList<>();
+		
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -23,6 +23,7 @@ public class ConnectedComponents implements Algorithm {
 	 */
 	@Override
 	public ArrayList<Operation> execute(Graph graph) {
+		connectedComponents = new ArrayList<>();
 		if (graph == null) {
     		throw new NullPointerException();
     	}
@@ -40,7 +41,7 @@ public class ConnectedComponents implements Algorithm {
 			changes.addAll(currentChanges);
 			verticesConnectedComponent = new ArrayList<>();
 			verticesConnectedComponent = dfs.getVerticesOfConnectedComponent();
-			System.out.println("number vertices in con comp= " + verticesConnectedComponent.size());
+			//System.out.println("number vertices in con comp= " + verticesConnectedComponent.size());
 			connectedComponents.add(verticesConnectedComponent);
 			for(int i=0; i<verticesConnectedComponent.size(); i++) {
 				vertices.remove(verticesConnectedComponent.get(i));
