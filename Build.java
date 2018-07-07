@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Build {
 
 	// TODO #instanz von find conCom
+	ConnectedComponents conComps;
 	/**
 	 * Saves the changes made by BUILD.
 	 */
@@ -64,8 +65,10 @@ public class Build {
 		 */
 		ahoGraph = this.computeAhoGraph(triples, leaves);
 		// TODO 
+		System.out.println("hihi");
 		connectedComponents = this.computeConnectedComponents(ahoGraph); // Instanz
-		changes.addAll(null);// statt null die changes von findConCom
+		conComps = new ConnectedComponents();
+		changes.addAll(conComps.execute(ahoGraph));// statt null die changes von findConCom
 		// TODO END
 		numberOfComponents = connectedComponents.size();
 		/*
@@ -98,7 +101,7 @@ public class Build {
 			 * the tripleset is consitent
 			 */
 			if ( !trees.contains(null)) {
-				//////// unbedingt überprüfen!!!!!!!!!!!
+				//////// unbedingt Ã¼berprÃ¼fen!!!!!!!!!!!
 				/*
 				 * compute new root
 				 */
@@ -143,9 +146,12 @@ public class Build {
 	 * @throws NullPointerException if the tripleset or the leafset is <code> null</code>.
 	 */
 	private UndirectedGraph computeAhoGraph(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves) {
-		if (triples == null || leaves == null) { // auch wenn die leer? oder dann trotzdem laufenlassen und Ergebnis wird (hoffentlich) null?
-    		throw new NullPointerException();
-    	}
+		//if (triples == null || leaves == null) { // auch wenn die leer? oder dann trotzdem laufenlassen und Ergebnis wird (hoffentlich) null?
+    	//	throw new NullPointerException();
+    	//}
+		if(leaves == null) {
+			throw new NullPointerException();
+		}
 		
 		UndirectedGraph ahoGraph = new UndirectedGraph();
 		Pair<Pair<Integer, Integer>, Integer> currentTriple;
@@ -186,7 +192,9 @@ public class Build {
 	 * 
 	 */
 	private ArrayList<ArrayList<Integer>> computeConnectedComponents(UndirectedGraph ahoGraph) {// liste von liste von allen Knoten in einer Component?
-		return null;
+		conComps = new ConnectedComponents();
+		conComps.execute(ahoGraph);
+		return conComps.getConnectedComponents();
 	}
 	
 	/**
