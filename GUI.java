@@ -361,7 +361,7 @@ public class GUI {
 		mnFile.add(mnOpen);
 		
 		JMenuItem mntmNew = new JMenuItem("new");
-		mntmUndo.setEnabled(false);
+		mntmNew.setEnabled(false);
 		mnOpen.add(mntmNew);
 		
 		JMenuItem mntmFile = new JMenuItem("file");
