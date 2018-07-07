@@ -36,7 +36,7 @@ public class EdgeOperation implements Operation {
 		if (startVertexName == null || endVertexName == null) {
     		throw new NullPointerException();
     	}
-		if (!(operationName.equals("consider") || operationName.equals("choose") || operationName.equals("not choose") || operationName.equals("build add"))) {
+		if (!(operationName.equals("consider") || operationName.equals("choose") || operationName.equals("not choose") || operationName.equals("build add") || operationName.equals("aho add"))) {
     		throw new IllegalArgumentException();
     	}
 		this.operationName = operationName;
