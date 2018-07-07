@@ -26,3 +26,4 @@ public interface Operation {
 	public String getOperationType();
 
 }
+
