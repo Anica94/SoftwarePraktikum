@@ -22,9 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class DrawPanel extends JPanel {
-	private Graph graph;
+	public Graph graph;
 	private String typeOfGraph;
-	private ArrayList<Integer> vertices;
+	public ArrayList<Integer> vertices;
 	private Integer vertex;
 	private int x, y, x2, y2;
 	private HashMap<Integer, Pair<Integer, Integer> > vertexCoordinates;
@@ -216,6 +216,7 @@ public class DrawPanel extends JPanel {
 	 * @param typeOfGraph the type of the new graph.
 	 */
 	public void changeGraph(Graph graph, String typeOfGraph) {
+		System.out.println("type of graph = " + typeOfGraph);
 		this.graph = graph;
 		this.typeOfGraph = typeOfGraph;
 		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
@@ -281,7 +282,7 @@ public class DrawPanel extends JPanel {
 		Integer vertex;
 		Pair<Integer, Integer> coordinates;
 		vertices = graph.getVertices();
-		//System.out.println("number of vertices = " + vertices.size());
+		System.out.println("number of vertices = " + vertices.size());
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
 			coordinates = vertexCoordinates.get(vertex);
@@ -359,7 +360,7 @@ public class DrawPanel extends JPanel {
 	@Override
     public void paintComponent (Graphics g) {
 		super.paintComponent(g);
-		
+		//g.drawRect(1000, 250, 20, 20);
 		drawCompleteGraph(g, vertexColor, edgeColor);
 		System.out.println("repainted");
 	}
