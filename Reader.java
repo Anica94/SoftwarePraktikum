@@ -33,16 +33,16 @@ public class Reader {
 		}
 		typeOfGraph = currentLine;
 		currentLine = bReader.readLine();
-		if (currentLine.matches("\\d")) {
+		if (currentLine.matches("\\d+")) {
 			numberOfVertices = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be a digit for the number of vertices.", currentLine, -1);
+			throw new PatternSyntaxException("Here should be some digits for the number of vertices.", currentLine, -1);
 		}
 		currentLine = bReader.readLine();
-		if (currentLine.matches("\\d")) {
+		if (currentLine.matches("\\d+")) {
 			numberOfEdges = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be a digit for the number of edges.", currentLine, -1);
+			throw new PatternSyntaxException("Here should be some digits for the number of edges.", currentLine, -1);
 		}
 		if (this.typeOfGraph().equals("d")) {
 			graph = new DirectedGraph();
@@ -55,7 +55,7 @@ public class Reader {
 		 */
 		for (int i = 0; i < numberOfVertices; i++) {
 			currentLine = bReader.readLine();
-			if (currentLine.matches("\\d")) {
+			if (currentLine.matches("\\d+")) {
 				graph.addVertex(Integer.valueOf(currentLine));
 			}else {
 				throw new PatternSyntaxException("Here should be some digits for name of a vertex.", currentLine, -1);
@@ -63,7 +63,7 @@ public class Reader {
 		}
 		for (int i=0; i<numberOfEdges; i++) {
 			currentLine = bReader.readLine();
-			if (currentLine.matches("\\d*(\\s\\d*){1,2}")){
+			if (currentLine.matches("\\d+(\\s\\d+){1,2}")){
 				currentLineSplit = currentLine.split("\\s");
 				if (currentLineSplit.length == 2) {
 					graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
