@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JFrame;
@@ -9,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.Color;
 
@@ -44,6 +47,9 @@ public class GUI {
 	private EdgeOperation edgeOperation;
 	private VertexOperation vertexOperation;
 	private MaximalMatching maximalMatching;
+	private DFS dfs;
+	private static Build build;
+	private static ReaderBUILD readerBuild;
 
 	/**
 	 * Launch the application.
@@ -88,6 +94,7 @@ public class GUI {
 			
 		JCheckBox chckbxDirected = new JCheckBox("directed");
 		chckbxDirected.setBounds(689, 0, 95, 15);
+		chckbxDirected.setEnabled(false);
 		frame.getContentPane().add(chckbxDirected);
 		/*
 		chckbxUndirected.addActionListener(new ActionListener() {
@@ -161,12 +168,18 @@ public class GUI {
 		});
 		
 		JMenuItem mntmDepthfirstsearch = new JMenuItem("Depth-First Search");
-		mntmDepthfirstsearch.setEnabled(false);
+		//mntmDepthfirstsearch.setEnabled(false);
 		mnAlgorithm.add(mntmDepthfirstsearch);
 		mntmDepthfirstsearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(2));
+				startAlgorithm();	
+				dfs = new DFS();
+				operations = dfs.execute(graph);
+				resultGraph = dfs.getResult(graph);
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -212,6 +225,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
+				createStartBuildFrame();
 			}
 		});
 		
@@ -498,6 +512,7 @@ public class GUI {
 	 * and creates a new empty graph for the result.
 	 */
 	public void startAlgorithm() {
+		graph = drawPanel.graph;
 		drawPanel.vertexColor = Color.GRAY;
 		drawPanel.edgeColor = Color.GRAY;
 		drawPanel.repaint();
@@ -521,10 +536,10 @@ public class GUI {
 	 * Visualizes an algorithm.
 	 */
 	public void visualizeAlgorithm() {
-		drawPanel.repaint();
-		System.out.println("HI1");
+		Graphics g = this.drawPanel.getGraphics();
+		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
 		String operationName;
-		System.out.println("HI2");
+		
 		for(int i=0; i<operations.size(); i++) {
 			operation = operations.get(i);
 			
@@ -568,7 +583,7 @@ public class GUI {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}	
-		}
+		}		
 	}
 	
 	/**
@@ -590,6 +605,99 @@ public class GUI {
 				}
 			}	
 		}
+	}
+	
+	/**
+	 * Creates a frame that shows the helpgraph for BUILD
+	 */
+	public static void createHelpGraphFrame() {
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(910, 225, 400, 400);
+		//frame.getContentPane().setBackground(new Color(0, 204, 204));
+		//frame.setUndecorated(true);
+		
+		drawPanel = new DrawPanel();
+		drawPanel.setBorder(null);
+		drawPanel.setLocation(0,0);
+		drawPanel.setSize(400,400);
+		frame.getContentPane().add(drawPanel);
+		frame.setVisible(true);
+	}
+	
+	/**
+	 * Creates a frame that asks if the graph should really be deleted and the BUILD algorithm started.
+	 */
+	public static void createStartBuildFrame() {
+		readerBuild = null;
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(390, 375, 220, 80);
+		frame.getContentPane().setBackground(new Color(0, 204, 204));
+		frame.setUndecorated(true);
+		
+		JLabel lblText = new JLabel( "<html>Do you really want to delete the graph<p/>and start the BUILD algorithm?</html>" );
+		
+		JButton btnYes = new JButton("Yes");
+		btnYes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Pair<UndirectedGraph, Integer> rootedTree;
+				graph = new UndirectedGraph();
+				typeOfGraph = "u";
+				drawPanel.changeGraph(graph, typeOfGraph);
+				frame.dispose();
+				build = new Build();
+				ArrayList<Integer> leaves = null;
+				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+		        JFileChooser chooser = new JFileChooser(directoryName);
+		        JComponent.setDefaultLocale(Locale.ENGLISH); 
+		        chooser.setLocale(Locale.ENGLISH);
+		        chooser.updateUI();
+		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+		        {
+		        	String fileName = chooser.getSelectedFile().getName();
+		           	try {
+					ReaderBUILD.read(directoryName + "\\" + fileName);
+					//leaves = readerBuild.getLeafset();
+					//triples = readerBuild.getTripleset();
+		           	} 
+		           	catch (IOException e1) {
+					//System.out.println("Error concerning file:\\n");
+					e1.printStackTrace();
+		           	}   
+		           	leaves = ReaderBUILD.getLeafset();
+					triples = ReaderBUILD.getTripleset();
+		        }
+		        System.out.println("num of leaves= " + leaves.size());
+		        System.out.println("num of triples= " + triples.size());
+		        createHelpGraphFrame();
+		        rootedTree = build.build(triples, leaves);
+		        graph = rootedTree.getFirst();
+		        ArrayList<Integer> v = graph.getVertices();
+		        System.out.println("number of vertices of result: "+ v.size());
+		        drawPanel.changeGraph(graph, typeOfGraph);
+		        Graphics g = drawPanel.getGraphics();
+		        drawPanel.drawCompleteGraph(g, Color.CYAN, Color.BLACK);
+		        System.out.println("I'm here");
+		        System.out.println("root= "+ rootedTree.getSecond());
+			}
+		});
+		
+		JButton btnNo = new JButton("No");
+		btnNo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		frame.getContentPane().add(lblText);
+		frame.getContentPane().add(btnYes);
+		frame.getContentPane().add(btnNo);
+		frame.setVisible(true);
 	}
 }
 
