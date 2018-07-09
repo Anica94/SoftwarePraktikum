@@ -25,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 /**
  * 
@@ -118,7 +119,7 @@ public class GUI {
 			}
 		});
 		*/
-		drawPanel = new DrawPanel();
+		drawPanel = new DrawPanel(784,491);
 		drawPanel.setBorder(null);
 		drawPanel.setLocation(0,23);
 		drawPanel.setSize(784,491);
@@ -244,7 +245,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				System.out.println("wieder zurück");
+				System.out.println("wieder zurÃ¼ck");
 				//operations = build.getChanges();
 				//btnShowResult.setVisible(true);
 				//btnVisualizeAlg.setVisible(true);
@@ -351,7 +352,7 @@ public class GUI {
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
-		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Undo-icon.png"));
+		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\img\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
 		JMenu mnFile = new JMenu("File");
@@ -375,7 +376,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -410,7 +411,7 @@ public class GUI {
 				 * produce save dialog
 				 * write file
 				 */
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
@@ -489,7 +490,7 @@ public class GUI {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.setBounds(390, 375, 220, 60);
-		frame.getContentPane().setBackground(new Color(0, 204, 204));
+		frame.getContentPane().setBackground(new Color(135, 206, 250));
 		frame.setUndecorated(true);
 		
 		JLabel lblText = new JLabel("Do you really want to delete the graph?");
@@ -692,6 +693,10 @@ public class GUI {
 					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
 					break;
 				case "aho add":
+					if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
+						auxilaryGraph = new UndirectedGraph();
+						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+					}					
 					auxilaryGraph.addVertex(vertexOperation.getVertexName());
 					auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
 					auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
@@ -711,31 +716,33 @@ public class GUI {
 	}
 	
 	/**
-	 * Creates a frame that shows the helpgraph for BUILD
+	 * Creates a frame that shows the aho-graph for BUILD
 	 */
 	public static void createHelpGraphFrame() {
 		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(new FlowLayout());
+		frame.getContentPane().setLayout(null);
 		frame.setBounds(910, 225, 400, 400);
-		//frame.getContentPane().setBackground(new Color(0, 204, 204));
-		//frame.setUndecorated(true);
 		
-		auxilaryDrawPanel = new DrawPanel();
+		auxilaryDrawPanel = new DrawPanel(390, 365);
 		auxilaryDrawPanel.setBorder(null);
-		auxilaryDrawPanel.setLocation(910,225);
-		auxilaryDrawPanel.setSize(400,400);
+		//auxilaryDrawPanel.setBorder(new LineBorder(new Color(0, 0, 0), 4));
+		auxilaryDrawPanel.setLocation(0, 0);
+		auxilaryDrawPanel.setSize(390, 365);
+		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
 		frame.getContentPane().add(auxilaryDrawPanel);
 		frame.setVisible(true);
-		// Test, ob auxilaryDrawPanel überhaupt malt.
+		// Test, ob auxilaryDrawPanel Ã¼berhaupt malt.
 		// funktioniert aber nicht :(
-		/*Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
+		/*
+		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
+		System.out.println("huhu");
 		UndirectedGraph auxilaryGraph = new UndirectedGraph();
 		auxilaryGraph.addVertex(1);
 		auxilaryGraph.addVertex(2);
 		auxilaryGraph.addEdge(1, 2);
 		
 		auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
-		System.out.println("number of vert = " +auxilaryDrawPanel.vertices.size());
+		//System.out.println("number of vert = " +auxilaryDrawPanel.vertices.size());
 		auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
 		*/
 	}
@@ -748,7 +755,7 @@ public class GUI {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.setBounds(390, 375, 220, 80);
-		frame.getContentPane().setBackground(new Color(0, 204, 204));
+		frame.getContentPane().setBackground(new Color(135, 206, 250));
 		frame.setUndecorated(true);
 		
 		JLabel lblText = new JLabel( "<html>Do you really want to delete the graph<p/>and start the BUILD algorithm?</html>" );
@@ -766,7 +773,7 @@ public class GUI {
 				build = new Build();
 				ArrayList<Integer> leaves = null;
 				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        JComponent.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
