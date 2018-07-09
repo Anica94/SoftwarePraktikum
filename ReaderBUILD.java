@@ -37,13 +37,13 @@ public class ReaderBUILD {
 		if (currentLine.matches("\\d+")) {
 			numberOfLeaves = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be some digits for the number of leaves.", currentLine, -1);
+			throw new IOException();
 		}
 		currentLine = bReader.readLine();
 		if (currentLine.matches("\\d+")) {
 			numberOfTriples = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be some digits for the number of triples.", currentLine, -1);
+			throw new IOException();
 		}
 		/*
 		 * fill leaves
@@ -53,7 +53,7 @@ public class ReaderBUILD {
 			if (currentLine.matches("\\d+")) {
 				leaves.add(Integer.parseInt(currentLine));
 			}else {
-				throw new PatternSyntaxException("Here should be some digits for name of a leaf.", currentLine, -1);
+				throw new IOException();
 			}
 		}
 		/*
@@ -67,10 +67,10 @@ public class ReaderBUILD {
 				triple = new Pair<Pair<Integer,Integer>, Integer>(tripleLeftside, Integer.valueOf(currentLineSplit[2]));
 				triples.add(triple);
 			}else {
-				throw new PatternSyntaxException("Here should be 'some digits space some digits space some digits'.", currentLine, -1);
+				throw new IOException();
 			}
 		}
-		System.out.println("number of leaves= " + leaves.size());
+		//System.out.println("number of leaves= " + leaves.size());
 		bReader.close();
 	}
 	
@@ -80,7 +80,7 @@ public class ReaderBUILD {
 	 * @return leafset
 	 */
 	public static ArrayList<Integer> getLeafset() {
-		System.out.println("huhu");
+		//System.out.println("huhu");
 		return leaves;
 	}
 	
