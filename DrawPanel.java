@@ -60,7 +60,9 @@ public class DrawPanel extends JPanel {
 				 * move
 				 */
 				if(GUI.getStatusNumber()==12) {
-					changeCoordinates(vertex, e.getX(), e.getY());
+					if(vertex != -1) {
+						changeCoordinates(vertex, e.getX(), e.getY());
+					}
 				}
 				repaint();
 			}
@@ -107,8 +109,10 @@ public class DrawPanel extends JPanel {
 	            			startpoint = vertex;
 	            		}
 	            		else {
-	            			addEdge(startpoint, vertex);
+	            			if(startpoint != vertex) {
+	            				addEdge(startpoint, vertex);
 	            			startpoint = -1;
+	            			}
 	            		}
 					}
             		break;
