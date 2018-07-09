@@ -137,8 +137,12 @@ public class GUI {
 		btnVisualizeAlg.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//drawPanel.repaint();
-				visualizeAlgorithm();
+				if(getStatusNumber()==6) {
+					visualizeAlgorithmBuild();
+				}
+				else {
+					visualizeAlgorithm();
+				}	
 			}
 		});
 		
@@ -246,7 +250,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				//System.out.println("wieder zurÃ¼ck");
+				//System.out.println("wieder zurÃƒÂ¼ck");
 			}
 		});
 		
@@ -636,6 +640,7 @@ public class GUI {
 	 * Visualizes BUILD.
 	 */
 	public void visualizeAlgorithmBuild() {
+		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 		System.out.println("in visualize");
 		System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
@@ -696,9 +701,11 @@ public class GUI {
 						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
 					}					
 					auxilaryGraph.addVertex(vertexOperation.getVertexName());
-					auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
-					auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
-					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
+						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+						auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+					}	
+					//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
 					break;
 				default:
 					break;
@@ -729,7 +736,7 @@ public class GUI {
 		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
 		frame.getContentPane().add(auxilaryDrawPanel);
 		frame.setVisible(true);
-		// Test, ob auxilaryDrawPanel Ã¼berhaupt malt.
+		// Test, ob auxilaryDrawPanel ÃƒÂ¼berhaupt malt.
 		// funktioniert aber nicht :(
 		/*
 		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
