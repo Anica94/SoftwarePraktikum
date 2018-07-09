@@ -43,6 +43,12 @@ public class Status {
 		status.add("open file");
 		//14
 		status.add("save file");
+		//15
+		status.add("runs Find Connected Components");
+		//16
+		status.add("Wrong file. Press 'help' for more information.");
+		//17
+		status.add("Wrong input. Press 'help' for more information.");
 	}
 	
 	public String getStatus(int number) {
