@@ -38,6 +38,7 @@ public class GUI {
 
 	private JFrame frame;
 	private static Status status;
+	private JLabel lblStatus;
 	private static DrawPanel drawPanel;
 	private static DrawPanel auxilaryDrawPanel;
 	private Reader reader;
@@ -125,7 +126,7 @@ public class GUI {
 		drawPanel.setSize(784,491);
 		frame.getContentPane().add(drawPanel);
 		
-		JLabel lblStatus = new JLabel(status.getStatus(0));
+		lblStatus = new JLabel(status.getStatus(0));
 		lblStatus.setBounds(0, 515, 784, 25);
 		frame.getContentPane().add(lblStatus);
 		
@@ -192,7 +193,7 @@ public class GUI {
 		mntmFindConnectedComponents.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lblStatus.setText(status.getStatus(2));
+				lblStatus.setText(status.getStatus(15));
 				startAlgorithm();	
 				findConCom = new ConnectedComponents();
 				operations = findConCom.execute(graph);
@@ -245,10 +246,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				System.out.println("wieder zurÃ¼ck");
-				//operations = build.getChanges();
-				//btnShowResult.setVisible(true);
-				//btnVisualizeAlg.setVisible(true);
+				//System.out.println("wieder zurÃ¼ck");
 			}
 		});
 		
@@ -391,11 +389,11 @@ public class GUI {
 		           	} 
 		           	catch (IOException e1) {
 					//System.out.println("Error concerning file:\\n");
-					e1.printStackTrace();
+					lblStatus.setText(status.getStatus(16));
 		           	}   
 		        }
 		        btnShowResult.setVisible(false);
-				btnVisualizeAlg.setVisible(false);
+			btnVisualizeAlg.setVisible(false);
 		}
 		});
 		
@@ -787,8 +785,8 @@ public class GUI {
 					//triples = readerBuild.getTripleset();
 		           	} 
 		           	catch (IOException e1) {
-					//System.out.println("Error concerning file:\\n");
-					e1.printStackTrace();
+					lblStatus.setText(status.getStatus(16));
+		           		return;
 		           	}   
 		           	leaves = ReaderBUILD.getLeafset();
 					triples = ReaderBUILD.getTripleset();
