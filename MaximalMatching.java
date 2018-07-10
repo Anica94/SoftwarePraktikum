@@ -28,6 +28,9 @@ public class MaximalMatching implements Algorithm {
 		if (graph == null) {
     		throw new NullPointerException();
     	}
+		if (graph.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		/*
 		 * make copy of the graph to work on (contains E')
 		 * produce container of variables to use later
