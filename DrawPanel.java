@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 
 /**
@@ -8,6 +9,7 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -230,6 +232,23 @@ public class DrawPanel extends JPanel {
 		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		repaint();
 	}
+	/**
+	 * Changes the actual graph (if a graph is read from a file or deleted).
+	 * 
+	 * @param graph the new graph.
+	 * @param typeOfGraph the type of the new graph.
+	 */
+	public void setGraph(Graph graph, String typeOfGraph) {
+		this.graph = graph;
+		this.typeOfGraph = typeOfGraph;
+		vertexCoordinates.clear();
+		if(!graph.getVertices().isEmpty() && vertexCoordinates.isEmpty()) {
+			createDefaultCoordinates();
+			for (Pair<Integer, Integer> p : vertexCoordinates.values()) {
+				assert(p != null);
+			}
+		}
+	}
 	
 	/**
 	 * Creates default coordinates for a graph which is read from a file.
@@ -282,10 +301,11 @@ public class DrawPanel extends JPanel {
 	public void drawCompleteGraph(Graphics g, Color vertexColor, Color edgeColor) {
 		super.paintComponent(g);
 		Integer vertex;
-		Pair<Integer, Integer> coordinates;
+		Pair<Integer, Integer> coordinates= new Pair<Integer, Integer>(null, null);
 		vertices = graph.getVertices();
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
+			assert(vertexCoordinates.containsKey(vertex));
 			coordinates = vertexCoordinates.get(vertex);
 			x = coordinates.getFirst();
 			y = coordinates.getSecond();
@@ -339,7 +359,14 @@ public class DrawPanel extends JPanel {
 		x2 = coordinates2.getFirst();
 		y2 = coordinates2.getSecond();
 		g.setColor(color);
-		g.drawLine(x1, y1, x2, y2);		
+		if(!color.equals(Color.BLACK)) {
+			Graphics2D g2 = (Graphics2D) g;
+		    g2.setStroke(new BasicStroke(2));
+		    g2.drawLine(x1, y1, x2, y2);
+		}
+		else {
+			g.drawLine(x1, y1, x2, y2);
+		}
 	}
 		
 	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeight, Color color) {
