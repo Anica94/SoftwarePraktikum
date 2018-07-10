@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -55,6 +56,9 @@ public class GUI {
 	private static Build build;
 	private static ReaderBUILD readerBuild;
 	private Timer timer;
+	private UndirectedGraph auxilaryGraph;
+	private int i;
+	private String operationName;
 
 	/**
 	 * Launch the application.
@@ -193,7 +197,7 @@ public class GUI {
 					lblStatus.setText(status.getStatus(17));
 					return;
 				}
-				btnShowResult.setVisible(true);
+				btnShowResult.setVisible(false);
 				btnVisualizeAlg.setVisible(true);
 			}
 		});
@@ -215,7 +219,7 @@ public class GUI {
 					lblStatus.setText(status.getStatus(17));
 					return;
 				}
-				btnShowResult.setVisible(true);
+				btnShowResult.setVisible(false);
 				btnVisualizeAlg.setVisible(true);
 			}
 		});
@@ -268,7 +272,9 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				//System.out.println("wieder zurÃƒÆ’Ã‚Â¼ck");
+				//System.out.println("wieder zurÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼ck");
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -372,7 +378,7 @@ public class GUI {
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
-		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Undo-icon.png"));
+		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\img\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
 		JMenu mnFile = new JMenu("File");
@@ -396,7 +402,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -585,52 +591,57 @@ public class GUI {
 		Graphics g = this.drawPanel.getGraphics();
 
 		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
-		String operationName;
 		
-		for(int i=0; i<operations.size(); i++) {
-			operation = operations.get(i);
-			
-			if(operation.getOperationType().equals("edge")) {
-				edgeOperation = (EdgeOperation) operation;
-				operationName = operation.getOperationName();
-				switch(operationName) {
-				case "consider":
-					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
-					break;
-				case "choose":
-					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
-					break;
-				case "not choose":
-					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
-					break;
-				default:
-					break;
+		i = 0;
+		timer = new Timer(1000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(!(i<operations.size())) {
+					timer.stop();
+					return;
 				}
-			}
-			else {
-				vertexOperation = (VertexOperation) operation;
-				operationName = operation.getOperationName();
-				switch(operationName) {
-				case "consider":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
-					break;
-				case "choose":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
-					break;
-				case "not choose":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GRAY);
-					break;
-				default:
-					break;
+				operation = operations.get(i);
+				
+				if(operation.getOperationType().equals("edge")) {
+					edgeOperation = (EdgeOperation) operation;
+					operationName = operation.getOperationName();
+					switch(operationName) {
+					case "consider":
+						drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+						break;
+					case "choose":
+						drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+						break;
+					case "not choose":
+						drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						break;
+					default:
+						break;
+					}
 				}
-			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				else {
+					vertexOperation = (VertexOperation) operation;
+					operationName = operation.getOperationName();
+					switch(operationName) {
+					case "consider":
+						drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+						break;
+					case "choose":
+						drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+						break;
+					case "not choose":
+						drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GRAY);
+						break;
+					default:
+						break;
+					}
+				}
+				i++;				
 			}	
-		}		
+		});
+			timer.start();	
 	}
 	
 	/**
@@ -657,9 +668,6 @@ public class GUI {
 	/**
 	 * Visualizes BUILD.
 	 */
-	UndirectedGraph auxilaryGraph;
-	int i;
-	String operationName;
 	public void visualizeAlgorithmBuild() {
 		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 		System.out.println("in visualize");
@@ -675,7 +683,7 @@ public class GUI {
 		
 		//for(int i=0; i<operations.size(); i++) {
 		i = 0;
-		timer = new Timer(500, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -684,66 +692,66 @@ public class GUI {
 					timer.stop();
 					return;
 				}
-			operation = operations.get(i);
-			
-			if(operation.getOperationType().equals("edge")) {
-				edgeOperation = (EdgeOperation) operation;
-				operationName = operation.getOperationName();
-				switch(operationName) {
-				case "consider":
-					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
-					break;
-				case "choose":
-					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
-					break;
-				case "not choose":
-					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
-					break;
-				case "build add":
-					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
-					break;
-				case "aho add":
-					auxilaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
-					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
-					break;
-				default:
-					break;
+				operation = operations.get(i);
+				
+				if(operation.getOperationType().equals("edge")) {
+					edgeOperation = (EdgeOperation) operation;
+					operationName = operation.getOperationName();
+					switch(operationName) {
+					case "consider":
+						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+						break;
+					case "choose":
+						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+						break;
+					case "not choose":
+						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						break;
+					case "build add":
+						drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						break;
+					case "aho add":
+						auxilaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
+						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						break;
+					default:
+						break;
+					}
 				}
-			}
-			else {
-				vertexOperation = (VertexOperation) operation;
-				operationName = operation.getOperationName();
-				switch(operationName) {
-				case "consider":
-					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
-					break;
-				case "choose":
-					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
-					break;
-				case "not choose":
-					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
-					break;
-				case "build add":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
-					break;
-				case "aho add":
-					if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
-						auxilaryGraph = new UndirectedGraph();
-						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
-					}					
-					auxilaryGraph.addVertex(vertexOperation.getVertexName());
-					auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
-					if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
-						auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
-					}	
-					//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
-					break;
-				default:
-					break;
+				else {
+					vertexOperation = (VertexOperation) operation;
+					operationName = operation.getOperationName();
+					switch(operationName) {
+					case "consider":
+						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+						break;
+					case "choose":
+						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+						break;
+					case "not choose":
+						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
+						break;
+					case "build add":
+						drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
+						break;
+					case "aho add":
+						if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
+							auxilaryGraph = new UndirectedGraph();
+							auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
+						}					
+						auxilaryGraph.addVertex(vertexOperation.getVertexName());
+						auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
+						if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
+							auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+						}	
+						//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+						break;
+					default:
+						break;
+					}
 				}
+				i++;
 			}
-			i++;
-		}
 		});
 		timer.start();
 	}
@@ -764,7 +772,7 @@ public class GUI {
 		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
 		frame.getContentPane().add(auxilaryDrawPanel);
 		frame.setVisible(true);
-		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã‚Â¼berhaupt malt.
+		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼berhaupt malt.
 		// funktioniert aber nicht :(
 		/*
 		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
@@ -806,7 +814,7 @@ public class GUI {
 				build = new Build();
 				ArrayList<Integer> leaves = null;
 				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        JComponent.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
