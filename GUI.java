@@ -90,7 +90,7 @@ public class GUI {
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		/*
 		JCheckBox chckbxUndirected = new JCheckBox("undirected");
 		chckbxUndirected.setSelected(true);
 		chckbxUndirected.setBounds(592, 0, 95, 15);
@@ -100,6 +100,7 @@ public class GUI {
 		chckbxDirected.setBounds(689, 0, 95, 15);
 		chckbxDirected.setEnabled(false);
 		frame.getContentPane().add(chckbxDirected);
+		*/
 		/*
 		chckbxUndirected.addActionListener(new ActionListener() {
 			@Override
@@ -184,8 +185,13 @@ public class GUI {
 				lblStatus.setText(status.getStatus(2));
 				startAlgorithm();	
 				dfs = new DFS();
-				operations = dfs.execute(graph);
-				resultGraph = dfs.getResult(graph);
+				try {
+					operations = dfs.execute(graph);
+					resultGraph = dfs.getResult(graph);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
 				btnShowResult.setVisible(true);
 				btnVisualizeAlg.setVisible(true);
 			}
@@ -200,8 +206,14 @@ public class GUI {
 				lblStatus.setText(status.getStatus(15));
 				startAlgorithm();	
 				findConCom = new ConnectedComponents();
-				operations = findConCom.execute(graph);
-				resultGraph = findConCom.getResult(graph);
+				try {
+					operations = findConCom.execute(graph);
+					resultGraph = findConCom.getResult(graph);
+				} catch (Exception e1) {
+					System.out.print("catch");
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
 				btnShowResult.setVisible(true);
 				btnVisualizeAlg.setVisible(true);
 			}
@@ -236,8 +248,13 @@ public class GUI {
 				lblStatus.setText(status.getStatus(5));
 				startAlgorithm();	
 				maximalMatching = new MaximalMatching();
-				operations = maximalMatching.execute(graph);
-				resultGraph = maximalMatching.getResult(graph);
+				try {
+					operations = maximalMatching.execute(graph);
+					resultGraph = maximalMatching.getResult(graph);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
 				btnShowResult.setVisible(true);
 				btnVisualizeAlg.setVisible(true);
 			}
@@ -250,7 +267,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				//System.out.println("wieder zurÃƒÂ¼ck");
+				//System.out.println("wieder zurÃƒÆ’Ã‚Â¼ck");
 			}
 		});
 		
@@ -354,7 +371,7 @@ public class GUI {
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
-		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\img\\Undo-icon.png"));
+		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
 		JMenu mnFile = new JMenu("File");
@@ -378,7 +395,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -413,7 +430,7 @@ public class GUI {
 				 * produce save dialog
 				 * write file
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
@@ -600,7 +617,7 @@ public class GUI {
 					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
 					break;
 				case "not choose":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GRAY);
 					break;
 				default:
 					break;
@@ -690,10 +707,10 @@ public class GUI {
 					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
 					break;
 				case "not choose":
-					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
 					break;
 				case "build add":
-					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
 					break;
 				case "aho add":
 					if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
@@ -736,7 +753,7 @@ public class GUI {
 		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
 		frame.getContentPane().add(auxilaryDrawPanel);
 		frame.setVisible(true);
-		// Test, ob auxilaryDrawPanel ÃƒÂ¼berhaupt malt.
+		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã‚Â¼berhaupt malt.
 		// funktioniert aber nicht :(
 		/*
 		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
@@ -778,7 +795,7 @@ public class GUI {
 				build = new Build();
 				ArrayList<Integer> leaves = null;
 				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        JComponent.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -792,7 +809,7 @@ public class GUI {
 					//triples = readerBuild.getTripleset();
 		           	} 
 		           	catch (IOException e1) {
-					lblStatus.setText(status.getStatus(16));
+		           		lblStatus.setText(status.getStatus(16));
 		           		return;
 		           	}   
 		           	leaves = ReaderBUILD.getLeafset();
