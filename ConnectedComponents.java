@@ -27,6 +27,9 @@ public class ConnectedComponents implements Algorithm {
 		if (graph == null) {
     		throw new NullPointerException();
     	}
+		if (graph.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		
 		ArrayList<Operation> changes = new ArrayList<Operation>();
 		ArrayList<Operation> currentChanges = new ArrayList<Operation>();
