@@ -3,6 +3,7 @@
  * Operations are used to ensure a stepwise drawing.
  * They symbolize a function of an algorithm like "consider", "choose" and "not choose" 
  * which means that a considered vertex or edge has not been chosen.
+ * Furthermore, it can be "build add" especially to use in the BUILD algorithm. 
  * 
  * @author Sonja
  */
@@ -10,7 +11,7 @@ public interface Operation {
 	
 	/**
 	 * Returns the name of an operation. 
-	 * It can be "consider", "choose" or "not choose". 
+	 * It can be "consider", "choose", "not choose" or "build add". 
 	 * 
 	 * @return name of the operation.
 	 */
@@ -25,3 +26,4 @@ public interface Operation {
 	public String getOperationType();
 
 }
+

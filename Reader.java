@@ -29,20 +29,20 @@ public class Reader {
 		bReader = new BufferedReader(new FileReader(fileName));
 		String currentLine = bReader.readLine();
 		if (!currentLine.matches("[du]")) {
-			throw new PatternSyntaxException("Here should be 'd' for directed graph or 'u' for undirected graph.", currentLine, -1);
+			throw new IOException();
 		}
 		typeOfGraph = currentLine;
 		currentLine = bReader.readLine();
-		if (currentLine.matches("\\d")) {
+		if (currentLine.matches("\\d+")) {
 			numberOfVertices = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be a digit for the number of vertices.", currentLine, -1);
+			throw new IOException();
 		}
 		currentLine = bReader.readLine();
-		if (currentLine.matches("\\d")) {
+		if (currentLine.matches("\\d+")) {
 			numberOfEdges = Integer.parseInt(currentLine);
 		}else {
-			throw new PatternSyntaxException("Here should be a digit for the number of edges.", currentLine, -1);
+			throw new IOException();
 		}
 		if (this.typeOfGraph().equals("d")) {
 			graph = new DirectedGraph();
@@ -55,15 +55,15 @@ public class Reader {
 		 */
 		for (int i = 0; i < numberOfVertices; i++) {
 			currentLine = bReader.readLine();
-			if (currentLine.matches("\\d")) {
+			if (currentLine.matches("\\d+")) {
 				graph.addVertex(Integer.valueOf(currentLine));
 			}else {
-				throw new PatternSyntaxException("Here should be some digits for name of a vertex.", currentLine, -1);
+				throw new IOException();
 			}
 		}
 		for (int i=0; i<numberOfEdges; i++) {
 			currentLine = bReader.readLine();
-			if (currentLine.matches("\\d*(\\s\\d*){1,2}")){
+			if (currentLine.matches("\\d+(\\s\\d+){1,2}")){
 				currentLineSplit = currentLine.split("\\s");
 				if (currentLineSplit.length == 2) {
 					graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
@@ -73,7 +73,7 @@ public class Reader {
 				} 
 				
 			}else {
-				throw new PatternSyntaxException("Here should be 'some digits space some digits' for an edge with default weight 1 or 'some digits space some digits space some digits' for an edge with specified weight.", currentLine, -1);
+				throw new IOException();
 			}
 		}
 		bReader.close();

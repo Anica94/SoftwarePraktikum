@@ -1,5 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.JFrame;
@@ -9,7 +10,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+
+import java.util.ArrayList;
 import java.util.Locale;
 
 import java.awt.event.ActionListener;
@@ -18,19 +22,38 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import java.awt.Color;
+import javax.swing.border.LineBorder;
 
-
+/**
+ * 
+ * 
+ * @author Anica, Sonja
+ *
+ */
 
 public class GUI {
 
 	private JFrame frame;
 	private static Status status;
+	private JLabel lblStatus;
 	private static DrawPanel drawPanel;
+	private static DrawPanel auxilaryDrawPanel;
 	private Reader reader;
 	private static Graph graph;
 	private static String typeOfGraph;
+	private static Graph resultGraph;
+	private ArrayList<Operation> operations;
+	private Operation operation;
+	private EdgeOperation edgeOperation;
+	private VertexOperation vertexOperation;
+	private MaximalMatching maximalMatching;
+	private DFS dfs;
+	private ConnectedComponents findConCom;
+	private static Build build;
+	private static ReaderBUILD readerBuild;
 
 	/**
 	 * Launch the application.
@@ -64,19 +87,20 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame("GraphGUI");
-		//frame.getContentPane().setBackground(new Color(224, 255, 255));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		/*
 		JCheckBox chckbxUndirected = new JCheckBox("undirected");
 		chckbxUndirected.setSelected(true);
-		chckbxUndirected.setBounds(700, 0, 95, 15);
+		chckbxUndirected.setBounds(592, 0, 95, 15);
 		frame.getContentPane().add(chckbxUndirected);
 			
 		JCheckBox chckbxDirected = new JCheckBox("directed");
-		chckbxDirected.setBounds(700, 15, 95, 15);
+		chckbxDirected.setBounds(689, 0, 95, 15);
+		chckbxDirected.setEnabled(false);
 		frame.getContentPane().add(chckbxDirected);
+		*/
 		/*
 		chckbxUndirected.addActionListener(new ActionListener() {
 			@Override
@@ -97,16 +121,43 @@ public class GUI {
 			}
 		});
 		*/
-		//drawPanel = new DrawPanel(graph, typeOfGraph);
-		drawPanel = new DrawPanel();
+		drawPanel = new DrawPanel(784,491);
 		drawPanel.setBorder(null);
-		drawPanel.setLocation(0,0);
-		drawPanel.setSize(784,514);
+		drawPanel.setLocation(0,23);
+		drawPanel.setSize(784,491);
 		frame.getContentPane().add(drawPanel);
 		
-		JLabel lblStatus = new JLabel(status.getStatus(0));
+		lblStatus = new JLabel(status.getStatus(0));
 		lblStatus.setBounds(0, 515, 784, 25);
 		frame.getContentPane().add(lblStatus);
+		
+		JButton btnVisualizeAlg = new JButton("visualize Alg");
+		btnVisualizeAlg.setBounds(0, 0, 104, 23);
+		frame.getContentPane().add(btnVisualizeAlg);
+		btnVisualizeAlg.setVisible(false);
+		btnVisualizeAlg.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(getStatusNumber()==6) {
+					visualizeAlgorithmBuild();
+				}
+				else {
+					visualizeAlgorithm();
+				}	
+			}
+		});
+		
+		JButton btnShowResult = new JButton("show result");
+		btnShowResult.setBounds(105, 0, 104, 23);
+		frame.getContentPane().add(btnShowResult);
+		btnShowResult.setVisible(false);
+		btnShowResult.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showResult();
+			}
+		});
+	
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(135, 206, 250));
@@ -126,12 +177,45 @@ public class GUI {
 		});
 		
 		JMenuItem mntmDepthfirstsearch = new JMenuItem("Depth-First Search");
-		mntmDepthfirstsearch.setEnabled(false);
+		//mntmDepthfirstsearch.setEnabled(false);
 		mnAlgorithm.add(mntmDepthfirstsearch);
 		mntmDepthfirstsearch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(2));
+				startAlgorithm();	
+				dfs = new DFS();
+				try {
+					operations = dfs.execute(graph);
+					resultGraph = dfs.getResult(graph);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
+			}
+		});
+		
+		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
+		//mntmFindConnectedComponents.setEnabled(false);
+		mnAlgorithm.add(mntmFindConnectedComponents);
+		mntmFindConnectedComponents.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				lblStatus.setText(status.getStatus(15));
+				startAlgorithm();	
+				findConCom = new ConnectedComponents();
+				try {
+					operations = findConCom.execute(graph);
+					resultGraph = findConCom.getResult(graph);
+				} catch (Exception e1) {
+					System.out.print("catch");
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -160,8 +244,19 @@ public class GUI {
 		mntmMaximalMatching.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				lblStatus.setText(status.getStatus(5));
-				startAlgorithm();
+				startAlgorithm();	
+				maximalMatching = new MaximalMatching();
+				try {
+					operations = maximalMatching.execute(graph);
+					resultGraph = maximalMatching.getResult(graph);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -171,6 +266,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
+				createStartBuildFrame();
+				//System.out.println("wieder zurÃƒÆ’Ã‚Â¼ck");
 			}
 		});
 		
@@ -187,6 +284,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(7));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -197,6 +296,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(8));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -208,6 +309,8 @@ public class GUI {
 				createAddLineFrame();
 				lblStatus.setText(status.getStatus(9));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -221,6 +324,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(10));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -231,6 +336,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(11));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -242,6 +349,8 @@ public class GUI {
 				lblStatus.setText(status.getStatus(0));
 				createDeleteGraphFrame();
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -252,6 +361,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(12));
 				startEdit();
+				btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -260,7 +371,7 @@ public class GUI {
 		
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
-		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\img\\Undo-icon.png"));
+		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
 		JMenu mnFile = new JMenu("File");
@@ -270,6 +381,7 @@ public class GUI {
 		mnFile.add(mnOpen);
 		
 		JMenuItem mntmNew = new JMenuItem("new");
+		mntmNew.setEnabled(false);
 		mnOpen.add(mntmNew);
 		
 		JMenuItem mntmFile = new JMenuItem("file");
@@ -283,7 +395,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -295,11 +407,14 @@ public class GUI {
 					graph = reader.read(directoryName + "\\" + fileName);
 					typeOfGraph = reader.typeOfGraph();
 					drawPanel.changeGraph(graph, typeOfGraph);
-				} catch (IOException e1) {
+		           	} 
+		           	catch (IOException e1) {
 					//System.out.println("Error concerning file:\\n");
-					e1.printStackTrace();
-				}   
+					lblStatus.setText(status.getStatus(16));
+		           	}   
 		        }
+		        btnShowResult.setVisible(false);
+			btnVisualizeAlg.setVisible(false);
 		}
 		});
 		
@@ -322,6 +437,8 @@ public class GUI {
 		        	String fileName = chooser.getSelectedFile().getName();
 		        	
 		        }
+		        btnShowResult.setVisible(false);
+				btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -341,8 +458,12 @@ public class GUI {
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
+		
 	}
 	
+	/**
+	 * Creates a frame for adding an edge via specifying.
+	 */
 	public static void createAddLineFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
@@ -377,13 +498,18 @@ public class GUI {
 		frame.getContentPane().add(btnCancel);
 		frame.getContentPane().add(btnAddEdge);
 		frame.setVisible(true);
+		frame.validate();
 	}
 	
+	/**
+	 * Creates a frame that appears after clicking on the "delete graph" 
+	 * and asks if the graph should really be deleted.
+	 */
 	public static void createDeleteGraphFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
 		frame.setBounds(390, 375, 220, 60);
-		frame.getContentPane().setBackground(new Color(0, 204, 204));
+		frame.getContentPane().setBackground(new Color(135, 206, 250));
 		frame.setUndecorated(true);
 		
 		JLabel lblText = new JLabel("Do you really want to delete the graph?");
@@ -415,18 +541,315 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Getter for the statusnumber.
+	 * 
+	 * @return statusnumber
+	 */
 	public static int getStatusNumber() {
 		return status.getStatusNumber();
 	}
 	
+	/**
+	 * Sets the vertex- and edge-color to gray, repaints the graph
+	 * and creates a new empty graph for the result.
+	 */
 	public void startAlgorithm() {
+		graph = drawPanel.graph;
 		drawPanel.vertexColor = Color.GRAY;
 		drawPanel.edgeColor = Color.GRAY;
+		drawPanel.repaint();
+		if(graph.typeOfGraph().equals("undirected")) {
+			resultGraph = new UndirectedGraph();
+		}
+		else {
+			resultGraph = new DirectedGraph();
+		}
 	}
 	
+	/**
+	 * Sets the vertex- and edge-color to the default colors.
+	 */
 	public void startEdit() {
 		drawPanel.vertexColor = Color.BLUE;
 		drawPanel.edgeColor = Color.BLACK;
 	}
+	
+	/**
+	 * Visualizes an algorithm.
+	 */
+	public void visualizeAlgorithm() {
+		//System.out.println("in visualize");
+		//System.out.println("number of operations = "+operations.size());
+		Graphics g = this.drawPanel.getGraphics();
+
+		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
+		String operationName;
+		
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+					break;
+				case "not choose":
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+					break;
+				case "not choose":
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.GRAY);
+					break;
+				default:
+					break;
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}		
+	}
+	
+	/**
+	 * Shows the result of an algorithm.
+	 */
+	public void showResult() {
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				if(operation.getOperationName().equals("choose")) {
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+				}
+			}	
+		}
+	}
+	
+	/**
+	 * Visualizes BUILD.
+	 */
+	public void visualizeAlgorithmBuild() {
+		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
+		System.out.println("in visualize");
+		System.out.println("number of operations = "+operations.size());
+		Graphics g = this.drawPanel.getGraphics();
+		Graphics auxilaryG = this.auxilaryDrawPanel.getGraphics();
+		UndirectedGraph auxilaryGraph = new UndirectedGraph();
+		//auxilaryDrawPanel.changeGraph(resultGraph, "undirected");
+		//auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+
+		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
+		String operationName;
+		
+		for(int i=0; i<operations.size(); i++) {
+			operation = operations.get(i);
+			
+			if(operation.getOperationType().equals("edge")) {
+				edgeOperation = (EdgeOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+					break;
+				case "not choose":
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				case "build add":
+					drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				case "aho add":
+					auxilaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
+					auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				vertexOperation = (VertexOperation) operation;
+				operationName = operation.getOperationName();
+				switch(operationName) {
+				case "consider":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+					break;
+				case "choose":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+					break;
+				case "not choose":
+					auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
+					break;
+				case "build add":
+					drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
+					break;
+				case "aho add":
+					if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
+						auxilaryGraph = new UndirectedGraph();
+						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+					}					
+					auxilaryGraph.addVertex(vertexOperation.getVertexName());
+					if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
+						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+						auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+					}	
+					//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+					break;
+				default:
+					break;
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}		
+	}
+	
+	/**
+	 * Creates a frame that shows the aho-graph for BUILD
+	 */
+	public static void createHelpGraphFrame() {
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(null);
+		frame.setBounds(910, 225, 400, 400);
+		
+		auxilaryDrawPanel = new DrawPanel(390, 365);
+		auxilaryDrawPanel.setBorder(null);
+		//auxilaryDrawPanel.setBorder(new LineBorder(new Color(0, 0, 0), 4));
+		auxilaryDrawPanel.setLocation(0, 0);
+		auxilaryDrawPanel.setSize(390, 365);
+		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
+		frame.getContentPane().add(auxilaryDrawPanel);
+		frame.setVisible(true);
+		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã‚Â¼berhaupt malt.
+		// funktioniert aber nicht :(
+		/*
+		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
+		System.out.println("huhu");
+		UndirectedGraph auxilaryGraph = new UndirectedGraph();
+		auxilaryGraph.addVertex(1);
+		auxilaryGraph.addVertex(2);
+		auxilaryGraph.addEdge(1, 2);
+		
+		auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
+		//System.out.println("number of vert = " +auxilaryDrawPanel.vertices.size());
+		auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+		*/
+	}
+	
+	/**
+	 * Creates a frame that asks if the graph should really be deleted and the BUILD algorithm started.
+	 */
+	public  void createStartBuildFrame() {
+		readerBuild = null;
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(390, 375, 220, 80);
+		frame.getContentPane().setBackground(new Color(135, 206, 250));
+		frame.setUndecorated(true);
+		
+		JLabel lblText = new JLabel( "<html>Do you really want to delete the graph<p/>and start the BUILD algorithm?</html>" );
+		
+		JButton btnYes = new JButton("Yes");
+		btnYes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Pair<UndirectedGraph, Integer> rootedTree;
+				graph = new UndirectedGraph();
+				typeOfGraph = "u";
+				drawPanel.changeGraph(graph, typeOfGraph);
+				frame.dispose();
+				build = new Build();
+				ArrayList<Integer> leaves = null;
+				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+		        JFileChooser chooser = new JFileChooser(directoryName);
+		        JComponent.setDefaultLocale(Locale.ENGLISH); 
+		        chooser.setLocale(Locale.ENGLISH);
+		        chooser.updateUI();
+		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
+		        {
+		        	String fileName = chooser.getSelectedFile().getName();
+		           	try {
+					ReaderBUILD.read(directoryName + "\\" + fileName);
+					//leaves = readerBuild.getLeafset();
+					//triples = readerBuild.getTripleset();
+		           	} 
+		           	catch (IOException e1) {
+		           		lblStatus.setText(status.getStatus(16));
+		           		return;
+		           	}   
+		           	leaves = ReaderBUILD.getLeafset();
+					triples = ReaderBUILD.getTripleset();
+		        }
+		        System.out.println("num of leaves= " + leaves.size());
+		        System.out.println("num of triples= " + triples.size());
+		        createHelpGraphFrame();
+		        rootedTree = build.build(triples, leaves, new Integer(-1));
+		        resultGraph = rootedTree.getFirst();
+
+		        operations = build.getChanges();
+		        System.out.println("fertig mit build");
+				drawPanel.changeGraph(resultGraph, "undirected");
+		        visualizeAlgorithmBuild();
+		        /*
+		        ArrayList<Integer> v = graph.getVertices();
+		        System.out.println("number of vertices of result: "+ v.size());
+		        drawPanel.changeGraph(graph, typeOfGraph);
+		        Graphics g = drawPanel.getGraphics();
+		        drawPanel.drawCompleteGraph(g, Color.CYAN, Color.BLACK);
+		        System.out.println("I'm here");
+		        System.out.println("root= "+ rootedTree.getSecond());
+		        */
+			}
+		});
+		
+		JButton btnNo = new JButton("No");
+		btnNo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		frame.getContentPane().add(lblText);
+		frame.getContentPane().add(btnYes);
+		frame.getContentPane().add(btnNo);
+		frame.setVisible(true);
+	}
+
 }
 

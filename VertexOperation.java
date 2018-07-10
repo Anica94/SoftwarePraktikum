@@ -6,8 +6,8 @@
 public class VertexOperation implements Operation {
 	
 	/**
-	 * String containing the name of the operation which can be "consider", "choose" or "not choose"
-	 * and stands for steps made by algorithms.
+	 * String containing the name of the operation which can be "consider", "choose", "not choose"
+	 * or "build add" and stands for steps made by algorithms.
 	 */
 	private String operationName;
 	/**
@@ -18,8 +18,8 @@ public class VertexOperation implements Operation {
 	/**
 	 * Produces a new type of operation for a specified vertex.
 	 * 
-	 * <p>If the name of the operation differs from "consider", "choose" or "not choose"
-	 * IllegalArgumentException is thrown.</p>
+	 * <p>If the name of the operation differs from "consider", "choose", "not choose" 
+	 * or "build add" IllegalArgumentException is thrown.</p>
 	 *  
 	 * @param operationName type of which the operation shall be
 	 * @param vertexName name of the specified vertex
@@ -31,7 +31,7 @@ public class VertexOperation implements Operation {
 		if (vertexName == null) {
     		throw new NullPointerException();
     	}
-		if (!operationName.equals("consider") || !operationName.equals("choose") || !operationName.equals("not choose")) {
+		if (!(operationName.equals("consider") || operationName.equals("choose") || operationName.equals("not choose") || operationName.equals("build add") || operationName.equals("aho add"))) {
     		throw new IllegalArgumentException();
     	}
 		this.operationName = operationName;

@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 public class DrawPanel extends JPanel {
-	private Graph graph;
+	public Graph graph;
 	private String typeOfGraph;
 	private ArrayList<Integer> vertices;
 	private Integer vertex;
@@ -36,28 +36,22 @@ public class DrawPanel extends JPanel {
 	private int status;
 	public Color vertexColor;
 	public Color edgeColor;
+	private int width, height;
 	
 	private int mouseX, mouseY;
 	private JLabel lblMouseCoords;
 	
-	public DrawPanel() {
-		//this.graph = graph;
-		//this.typeOfGraph = typeOfGraph;
+	public DrawPanel(int width, int height) {
+		this.width = width;
+		this.height = height;
 		graph = new UndirectedGraph();
 		vertexCoordinates = new HashMap<Integer, Pair<Integer, Integer> >();
 		coordinates = new Pair<Integer, Integer>(0, 0);
 		coordinates2 = new Pair<Integer, Integer>(0, 0);
-		startpoint = null;
+		startpoint = -1;
 		vertexColor = Color.BLUE;
 		edgeColor = Color.BLACK;
-/*
-		System.out.println("number of vertices " + graph.getVertices().size());
-		if(!graph.getVertices().isEmpty() && vertexCoordinates.isEmpty()) {
-			createDefaultCoordinates();
-		}*/
-		//repaint();
-		
-		
+	
 		this.addMouseMotionListener(new MouseMotionListener() {
 
 			@Override
@@ -66,10 +60,9 @@ public class DrawPanel extends JPanel {
 				 * move
 				 */
 				if(GUI.getStatusNumber()==12) {
-					//vertex = findVertex(x, y);
-					changeCoordinates(vertex, e.getX(), e.getY());
-					//coordinates = new Pair<Integer, Integer>(mouseX, mouseY);
-					//vertexCoordinates.replace(vertex, coordinates);
+					if(vertex != -1) {
+						changeCoordinates(vertex, e.getX(), e.getY());
+					}
 				}
 				repaint();
 			}
@@ -84,8 +77,8 @@ public class DrawPanel extends JPanel {
 			
 		});		
 		
-		lblMouseCoords = new JLabel("TEST");
-		this.add(lblMouseCoords, BorderLayout.NORTH);
+		//lblMouseCoords = new JLabel("TEST");
+		//this.add(lblMouseCoords, BorderLayout.NORTH);
 		
 		this.addMouseListener(new MouseAdapter() {
         //    private Color background;
@@ -111,33 +104,41 @@ public class DrawPanel extends JPanel {
             	 */
 				case 8:
 					vertex = findVertex(mouseX, mouseY);
-            		if(startpoint == null) {
-            			startpoint = vertex;
-            		}
-            		else {
-            			addEdge(startpoint, vertex);
-            			startpoint = null;
-            		}
+					if(vertex != -1) {
+						if(startpoint == -1) {
+	            			startpoint = vertex;
+	            		}
+	            		else {
+	            			if(startpoint != vertex) {
+	            				addEdge(startpoint, vertex);
+	            			startpoint = -1;
+	            			}
+	            		}
+					}
             		break;
         		/*
         		 * delete vertex
         		 */
 				case 10:
 					vertex = findVertex(mouseX, mouseY);
-            		graph.deleteVertex(vertex);
+					if(vertex != -1) {
+						graph.deleteVertex(vertex);
+					}
             		break;
         		/*
         		 * delete edge
         		 */
 				case 11: 
 					vertex = findVertex(mouseX, mouseY);
-            		if(startpoint == null) {
-            			startpoint = vertex;
-            		}
-            		else {
-            			graph.deleteEdge(startpoint, vertex);
-            			startpoint = null;
-            		}
+					if(vertex != -1) {
+						if(startpoint == -1) {
+	            			startpoint = vertex;
+	            		}
+	            		else {
+	            			graph.deleteEdge(startpoint, vertex);
+	            			startpoint = -1;
+	            		}
+					}
             		break;
         		/*
         		 * move
@@ -168,7 +169,8 @@ public class DrawPanel extends JPanel {
 	 * @param y2 y-coordinate of the second point.
 	 */
 	public double distance(int x1, int y1, int x2, int y2){
-		double distance = Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2), 2));
+		//double distance = Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2), 2));
+		double distance = Math.hypot((x1-x2), (y1-y2));
 		return distance;
 	}
 	
@@ -179,7 +181,7 @@ public class DrawPanel extends JPanel {
 	 * @param y2 y-coordinate 
 	 */
 	public Integer findVertex(int x1, int y1) {
-		Integer v = null;
+		Integer v = -1;
 		double distance;
 		double shortestDistance = 100;
 		vertices = graph.getVertices();
@@ -189,14 +191,11 @@ public class DrawPanel extends JPanel {
 			x = coordinates.getFirst();
 			y = coordinates.getSecond();
 			distance = distance(x1, y1, x, y);
-			if(distance < 15) {
+			if(distance < 20) {
 				if(distance < shortestDistance) {
 					v = vertex;
 				}
 			}
-		}
-		if(v == null) {
-			throw new NullPointerException();
 		}
 		return v;
 	}
@@ -239,8 +238,8 @@ public class DrawPanel extends JPanel {
 		vertices = graph.getVertices();
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
-			int x = (int)(Math.random() * ((784) + 1));
-			int y = (int)(Math.random() * ((514) + 1));
+			int x = (int)(Math.random() * ((width-20))+10);
+			int y = (int)(Math.random() * ((height-20)+10));
 			coordinates = new Pair<Integer, Integer>(x, y);
 			vertexCoordinates.put(vertex, coordinates);
 		}
@@ -273,11 +272,18 @@ public class DrawPanel extends JPanel {
     }
 */	
 	
+	/**
+	 * Draws the complete graph.
+	 * 
+	 * @param g graphical object
+	 * @param vertexColor color in which the vertices should be drawn.
+	 * @param edgeColor color in which the edges should be drawn.
+	 */
 	public void drawCompleteGraph(Graphics g, Color vertexColor, Color edgeColor) {
+		super.paintComponent(g);
 		Integer vertex;
 		Pair<Integer, Integer> coordinates;
 		vertices = graph.getVertices();
-		//System.out.println("number of vertices = " + vertices.size());
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
 			coordinates = vertexCoordinates.get(vertex);
@@ -298,8 +304,62 @@ public class DrawPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Draws the specified vertex in the specified color.
+	 * 
+	 * @param vertexName name of the vertex that should be drawn.
+	 * @param color
+	 */
+	public void drawVertex(Integer vertexName, Color color) {
+		Graphics g = this.getGraphics();	
+		Pair<Integer, Integer> coordinates;
+		coordinates = vertexCoordinates.get(vertexName);
+		x = coordinates.getFirst();
+		y = coordinates.getSecond();
+		c = new Circle(vertexName, 10, x, y);
+		c.draw(g, color);
+	}
+	
+	/**
+	 * Draws the specified edge in the specified color.
+	 * 
+	 * @param vertexNameStart start-vertex of the edge to be drawn.
+	 * @param vertexNameEnd end-vertex of the edge to be drawn.
+	 * @param color
+	 */
+	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Color color) {
+		Graphics g = this.getGraphics();
+		Pair<Integer, Integer> coordinates1;
+		Pair<Integer, Integer> coordinates2;
+		int x1, x2, y1, y2;
+		coordinates1 = vertexCoordinates.get(vertexNameStart);
+		x1 = coordinates1.getFirst();
+		y1 = coordinates1.getSecond();
+		coordinates2 = vertexCoordinates.get(vertexNameEnd);
+		x2 = coordinates2.getFirst();
+		y2 = coordinates2.getSecond();
+		g.setColor(color);
+		g.drawLine(x1, y1, x2, y2);		
+	}
+		
+	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeight, Color color) {
+		Graphics g = this.getGraphics();
+		Pair<Integer, Integer> coordinates1;
+		Pair<Integer, Integer> coordinates2;
+		int x1, x2, y1, y2;
+		coordinates1 = vertexCoordinates.get(vertexNameStart);
+		x1 = coordinates1.getFirst();
+		y1 = coordinates1.getSecond();
+		coordinates2 = vertexCoordinates.get(vertexNameEnd);
+		x2 = coordinates2.getFirst();
+		y2 = coordinates2.getSecond();
+		g.setColor(color);
+		g.drawLine(x1, y1, x2, y2);
+		g.drawString(String.valueOf(edgeWeight), 1/2*(x1+x2), 1/2*(y1+y2));
+	}
+	
 	@Override
-    protected void paintComponent (Graphics g) {
+    public void paintComponent (Graphics g) {
 		super.paintComponent(g);
 		
 		drawCompleteGraph(g, vertexColor, edgeColor);
