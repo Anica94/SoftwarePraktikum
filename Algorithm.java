@@ -17,6 +17,7 @@ public interface Algorithm {
 	 * @return list of operations made by the algorithm.
 	 * 
 	 * @throws NullPointerException if the specified graph is <code> null</code>.
+	 * @throws IllegalArgumentException if the specified graph is empty.
 	 */
 	public ArrayList<Operation> execute(Graph graph);
 	
