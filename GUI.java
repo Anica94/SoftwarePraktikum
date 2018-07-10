@@ -54,6 +54,7 @@ public class GUI {
 	private ConnectedComponents findConCom;
 	private static Build build;
 	private static ReaderBUILD readerBuild;
+	private Timer timer;
 
 	/**
 	 * Launch the application.
@@ -656,20 +657,33 @@ public class GUI {
 	/**
 	 * Visualizes BUILD.
 	 */
+	UndirectedGraph auxilaryGraph;
+	int i;
+	String operationName;
 	public void visualizeAlgorithmBuild() {
 		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 		System.out.println("in visualize");
 		System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
 		Graphics auxilaryG = this.auxilaryDrawPanel.getGraphics();
-		UndirectedGraph auxilaryGraph = new UndirectedGraph();
+		auxilaryGraph = new UndirectedGraph();
 		//auxilaryDrawPanel.changeGraph(resultGraph, "undirected");
 		//auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
 
 		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
-		String operationName;
+		//String operationName;
 		
-		for(int i=0; i<operations.size(); i++) {
+		//for(int i=0; i<operations.size(); i++) {
+		i = 0;
+		timer = new Timer(500, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(!(i<operations.size())) {
+					timer.stop();
+					return;
+				}
 			operation = operations.get(i);
 			
 			if(operation.getOperationType().equals("edge")) {
@@ -718,8 +732,8 @@ public class GUI {
 						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
 					}					
 					auxilaryGraph.addVertex(vertexOperation.getVertexName());
+					auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
 					if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
-						auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
 						auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
 					}	
 					//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
@@ -728,13 +742,10 @@ public class GUI {
 					break;
 				}
 			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}	
-		}		
+			i++;
+		}
+		});
+		timer.start();
 	}
 	
 	/**
@@ -823,7 +834,7 @@ public class GUI {
 
 		        operations = build.getChanges();
 		        System.out.println("fertig mit build");
-				drawPanel.changeGraph(resultGraph, "undirected");
+				drawPanel.setGraph(resultGraph, "undirected");
 		        visualizeAlgorithmBuild();
 		        /*
 		        ArrayList<Integer> v = graph.getVertices();
