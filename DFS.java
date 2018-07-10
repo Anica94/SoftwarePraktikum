@@ -39,6 +39,9 @@ public class DFS implements Algorithm {
 		if (graph == null) {
     		throw new NullPointerException();
     	}
+		if (graph.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		
 		ArrayList<Operation> changes = new ArrayList<Operation>();
 		ArrayList<Integer> vertices = graph.getVertices();
