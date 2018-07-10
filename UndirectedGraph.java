@@ -311,5 +311,13 @@ public class UndirectedGraph implements Graph {
 		return copyGraph;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		if(startpoints.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+
 }
 
