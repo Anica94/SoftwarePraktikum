@@ -385,6 +385,15 @@ public class DrawPanel extends JPanel {
 		g.drawString(String.valueOf(edgeWeight), 1/2*(x1+x2), 1/2*(y1+y2));
 	}
 	
+	/**
+	 * Empties the drawpanel
+	 * 
+	 * @param g graphical object
+	 */
+	public void emptyDrawPanel(Graphics g) {
+		super.paintComponent(g);
+	}
+	
 	@Override
     public void paintComponent (Graphics g) {
 		super.paintComponent(g);
