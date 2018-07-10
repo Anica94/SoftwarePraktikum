@@ -59,12 +59,12 @@ public class DFS implements Algorithm {
 		Stack<Integer> stack = new Stack<>();
 		stack.push(startvertex);
 		while(!stack.isEmpty()) {
-			v = stack.pop();
-			changes.add(new VertexOperation("consider", v));
-			changes.add(new VertexOperation("choose", v));
+			v = stack.pop();			
 			if(!verticesConnectedComponent.contains(v)) {
 				verticesConnectedComponent.add(v);
 				result.addVertex(v);
+				changes.add(new VertexOperation("consider", v));
+				changes.add(new VertexOperation("choose", v));
 				startAdjacent =graph.getStartpoints().get(v);
 				set = startAdjacent.keySet();
 				java.util.Iterator<Integer> itr = set.iterator();
