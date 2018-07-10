@@ -21,6 +21,13 @@ public interface Graph {
 	public HashMap<Integer, TreeMap<Integer, Integer>> getStartpoints();
 	
 	/**
+	 * Returns <tt>true</tt> if the graph is empty, i.e. if the graph contains no vertices.
+	 * 
+	 * @return <tt>true</tt> if this graph is empty.
+	 */
+	boolean isEmpty();
+	
+	/**
 	 * Returns the type of the graph as a string. To be exact, the type can be "undirected" or "directed".
 	 *  
 	 * @return type of graph which is undirected or directed
