@@ -443,7 +443,7 @@ public class GUI {
 				 * produce save dialog
 				 * write file
 				 */
-				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
@@ -675,7 +675,6 @@ public class GUI {
 	 * Visualizes BUILD.
 	 */
 	public void visualizeAlgorithmBuild() {
-		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 		createHelpGraphFrame();
 		System.out.println("in visualize");
 		System.out.println("number of operations = "+operations.size());
@@ -686,7 +685,6 @@ public class GUI {
 		//auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
 
 		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
-		//String operationName;
 		
 		//for(int i=0; i<operations.size(); i++) {
 		drawPanel.emptyDrawPanel(g);
@@ -784,20 +782,6 @@ public class GUI {
 		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
 		ahoframe.getContentPane().add(auxilaryDrawPanel);
 		ahoframe.setVisible(true);
-		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼berhaupt malt.
-		// funktioniert aber nicht :(
-		/*
-		Graphics auxilaryG = auxilaryDrawPanel.getGraphics();
-		System.out.println("huhu");
-		UndirectedGraph auxilaryGraph = new UndirectedGraph();
-		auxilaryGraph.addVertex(1);
-		auxilaryGraph.addVertex(2);
-		auxilaryGraph.addEdge(1, 2);
-		
-		auxilaryDrawPanel.changeGraph(auxilaryGraph, "undirected");
-		//System.out.println("number of vert = " +auxilaryDrawPanel.vertices.size());
-		auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
-		*/
 	}
 	
 	/**
@@ -855,16 +839,7 @@ public class GUI {
 		        operations = build.getChanges();
 		        System.out.println("fertig mit build");
 				drawPanel.setGraph(resultGraph, "undirected");
-		       // visualizeAlgorithmBuild();
-		        /*
-		        ArrayList<Integer> v = graph.getVertices();
-		        System.out.println("number of vertices of result: "+ v.size());
-		        drawPanel.changeGraph(graph, typeOfGraph);
-		        Graphics g = drawPanel.getGraphics();
-		        drawPanel.drawCompleteGraph(g, Color.CYAN, Color.BLACK);
-		        System.out.println("I'm here");
-		        System.out.println("root= "+ rootedTree.getSecond());
-		        */
+				lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 			}
 		});
 		
