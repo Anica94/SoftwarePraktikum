@@ -159,7 +159,13 @@ public class GUI {
 		btnShowResult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showResult();
+				if(getStatusNumber()==6) {
+					Graphics g = drawPanel.getGraphics();
+					drawPanel.drawCompleteGraph(g, Color.BLUE, Color.BLACK);
+				}
+				else {
+					showResult();
+				}				
 			}
 		});
 	
@@ -273,8 +279,8 @@ public class GUI {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
 				//System.out.println("wieder zurÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼ck");
-				btnShowResult.setVisible(false);
-				btnVisualizeAlg.setVisible(false);
+				btnShowResult.setVisible(true);
+				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -670,6 +676,7 @@ public class GUI {
 	 */
 	public void visualizeAlgorithmBuild() {
 		lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
+		createHelpGraphFrame();
 		System.out.println("in visualize");
 		System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
@@ -682,8 +689,9 @@ public class GUI {
 		//String operationName;
 		
 		//for(int i=0; i<operations.size(); i++) {
+		drawPanel.emptyDrawPanel(g);
 		i = 0;
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(750, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -750,13 +758,13 @@ public class GUI {
 						break;
 					}
 				}
-				System.out.println(i);
+				i++;
 				if(i==operations.size()) {
 			ahoframe.dispose();
 		}
 			}
 		});
-		timer.start();
+		timer.start();		
 	}
 	
 	/**
@@ -840,14 +848,14 @@ public class GUI {
 		        }
 		        System.out.println("num of leaves= " + leaves.size());
 		        System.out.println("num of triples= " + triples.size());
-		        createHelpGraphFrame();
+		        //createHelpGraphFrame();
 		        rootedTree = build.build(triples, leaves, new Integer(-1));
 		        resultGraph = rootedTree.getFirst();
 
 		        operations = build.getChanges();
 		        System.out.println("fertig mit build");
 				drawPanel.setGraph(resultGraph, "undirected");
-		        visualizeAlgorithmBuild();
+		       // visualizeAlgorithmBuild();
 		        /*
 		        ArrayList<Integer> v = graph.getVertices();
 		        System.out.println("number of vertices of result: "+ v.size());
