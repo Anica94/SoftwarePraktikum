@@ -750,7 +750,6 @@ public class GUI {
 						break;
 					}
 				}
-				i++;
 				System.out.println(i);
 				if(i==operations.size()) {
 			ahoframe.dispose();
@@ -758,7 +757,6 @@ public class GUI {
 			}
 		});
 		timer.start();
-		
 	}
 	
 	/**
