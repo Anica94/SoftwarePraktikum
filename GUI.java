@@ -751,18 +751,24 @@ public class GUI {
 					}
 				}
 				i++;
+				System.out.println(i);
+				if(i==operations.size()) {
+			ahoframe.dispose();
+		}
 			}
 		});
 		timer.start();
+		
 	}
 	
 	/**
 	 * Creates a frame that shows the aho-graph for BUILD
 	 */
+	private static JFrame ahoframe;
 	public static void createHelpGraphFrame() {
-		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(null);
-		frame.setBounds(910, 225, 400, 400);
+		ahoframe = new JFrame();
+		ahoframe.getContentPane().setLayout(null);
+		ahoframe.setBounds(910, 225, 400, 400);
 		
 		auxilaryDrawPanel = new DrawPanel(390, 365);
 		auxilaryDrawPanel.setBorder(null);
@@ -770,8 +776,8 @@ public class GUI {
 		auxilaryDrawPanel.setLocation(0, 0);
 		auxilaryDrawPanel.setSize(390, 365);
 		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
-		frame.getContentPane().add(auxilaryDrawPanel);
-		frame.setVisible(true);
+		ahoframe.getContentPane().add(auxilaryDrawPanel);
+		ahoframe.setVisible(true);
 		// Test, ob auxilaryDrawPanel ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼berhaupt malt.
 		// funktioniert aber nicht :(
 		/*
