@@ -66,10 +66,18 @@ public class Reader {
 			if (currentLine.matches("\\d+(\\s\\d+){1,2}")){
 				currentLineSplit = currentLine.split("\\s");
 				if (currentLineSplit.length == 2) {
-					graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
+					try {
+						graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
+					} catch (IllegalArgumentException e) {
+						throw new IOException();
+					}
 				} 
 				else if (currentLineSplit.length == 3) {
-					graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]), Integer.valueOf(currentLineSplit[2]));
+					try {
+						graph.addEdge(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]), Integer.valueOf(currentLineSplit[2]));
+					} catch (IllegalArgumentException e) {
+						throw new IOException();
+					}
 				} 
 				
 			}else {
