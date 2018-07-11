@@ -31,7 +31,12 @@ public class Reader {
 		if (!currentLine.matches("[du]")) {
 			throw new IOException();
 		}
-		typeOfGraph = currentLine;
+		if (currentLine.equals("d")) {
+			graph = new DirectedGraph();
+		}
+		else if (currentLine.equals("u")) {
+			graph = new UndirectedGraph();
+		}
 		currentLine = bReader.readLine();
 		if (currentLine.matches("\\d+")) {
 			numberOfVertices = Integer.parseInt(currentLine);
@@ -44,12 +49,7 @@ public class Reader {
 		}else {
 			throw new IOException();
 		}
-		if (this.typeOfGraph().equals("d")) {
-			graph = new DirectedGraph();
-		}
-		else if ( this.typeOfGraph().equals("u")) {
-			graph = new UndirectedGraph();
-		}
+		
 		/*
 		 * fill graph
 		 */
@@ -80,10 +80,4 @@ public class Reader {
 		return graph;
 	}
 	
-	public String typeOfGraph() {
-		if (typeOfGraph.equals(null)) {
-			throw new NullPointerException();
-		}
-		return typeOfGraph;
-	}
 }
