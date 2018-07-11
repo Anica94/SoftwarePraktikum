@@ -51,7 +51,7 @@ public class TestMaximalMatching extends TestCase {
 			// is tested at TestReader
 		}
 		changes = mm.execute(graph);
-		assertTrue("mm.execute(graph) did not make any changes.", changes.isEmpty());
+		assertTrue("mm.execute(graph) made changes although no changes should be made.", changes.isEmpty());
 		
 		/*
 		 * Test graph with two components: a star and a circle
@@ -69,10 +69,23 @@ public class TestMaximalMatching extends TestCase {
 		expectedChanges.add(new EdgeOperation("consider", 5, 6));
 		expectedChanges.add(new EdgeOperation("choose", 5, 6));
 		
-		assertFalse("mm.execute(graph) makes the wrong number of changes", changes.size()==expectedChanges.size());
+		boolean success;
+		
+		assertTrue("mm.execute(graph) makes the wrong number of changes", changes.size()==expectedChanges.size());
 		for(int i=0; i<changes.size(); i++) {
 			currentChange = (EdgeOperation) changes.get(i);
 			currentExpected = (EdgeOperation) expectedChanges.get(i);
+			
+			success = currentChange.getOperationType().equals(currentExpected.getOperationType());
+			assertTrue("mm.execute(graph) decides for the wrong type of an operation.", success);
+			success = currentChange.getOperationName().equals(currentExpected.getOperationName());
+			assertTrue("mm.execute(graph) decides for the wrong name of an operation.", success);
+			success = currentChange.getStartVertexName()==currentExpected.getStartVertexName();
+			assertTrue("mm.execute(graph) decides for the wrong startpoint.", success);
+			success = currentChange.getEndVertexName()==currentExpected.getEndVertexName();
+			assertTrue("mm.execute(graph) decides for the wrong endpoint.", success);
+			
+			/*
 			if(currentChange.getOperationType().equals(currentExpected.getOperationType())) {
 				if(currentChange.getOperationName().equals(currentExpected.getOperationName())) {
 					if(currentChange.getStartVertexName()==currentExpected.getStartVertexName()) {
@@ -94,6 +107,7 @@ public class TestMaximalMatching extends TestCase {
 			else {
 				assertFalse("mm.execute(graph) decides for the wrong type of an operation.", true);
 			}
+			*/
 		}	
 		assertTrue("mm.execute(graph) makes the expected changes.", true);
 	}
