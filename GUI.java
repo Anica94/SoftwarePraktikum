@@ -41,7 +41,7 @@ public class GUI {
 	private static Status status;
 	private JLabel lblStatus;
 	private static DrawPanel drawPanel;
-	private static DrawPanel auxilaryDrawPanel;
+	private static DrawPanel auxiliaryDrawPanel;
 	private Reader reader;
 	private static Graph graph;
 	private static String typeOfGraph;
@@ -56,7 +56,7 @@ public class GUI {
 	private static Build build;
 	private static ReaderBUILD readerBuild;
 	private Timer timer;
-	private UndirectedGraph auxilaryGraph;
+	private UndirectedGraph auxiliaryGraph;
 	private int i;
 	private String operationName;
 
@@ -418,7 +418,7 @@ public class GUI {
 		        	String fileName = chooser.getSelectedFile().getName();
 		           	try {
 					graph = reader.read(directoryName + "\\" + fileName);
-					typeOfGraph = reader.typeOfGraph();
+					typeOfGraph = graph.typeOfGraph();
 					drawPanel.changeGraph(graph, typeOfGraph);
 		           	} 
 		           	catch (IOException e1) {
@@ -679,10 +679,10 @@ public class GUI {
 		System.out.println("in visualize");
 		System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
-		Graphics auxilaryG = this.auxilaryDrawPanel.getGraphics();
-		auxilaryGraph = new UndirectedGraph();
-		//auxilaryDrawPanel.changeGraph(resultGraph, "undirected");
-		//auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+		Graphics auxiliaryG = this.auxiliaryDrawPanel.getGraphics();
+		auxiliaryGraph = new UndirectedGraph();
+		//auxiliaryDrawPanel.changeGraph(resultGraph, "undirected");
+		//auxiliaryDrawPanel.drawCompleteGraph(auxiliaryG, auxiliaryDrawPanel.vertexColor, auxiliaryDrawPanel.edgeColor);
 
 		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
 		
@@ -705,20 +705,20 @@ public class GUI {
 					operationName = operation.getOperationName();
 					switch(operationName) {
 					case "consider":
-						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
+						auxiliaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.GREEN);
 						break;
 					case "choose":
-						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
+						auxiliaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.RED);
 						break;
 					case "not choose":
-						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						auxiliaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
 						break;
 					case "build add":
 						drawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
 						break;
 					case "aho add":
-						auxilaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
-						auxilaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
+						auxiliaryDrawPanel.addEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName());
+						auxiliaryDrawPanel.drawEdge(edgeOperation.getStartVertexName(), edgeOperation.getEndVertexName(), Color.BLACK);
 						break;
 					default:
 						break;
@@ -729,28 +729,28 @@ public class GUI {
 					operationName = operation.getOperationName();
 					switch(operationName) {
 					case "consider":
-						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
+						auxiliaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.GREEN);
 						break;
 					case "choose":
-						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
+						auxiliaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.RED);
 						break;
 					case "not choose":
-						auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
+						auxiliaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
 						break;
 					case "build add":
 						drawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLUE);
 						break;
 					case "aho add":
 						if(i!=0 && !operations.get(i-1).getOperationName().equals("aho add")) {
-							auxilaryGraph = new UndirectedGraph();
-							auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
+							auxiliaryGraph = new UndirectedGraph();
+							auxiliaryDrawPanel.setGraph(auxiliaryGraph, "undirected");
 						}					
-						auxilaryGraph.addVertex(vertexOperation.getVertexName());
-						auxilaryDrawPanel.setGraph(auxilaryGraph, "undirected");
+						auxiliaryGraph.addVertex(vertexOperation.getVertexName());
+						auxiliaryDrawPanel.setGraph(auxiliaryGraph, "undirected");
 						if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
-							auxilaryDrawPanel.drawCompleteGraph(auxilaryG, auxilaryDrawPanel.vertexColor, auxilaryDrawPanel.edgeColor);
+							auxiliaryDrawPanel.drawCompleteGraph(auxiliaryG, auxiliaryDrawPanel.vertexColor, auxiliaryDrawPanel.edgeColor);
 						}	
-						//auxilaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
+						//auxiliaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
 						break;
 					default:
 						break;
@@ -770,17 +770,17 @@ public class GUI {
 	 */
 	private static JFrame ahoframe;
 	public static void createHelpGraphFrame() {
-		ahoframe = new JFrame();
+		ahoframe = new JFrame("Aho-graph");
 		ahoframe.getContentPane().setLayout(null);
 		ahoframe.setBounds(910, 225, 400, 400);
 		
-		auxilaryDrawPanel = new DrawPanel(390, 365);
-		auxilaryDrawPanel.setBorder(null);
-		//auxilaryDrawPanel.setBorder(new LineBorder(new Color(0, 0, 0), 4));
-		auxilaryDrawPanel.setLocation(0, 0);
-		auxilaryDrawPanel.setSize(390, 365);
-		auxilaryDrawPanel.setLayout(drawPanel.getLayout());
-		ahoframe.getContentPane().add(auxilaryDrawPanel);
+		auxiliaryDrawPanel = new DrawPanel(390, 365);
+		auxiliaryDrawPanel.setBorder(null);
+		//auxiliaryDrawPanel.setBorder(new LineBorder(new Color(0, 0, 0), 4));
+		auxiliaryDrawPanel.setLocation(0, 0);
+		auxiliaryDrawPanel.setSize(390, 365);
+		auxiliaryDrawPanel.setLayout(drawPanel.getLayout());
+		ahoframe.getContentPane().add(auxiliaryDrawPanel);
 		ahoframe.setVisible(true);
 	}
 	
