@@ -415,9 +415,9 @@ public class GUI {
 		        chooser.updateUI();
 		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
-		        	String fileName = chooser.getSelectedFile().getName();
+		        	String fileName = chooser.getSelectedFile().getPath();
 		           	try {
-					graph = reader.read(directoryName + "\\" + fileName);
+					graph = reader.read(fileName);
 					typeOfGraph = graph.typeOfGraph();
 					drawPanel.changeGraph(graph, typeOfGraph);
 		           	} 
@@ -427,8 +427,8 @@ public class GUI {
 		           	}   
 		        }
 		        btnShowResult.setVisible(false);
-			btnVisualizeAlg.setVisible(false);
-		}
+		        btnVisualizeAlg.setVisible(false);
+			}
 		});
 		
 		
@@ -597,7 +597,7 @@ public class GUI {
 		Graphics g = this.drawPanel.getGraphics();
 
 		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
-		
+		System.out.println("number of operations: " + operations.size());
 		i = 0;
 		timer = new Timer(1000, new ActionListener() {
 
@@ -689,6 +689,7 @@ public class GUI {
 		//for(int i=0; i<operations.size(); i++) {
 		drawPanel.emptyDrawPanel(g);
 		i = 0;
+		frame.setEnabled(false);
 		timer = new Timer(750, new ActionListener() {
 
 			@Override
@@ -758,8 +759,9 @@ public class GUI {
 				}
 				i++;
 				if(i==operations.size()) {
-			ahoframe.dispose();
-		}
+					frame.setEnabled(true);
+					ahoframe.dispose();					
+				}
 			}
 		});
 		timer.start();		
