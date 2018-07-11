@@ -39,19 +39,19 @@ public class GUI {
 
 	private JFrame frame;
 	private static Status status;
-	private JLabel lblStatus;
+	private static JLabel lblStatus;
 	private static DrawPanel drawPanel;
 	private static DrawPanel auxiliaryDrawPanel;
 	private Reader reader;
 	private static Graph graph;
 	private static String typeOfGraph;
 	private static Graph resultGraph;
-	private ArrayList<Operation> operations;
+	private static ArrayList<Operation> operations;
 	private Operation operation;
 	private EdgeOperation edgeOperation;
 	private VertexOperation vertexOperation;
 	private MaximalMatching maximalMatching;
-	private DFS dfs;
+	private static DFS dfs;
 	private ConnectedComponents findConCom;
 	private static Build build;
 	private static ReaderBUILD readerBuild;
@@ -195,6 +195,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(2));
 				startAlgorithm();	
+				/*
 				dfs = new DFS();
 				try {
 					operations = dfs.execute(graph);
@@ -203,6 +204,8 @@ public class GUI {
 					lblStatus.setText(status.getStatus(17));
 					return;
 				}
+				*/
+				createDfsStartpointFrame();
 				btnShowResult.setVisible(false);
 				btnVisualizeAlg.setVisible(true);
 			}
@@ -552,6 +555,47 @@ public class GUI {
 		frame.getContentPane().add(btnYes);
 		frame.getContentPane().add(btnNo);
 		frame.setVisible(true);
+	}
+	
+	public static void createDfsStartpointFrame() {
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new FlowLayout());
+		frame.setBounds(100, 150, 200, 75);
+		
+		JTextField txtC1 = new JTextField(1);
+		
+		JButton btnCancel = new JButton("cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		
+		JButton btnApply = new JButton("apply");
+		btnApply.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Integer startpoint = Integer.parseInt(txtC1.getText());
+				dfs = new DFS();
+				try {
+					operations = dfs.execute(graph, startpoint);
+					resultGraph = dfs.getResult(graph);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				frame.dispose();
+			}
+		});
+		
+		frame.getContentPane().add(txtC1);
+		frame.getContentPane().add(btnCancel);
+		frame.getContentPane().add(btnApply);
+		frame.setVisible(true);
+		frame.validate();
 	}
 	
 	/**
