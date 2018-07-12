@@ -1,14 +1,15 @@
 import java.util.ArrayList;
 
 /**
- * 
- */
-
-/**
  * @author Anica
  *
  */
 public class ConnectedComponents implements Algorithm {
+	/**
+	 * Saves the result of the algorithm as a graph.
+	 */
+	private Graph result;
+	private Graph resultDFS;
 	
 	private DFS dfs = new DFS();
 	private ArrayList<ArrayList<Integer>> connectedComponents;
@@ -37,15 +38,23 @@ public class ConnectedComponents implements Algorithm {
 		ArrayList<Integer> vertices = graph.getVertices();
 		Integer startvertex;
 		
+		if(graph.typeOfGraph().equals("undirected")) {
+			result = new UndirectedGraph();
+		}
+		else {
+			result = new DirectedGraph();
+		}
+		
 		while(!vertices.isEmpty()) {
 			startvertex = vertices.get(0);
 			dfs = new DFS();
 			currentChanges = dfs.execute(graph, startvertex);
+			resultDFS = dfs.getResult(graph, startvertex);
 			changes.addAll(currentChanges);
 			verticesConnectedComponent = new ArrayList<>();
-			verticesConnectedComponent = dfs.getVerticesOfConnectedComponent();
-			//System.out.println("number vertices in con comp= " + verticesConnectedComponent.size());
+			verticesConnectedComponent = dfs.getVerticesOfConnectedComponent();		
 			connectedComponents.add(verticesConnectedComponent);
+			result.getStartpoints().putAll(resultDFS.getStartpoints());
 			for(int i=0; i<verticesConnectedComponent.size(); i++) {
 				vertices.remove(verticesConnectedComponent.get(i));
 			}
@@ -59,7 +68,7 @@ public class ConnectedComponents implements Algorithm {
 	@Override
 	public Graph getResult(Graph graph) {
 		this.execute(graph);
-		return graph;
+		return result;
 	}
 	
 	public ArrayList<ArrayList<Integer>> getConnectedComponents(){
