@@ -28,6 +28,9 @@ public class DFS implements Algorithm {
 		if (graph == null) {
     		throw new NullPointerException();
     	}
+		if (graph.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 
 		ArrayList<Integer> vertices = graph.getVertices();
 		Integer startvertex = vertices.get(0);
@@ -40,6 +43,10 @@ public class DFS implements Algorithm {
     		throw new NullPointerException();
     	}
 		if (graph.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+		
+		if(!graph.getStartpoints().containsKey(startvertex)) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -83,6 +90,11 @@ public class DFS implements Algorithm {
 	@Override
 	public Graph getResult(Graph graph) {
 		this.execute(graph);
+		return result;
+	}
+	
+	public Graph getResult(Graph graph, Integer startvertex) {
+		this.execute(graph, startvertex);
 		return result;
 	}
 	
