@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +22,9 @@ public class TestMaximalMatching extends TestCase {
 	private ArrayList<Operation> expectedChanges = new ArrayList<>();
 	private EdgeOperation currentChange, currentExpected;
 
+	/**
+	 * Tests the method execute(Graph)
+	 */
 	@Test
 	public void testExecute() {
 		
@@ -88,30 +90,6 @@ public class TestMaximalMatching extends TestCase {
 			assertTrue("mm.execute(graph) decides for the wrong startpoint.", success);
 			success = currentChange.getEndVertexName()==currentExpected.getEndVertexName();
 			assertTrue("mm.execute(graph) decides for the wrong endpoint.", success);
-			
-			/*
-			if(currentChange.getOperationType().equals(currentExpected.getOperationType())) {
-				if(currentChange.getOperationName().equals(currentExpected.getOperationName())) {
-					if(currentChange.getStartVertexName()==currentExpected.getStartVertexName()) {
-						if(currentChange.getEndVertexName()==currentExpected.getEndVertexName()) {
-							
-						}
-						else {
-							assertFalse("mm.execute(graph) decides for the wrong endpoint.", true);
-						}
-					}
-					else {
-						assertFalse("mm.execute(graph) decides for the wrong startpoint.", true);
-					}
-				}
-				else {
-					assertFalse("mm.execute(graph) decides for the wrong name of an operation.", true);
-				}
-			}
-			else {
-				assertFalse("mm.execute(graph) decides for the wrong type of an operation.", true);
-			}
-			*/
 		}
 	}
 	
