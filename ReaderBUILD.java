@@ -38,6 +38,9 @@ public class ReaderBUILD {
 		triples = new ArrayList<>();
 		sbL = new StringBuilder();
 		sbR = new StringBuilder();
+		if (currentLine == null) {
+			throw new IOException();
+		}
 		if (currentLine.matches("\\d+")) {
 			numberOfLeaves = Integer.parseInt(currentLine);
 		}else {
