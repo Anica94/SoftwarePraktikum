@@ -28,6 +28,9 @@ public class Reader {
 		String[] currentLineSplit;
 		bReader = new BufferedReader(new FileReader(fileName));
 		String currentLine = bReader.readLine();
+		if (currentLine == null) {
+			throw new IOException();
+		}
 		if (!currentLine.matches("[du]")) {
 			throw new IOException();
 		}
