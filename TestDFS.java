@@ -33,8 +33,9 @@ public class TestDFS extends TestCase {
 		 */	
 		try {
 			dfs.execute(graph);
-		} catch (NullPointerException e) {
-			assertTrue("NullPointerException was thrown.", true);
+			fail("expected NullPointerException");
+		} catch (Exception e) {
+			// ignore, this exception is expected
 		}
 		
 		/*
@@ -43,8 +44,9 @@ public class TestDFS extends TestCase {
 		graph = new UndirectedGraph();
 		try {
 			dfs.execute(graph);
-		} catch (IllegalArgumentException e) {
-			assertTrue("IllegalArgumentException.", true);
+			fail("expected IllegalArgumentException");
+		} catch (Exception e) {
+			// ignore, this exception is expected
 		}
 		
 		/*
@@ -174,8 +176,9 @@ public class TestDFS extends TestCase {
 		graph.addVertex();
 		try {
 			dfs.execute(graph, 2);
+			fail("expected IllegalArgumentException");
 		} catch (Exception e) {
-			assertTrue("IllegalArgumentException.", true); 
+			// ignore, this exception is expected
 		}
 	}
 	
