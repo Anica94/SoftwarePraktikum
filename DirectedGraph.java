@@ -86,7 +86,7 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    Iterator itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    startpoints.remove(vertexName);
 	    /* 
@@ -99,37 +99,10 @@ public class DirectedGraph extends UndirectedGraph implements Graph {
 	    itr = c.iterator();
 	    while (itr.hasNext()){
 	    	Integer  currentVertex = (Integer) itr.next();
-	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plötzlich wird "c" verändert (beide Richtungen gelöscht --- abwarten
+	    	this.deleteEdge(vertexName, currentVertex); ////evtl Fehler wegen plÃ¶tzlich wird "c" verÃ¤ndert (beide Richtungen gelÃ¶scht --- abwarten
 	    }
 	    endpoints.remove(vertexName);
 		return true;
-	}
-	
-	@Override
-	public boolean isAdjacentTo(Integer vertexNameStart, Integer vertexNameEnd) {
-		if (vertexNameStart == null || vertexNameEnd == null) {
-    		throw new NullPointerException();
-    	}
-		if (!startpoints.containsKey(vertexNameStart) || !startpoints.containsKey(vertexNameEnd) || vertexNameStart.equals(vertexNameEnd)) {
-    		throw new IllegalArgumentException();
-    	}
-		/*
-		 *  check adjacent vertices of vertexNameStart (outgoing)
-		 */
-		TreeMap<Integer, Integer> adjacent = startpoints.get(vertexNameStart);
-		if (adjacent.containsKey(vertexNameEnd))
-		{
-			return true;
-		}
-		/*
-		 *  check adjacent vertices of vertexNameStart (ingoing)
-		 */
-		adjacent = endpoints.get(vertexNameStart);
-		if (adjacent.containsKey(vertexNameEnd))
-		{
-			return true;
-		}
-		return false;
 	}
 	
 	@Override
