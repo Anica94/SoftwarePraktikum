@@ -81,11 +81,11 @@ public class TestMaximalMatching extends TestCase {
 		
 		assertTrue("mm.execute(graph) makes the wrong number of changes", changes.size()==expectedChanges.size());
 		for(int i=0; i<changes.size(); i++) {
-			currentChange = (EdgeOperation) changes.get(i);
 			currentExpected = (EdgeOperation) expectedChanges.get(i);
-			
-			success = currentChange.getOperationType().equals(currentExpected.getOperationType());
+			success = changes.get(i).getOperationType().equals(currentExpected.getOperationType());	
 			assertTrue("mm.execute(graph) decides for the wrong type of an operation.", success);
+			currentChange = (EdgeOperation) changes.get(i);
+		
 			success = currentChange.getOperationName().equals(currentExpected.getOperationName());
 			assertTrue("mm.execute(graph) decides for the wrong name of an operation.", success);
 			success = currentChange.getStartVertexName()==currentExpected.getStartVertexName();
