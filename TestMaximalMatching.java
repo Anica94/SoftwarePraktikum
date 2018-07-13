@@ -34,8 +34,9 @@ public class TestMaximalMatching extends TestCase {
 		
 		try {
 			mm.execute(graph);
+			fail("expected NullPointerException");
 		} catch (NullPointerException e) {
-			assertTrue("NullPointerException was thrown.", true);
+			// ignore, this exception is expected
 		}
 		
 		/*
@@ -44,8 +45,9 @@ public class TestMaximalMatching extends TestCase {
 		graph = new UndirectedGraph();
 		try {
 			mm.execute(graph);
+			fail("expected IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
-			assertTrue("IllegalArgumentException.", true);
+			// ignore, this exception is expected
 		}
 		
 		/*
