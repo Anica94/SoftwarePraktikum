@@ -863,9 +863,9 @@ public class GUI {
 		        chooser.updateUI();
 		        if(chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
-		        	String fileName = chooser.getSelectedFile().getName();
+		        	String fileName = chooser.getSelectedFile().getPath();
 		           	try {
-					ReaderBUILD.read(directoryName + "\\" + fileName);
+					ReaderBUILD.read(fileName);
 					//leaves = readerBuild.getLeafset();
 					//triples = readerBuild.getTripleset();
 		           	} 
