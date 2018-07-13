@@ -33,8 +33,9 @@ public class TestConnectedComponents extends TestCase{
 		 */	
 		try {
 			conComp.execute(graph);
-		} catch (NullPointerException e) {
-			assertTrue("NullPointerException was thrown.", true);
+			fail("expected NullPointerException");
+		} catch (Exception e) {
+			// ignore, this exception is expected.
 		}
 		
 		/*
@@ -43,8 +44,9 @@ public class TestConnectedComponents extends TestCase{
 		graph = new UndirectedGraph();
 		try {
 			conComp.execute(graph);
-		} catch (IllegalArgumentException e) {
-			assertTrue("IllegalArgumentException.", true);
+			fail("expected IllegalArgumentException");
+		} catch (Exception e) {
+			// ignore, this exception is expected.
 		}
 		
 		/*
