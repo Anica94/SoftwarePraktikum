@@ -5,28 +5,56 @@ import java.util.regex.PatternSyntaxException;
 import java.io.BufferedReader;
 
 /**
+ * This class takes care of reading a leaf- and tripleset from a text file.
  * 
  * @author Anica
- *
  */
 
 public class ReaderBUILD {
 
+	/**
+	 * Container for a buffered reader.
+	 */
 	private static BufferedReader bReader;
+	
+	/**
+	 * Container for the leaf- and tripleset to be read.
+	 */
 	private static int numberOfLeaves;
 	private static int numberOfTriples;
 	private static ArrayList<Integer> leaves;
 	private static ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples;
 	private static Pair<Integer, Integer> tripleLeftside;
 	private static Pair<Pair<Integer, Integer>, Integer> triple;
+	/**
+	 * Container for printing.
+	 */
 	private static StringBuilder sbL = new StringBuilder();
 	private static StringBuilder sbR = new StringBuilder();
 	
+	/**
+	 * Produces an empty ReaderBUILD.
+	 */
 	public ReaderBUILD() {
 		leaves = null;
 		triples = null;
 	}
 	
+	/**
+	 * Reads a leaf- and tripleset from a text file with the following format:
+	 * # of leaves
+	 * # of triples
+	 * in each line one number as name of a leaf, e.g. leaves '1', '5' and '78':
+	 * 1
+	 * 5
+	 * 78
+	 * in each line one triple ((x,y),z) as 'number of x space number of y space number of z', e.g.:
+	 * 1 78 5
+	 * 
+	 * @param fileName name of the file to be read from.
+	 * 
+	 * @throws IOException if some problems with the text file occur.
+	 */
 	public static void read(String fileName) throws IOException {
 		/*
 		 * get necessary variables
@@ -81,7 +109,7 @@ public class ReaderBUILD {
 			currentLine = bReader.readLine();
 			if (currentLine.matches("\\d+\\s\\d+\\s\\d+")){
 				currentLineSplit = currentLine.split("\\s");
-				if(!(leaves.contains(Integer.valueOf(currentLineSplit[0])) || leaves.contains(Integer.valueOf(currentLineSplit[1])) || leaves.contains(Integer.valueOf(currentLineSplit[2])))){
+				if(!leaves.contains(Integer.valueOf(currentLineSplit[0])) || !leaves.contains(Integer.valueOf(currentLineSplit[1])) || !leaves.contains(Integer.valueOf(currentLineSplit[2]))){
 					throw new IllegalArgumentException();
 				}
 				tripleLeftside = new Pair<Integer, Integer>(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
@@ -103,41 +131,40 @@ public class ReaderBUILD {
 			}
 		}
 		sbR.append("}");
-		System.out.println(sbR);
-		System.out.println("number of leaves= " + leaves.size());
 		bReader.close();
 	}
 	
 	/**
 	 * Returns the leafset.
 	 * 
-	 * @return leafset
+	 * @return leafset.
 	 */
 	public static ArrayList<Integer> getLeafset() {
-		System.out.println("huhu");
 		return leaves;
 	}
 	
 	/**
 	 * Returns the tripleset.
 	 * 
-	 * @return tripleset
+	 * @return tripleset.
 	 */
 	public static ArrayList<Pair<Pair<Integer, Integer>, Integer>> getTripleset() {
 		return triples;
 	}
 	
 	/**
+	 *  Returns the leafset as string.
 	 * 
-	 * @return leafset as String
+	 * @return leafset as string.
 	 */
 	public static String getLeafsetPrint() {
 		return sbL.toString();
 	}
 	
 	/**
+	 * Returns the tripleset as string.
 	 * 
-	 * @return tripleset as String
+	 * @return tripleset as string
 	 */
 	public static String getTriplesetPrint() {
 		return sbR.toString();
