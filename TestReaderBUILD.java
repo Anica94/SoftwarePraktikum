@@ -75,7 +75,7 @@ public class TestReaderBUILD extends TestCase{
 		 * 	RBwrongFormat.txt: wrong number of leaves
 		 * 	RBwrong.txt: triple with not existing leaf
 		 * 	RBwrong2.txt: random text
-		 * 	RBwrong3.txt: graph text file (edge to not existing endpoint)
+		 * 	RBwrong3.txt: graph text file (edge to a not existing endpoint)
 		 */
 		try {
 			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBwrongFormat.txt");
