@@ -233,7 +233,7 @@ public class TestBuild extends TestCase{
 			}
 		}
 		/*
-		 * test consistent tripleset
+		 * test consistent tripleset with all triples
 		 */
 		try {
 			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\BconsistentAllTriples.txt");
