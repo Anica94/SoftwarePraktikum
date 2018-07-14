@@ -6,24 +6,34 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * 
+ * Test for the class Reader.
  * 
  * @author Sonja
- *
  */
 public class TestReader extends TestCase{
 
+	/**
+	 * Class to be tested.
+	 */
 	private Reader reader = new Reader();
+	/**
+	 * Containers for the graph to be tested.
+	 */
 	private Graph graph;
 	private ArrayList<Integer> vertices;
 	private TreeMap<Integer, Integer> currentEdge;
+	private Integer currentEndVertex;
+	/**
+	 * Containers for testing.
+	 */
 	private UndirectedGraph expectedUndirectedGraph = new UndirectedGraph();
 	private DirectedGraph expectedDirectedGraph = new DirectedGraph();
 	private boolean success;
-	private Integer currentEndVertex;
 	
-	
-	//private DirectedGraph directedGraph;
+
+	/**
+	 * Produce the expected graphs.
+	 */
 	private void produceExpected() {
 		/*
 		 * produce expected undirected graph
@@ -43,6 +53,7 @@ public class TestReader extends TestCase{
 		expectedDirectedGraph.addEdge(new Integer(1), new Integer(2));
 		expectedDirectedGraph.addEdge(new Integer(3), new Integer(2), new Integer(5));
 	}
+	
 	@Test
 	public void testRead() {
 		/*
@@ -50,8 +61,9 @@ public class TestReader extends TestCase{
 		 */	
 		try {
 			graph = reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RemptyFile.txt");
+			fail("expected IOException");
 		} catch (IOException e) {
-			assertTrue("IOException was thrown.", true);
+			// ignore, this exception is expected
 		}
 		/*
 		 * test empty graph
@@ -73,20 +85,26 @@ public class TestReader extends TestCase{
 		assertFalse("reader.read(textfile) creates edges although none were stated in the textfile.", graph.containsEdges());
 		/*
 		 * test wrong format
+		 * 	Rwrong.txt: contains blank line
+		 * 	Rwrong2.txt: random text
+		 * 	Rwrong3.txt: edge to not existing endpoint
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong.txt");
+			fail("expected IOException");
 		} catch (IOException e) {
-			assertTrue("IOException was thrown.", true);
+			// ignore, this exception is expected
 		}
 		try {
 			graph = reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong2.txt");
+			fail("expected IOException");
 		} catch (IOException e) {
-			assertTrue("IOException was thrown.", true);
+			// ignore, this exception is expected
 		}try {
 			graph = reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong3.txt");
+			fail("expected IOException");
 		} catch (IOException e) {
-			assertTrue("IOException was thrown.", true);
+			// ignore, this exception is expected
 		}
 		this.produceExpected();
 		/*
