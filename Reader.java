@@ -2,24 +2,51 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.PatternSyntaxException;
 import java.io.BufferedReader;
+
 /**
  * This class takes care of reading a graph from a text file.
  * 
  * @author Sonja
- *
  */
 public class Reader {
 	
+	/**
+	 * Container for a buffered reader.
+	 */
 	private BufferedReader bReader;
+	/**
+	 * Container for the graph to be read.
+	 */
 	private Graph graph;
 	private int numberOfEdges;
 	private int numberOfVertices;
-	private String typeOfGraph;
 	
+	/**
+	 * Produces a new empty reader.
+	 */
 	Reader(){
 		
 	}
 
+	/**
+	 * Reads a graph from a text file with the following format:
+	 * 'd' or 'u' for directed or undirected graph
+	 * # of vertices
+	 * # of edges
+	 * in each line one number as name of a vertex, e.g. vertices '1', '5' and '78':
+	 * 1
+	 * 5
+	 * 78
+	 * in each line one edge as either '<startvertexname> space <endvertexname>' or '<startvertexname> space <endvertexname> space <edge weight>', e.g.:
+	 * 1 5 6
+	 * 78 1
+	 * 
+	 * @param fileName name of the file to be read from.
+	 * 
+	 * @return graph as specified in the text file.
+	 * 
+	 * @throws IOException if some problems with the text file occur.
+	 */
 	public Graph read(String fileName) throws IOException {
 		
 		/*
@@ -55,6 +82,8 @@ public class Reader {
 		
 		/*
 		 * fill graph
+		 * 	add vertices
+		 * 	add edges
 		 */
 		for (int i = 0; i < numberOfVertices; i++) {
 			currentLine = bReader.readLine();
