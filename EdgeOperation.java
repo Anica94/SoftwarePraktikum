@@ -6,8 +6,8 @@
 public class EdgeOperation implements Operation {
 	
 	/**
-	 * String containing the name of the operation which can be "consider", "choose", "not choose" 
-	 * or "build add" and stands for steps made by algorithms.
+	 * String containing the name of the operation which can be "consider", "choose", "not choose",
+	 * "build add" or "aho add" and stands for steps made by algorithms.
 	 */
 	private String operationName;
 	/**
@@ -22,12 +22,12 @@ public class EdgeOperation implements Operation {
 	/**
 	 * Produces a new type of operation for a specified edge.
 	 * 
-	 * <p>If the name of the operation differs from "consider", "choose", "not choose"
-	 * or "build add" IllegalArgumentException is thrown.</p>
+	 * <p>If the name of the operation differs from "consider", "choose", "not choose",
+	 * "build add" or "aho add" IllegalArgumentException is thrown.</p>
 	 *  
-	 * @param operationName type of which the operation shall be
-	 * @param startVertexName startpoint of the specified edge
-	 * @param endVertexName endpoint of the specified edge
+	 * @param operationName type of which the operation shall be.
+	 * @param startVertexName startpoint of the specified edge.
+	 * @param endVertexName endpoint of the specified edge.
 	 * 
 	 * @throws IllegalArgumentException if the operationName is wrong.
 	 * @throws NullPointerException if any of the specified vertices is <code> null</code>.
@@ -47,7 +47,7 @@ public class EdgeOperation implements Operation {
 	/**
 	 * Returns the endpoint of the edge concerned by the operation.
 	 * 
-	 * @return name of the endpoint of the edge in question
+	 * @return name of the endpoint of the edge in question.
 	 */
 	public Integer getEndVertexName() {
 		return endVertexName;
@@ -66,7 +66,7 @@ public class EdgeOperation implements Operation {
 	/**
 	 * Returns the startpoint of the edge concerned by the operation.
 	 * 
-	 * @return name of the startpoint of the edge in question
+	 * @return name of the startpoint of the edge in question.
 	 */
 	public Integer getStartVertexName() {
 		return startVertexName;
