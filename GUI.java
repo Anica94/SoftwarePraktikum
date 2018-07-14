@@ -37,28 +37,51 @@ import javax.swing.border.LineBorder;
 
 public class GUI {
 
+	/**
+	 * Containers for the gui.
+	 */
 	private JFrame frame;
-	private static Status status;
 	private static JLabel lblStatus;
 	private static DrawPanel drawPanel;
 	private static DrawPanel auxiliaryDrawPanel;
-	private Reader reader;
+	
+	/**
+	 * Container for the status.
+	 */
+	private static Status status;
+	
+	/**
+	 * 
+	 */
 	private static Graph graph;
 	private static String typeOfGraph;
+	
+	/**
+	 * Containers for file reading.
+	 */
+	private Reader reader;
+	private static ReaderBUILD readerBuild;	
+	
+	/**
+	 * Containers for the algorithms.
+	 */
+	private MaximalMatching maximalMatching;
+	private static DFS dfs;
+	private ConnectedComponents findConCom;
+	private static Build build;	
 	private static Graph resultGraph;
+	private UndirectedGraph auxiliaryGraph;
+	
+	/**
+	 * Containers for the visualization of an algorithm.
+	 */
 	private static ArrayList<Operation> operations;
 	private Operation operation;
 	private EdgeOperation edgeOperation;
 	private VertexOperation vertexOperation;
-	private MaximalMatching maximalMatching;
-	private static DFS dfs;
-	private ConnectedComponents findConCom;
-	private static Build build;
-	private static ReaderBUILD readerBuild;
-	private Timer timer;
-	private UndirectedGraph auxiliaryGraph;
-	private int i;
 	private String operationName;
+	private Timer timer;
+	private int i;
 
 	/**
 	 * Launch the application.
@@ -91,51 +114,27 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("GraphGUI");
+		frame = new JFrame("AlgraviS");
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		/*
-		JCheckBox chckbxUndirected = new JCheckBox("undirected");
-		chckbxUndirected.setSelected(true);
-		chckbxUndirected.setBounds(592, 0, 95, 15);
-		frame.getContentPane().add(chckbxUndirected);
-			
-		JCheckBox chckbxDirected = new JCheckBox("directed");
-		chckbxDirected.setBounds(689, 0, 95, 15);
-		chckbxDirected.setEnabled(false);
-		frame.getContentPane().add(chckbxDirected);
-		*/
-		/*
-		chckbxUndirected.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(chckbxUndirected.isSelected()) {
-					typeOfGraph = "u";
-					chckbxDirected.setSelected(false);
-				}
-			}
-		});
-		chckbxDirected.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(chckbxDirected.isSelected()) {
-					typeOfGraph = "d";
-					chckbxUndirected.setSelected(false);
-				}
-			}
-		});
-		*/
+		
 		drawPanel = new DrawPanel(784,491);
 		drawPanel.setBorder(null);
 		drawPanel.setLocation(0,23);
 		drawPanel.setSize(784,491);
 		frame.getContentPane().add(drawPanel);
 		
+		/**
+		 * This label shows the current status of the software.
+		 */
 		lblStatus = new JLabel(status.getStatus(0));
 		lblStatus.setBounds(0, 515, 784, 25);
 		frame.getContentPane().add(lblStatus);
 		
+		/**
+		 * Pressing this button starts the visualization of the current algorithm.
+		 */
 		JButton btnVisualizeAlg = new JButton("visualize Alg");
 		btnVisualizeAlg.setBounds(0, 0, 104, 23);
 		frame.getContentPane().add(btnVisualizeAlg);
@@ -152,6 +151,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this button shows the result of the current algorithm.
+		 */
 		JButton btnShowResult = new JButton("show result");
 		btnShowResult.setBounds(105, 0, 104, 23);
 		frame.getContentPane().add(btnShowResult);
@@ -169,14 +171,23 @@ public class GUI {
 			}
 		});
 	
-		
+		/**
+		 * Produces the menubar of the gui.
+		 */
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(135, 206, 250));
 		frame.setJMenuBar(menuBar);
 		
+		/**
+		 * This menu contains all algorithms.
+		 */
 		JMenu mnAlgorithm = new JMenu("Algorithm");
 		menuBar.add(mnAlgorithm);
 		
+		/**
+		 * Pressing this menuitem starts the bfs.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmBreadthFirstSearch = new JMenuItem("Breadth-First Search");
 		mntmBreadthFirstSearch.setEnabled(false);
 		mnAlgorithm.add(mntmBreadthFirstSearch);
@@ -187,6 +198,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the dfs.
+		 */
 		JMenuItem mntmDepthfirstsearch = new JMenuItem("Depth-First Search");
 		//mntmDepthfirstsearch.setEnabled(false);
 		mnAlgorithm.add(mntmDepthfirstsearch);
@@ -211,6 +225,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the finding connected components.
+		 */
 		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
 		//mntmFindConnectedComponents.setEnabled(false);
 		mnAlgorithm.add(mntmFindConnectedComponents);
@@ -224,7 +241,6 @@ public class GUI {
 					operations = findConCom.execute(graph);
 					resultGraph = findConCom.getResult(graph);
 				} catch (Exception e1) {
-					System.out.print("catch");
 					lblStatus.setText(status.getStatus(17));
 					return;
 				}
@@ -233,6 +249,10 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the topological sort.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmTopologicalSort = new JMenuItem("Topological Sort");
 		mntmTopologicalSort.setEnabled(false);
 		mnAlgorithm.add(mntmTopologicalSort);
@@ -243,6 +263,10 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the minimum-spanning-tree-algorithm.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmMinimumSpanningTree = new JMenuItem("Minimum Spanning Tree");
 		mntmMinimumSpanningTree.setEnabled(false);
 		mnAlgorithm.add(mntmMinimumSpanningTree);
@@ -253,6 +277,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the maximal-matching-algorithm.
+		 */
 		JMenuItem mntmMaximalMatching = new JMenuItem("Maximal Matching");
 		mnAlgorithm.add(mntmMaximalMatching);
 		mntmMaximalMatching.addActionListener(new ActionListener() {
@@ -274,6 +301,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing this menuitem starts the BUILD-Algorithm.
+		 */
 		JMenuItem mntmBuild = new JMenuItem("BUILD");
 		mnAlgorithm.add(mntmBuild);
 		mntmBuild.addActionListener(new ActionListener() {
@@ -281,18 +311,26 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				//System.out.println("wieder zurÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¼ck");
 				btnShowResult.setVisible(true);
 				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
+		/**
+		 * This menu contains menuitems for editing the graph.
+		 */
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
+		/**
+		 * This menu contains menuitems for adding something to the graph.
+		 */
 		JMenu mnAdd = new JMenu("add");
 		mnEdit.add(mnAdd);
 		
+		/**
+		 * After pressing this menuitem vertices can be added by clicking in the drawpanel.
+		 */
 		JMenuItem mntmVertexdraw = new JMenuItem("vertex");
 		mnAdd.add(mntmVertexdraw);
 		mntmVertexdraw.addActionListener(new ActionListener() {
@@ -305,6 +343,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * After pressing this menuitem edges can be added by clicking on two vertices.
+		 */
 		JMenuItem mntmEdgedraw = new JMenuItem("edge (draw)");
 		mnAdd.add(mntmEdgedraw);
 		mntmEdgedraw.addActionListener(new ActionListener() {
@@ -317,6 +358,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * After pressing this menuitem an edge can be added by choosing vertex-names.
+		 */
 		JMenuItem mntmEdgespecify = new JMenuItem("edge (specify)");
 		mnAdd.add(mntmEdgespecify);
 		mntmEdgespecify.addActionListener(new ActionListener() {
@@ -330,9 +374,15 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * This menu contains menuitems for deleting something of the graph.
+		 */
 		JMenu mnDelete = new JMenu("delete");
 		mnEdit.add(mnDelete);
 		
+		/**
+		 * After pressing this menuitem vertices can be deleted by clicking on a vertex.
+		 */
 		JMenuItem mntmDeleteVertex = new JMenuItem("delete vertex");
 		mnDelete.add(mntmDeleteVertex);
 		mntmDeleteVertex.addActionListener(new ActionListener() {
@@ -345,6 +395,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * After pressing this menuitem edges can be deleted by clicking on two vertices.
+		 */
 		JMenuItem mntmDeleteEdge = new JMenuItem("delete edge");
 		mnDelete.add(mntmDeleteEdge);
 		mntmDeleteEdge.addActionListener(new ActionListener() {
@@ -357,6 +410,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * After pressing this menuitem a window opens that asks if the graph should really be deleted..
+		 */
 		JMenuItem mntmDeleteGraph = new JMenuItem("delete graph");
 		mnDelete.add(mntmDeleteGraph);
 		mntmDeleteGraph.addActionListener(new ActionListener() {
@@ -370,6 +426,9 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * After pressing this menuitem vertices can be moved by clicking on vertices and dragging.
+		 */
 		JMenuItem mntmMove = new JMenuItem("move");
 		mnEdit.add(mntmMove);
 		mntmMove.addActionListener(new ActionListener() {
@@ -382,24 +441,37 @@ public class GUI {
 			}
 		});
 		
-		//JMenuItem mntmSetVertexProperties = new JMenuItem("set vertex properties");
-		//mnEdit.add(mntmSetVertexProperties);
-		
+		/**
+		 * Pressing this menuitem reverses the last operation.
+		 */
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
 		mntmUndo.setIcon(new ImageIcon("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\img\\Undo-icon.png"));
 		mnEdit.add(mntmUndo);
 		
+		/**
+		 * This menu contains menuitems for dealing with files.
+		 */
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
+		/**
+		 * This menu contains menuitems for opening files.
+		 */
 		JMenu mnOpen = new JMenu("open");
 		mnFile.add(mnOpen);
 		
+		/**
+		 * Pressing on this menuitem opens a new textfile for adding a graph as textfile.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmNew = new JMenuItem("new");
 		mntmNew.setEnabled(false);
 		mnOpen.add(mntmNew);
 		
+		/**
+		 * Pressing this menuitem opens a window for choosing a file that should be read.
+		 */
 		JMenuItem mntmFile = new JMenuItem("file");
 		mnOpen.add(mntmFile);
 		mntmFile.addActionListener(new ActionListener() {
@@ -425,7 +497,6 @@ public class GUI {
 					drawPanel.changeGraph(graph, typeOfGraph);
 		           	} 
 		           	catch (IOException e1) {
-					//System.out.println("Error concerning file:\\n");
 					lblStatus.setText(status.getStatus(16));
 		           	}   
 		        }
@@ -434,7 +505,10 @@ public class GUI {
 			}
 		});
 		
-		
+		/**
+		 * Pressing on this menuitem safes the current graph as textfile.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmSaveas = new JMenuItem("save (as)");
 		mntmSaveas.setEnabled(false);
 		mnFile.add(mntmSaveas);
@@ -458,27 +532,47 @@ public class GUI {
 			}
 		});
 		
+		/**
+		 * Pressing on this menuitem opens the textfile containing the current graph.
+		 * (Not yet implemented.)
+		 */
 		JMenuItem mntmShow = new JMenuItem("show");
 		mntmShow.setEnabled(false);
 		mnFile.add(mntmShow);
 		
+		/**
+		 * This menu contains menuitems for showing or hiding edge weights.
+		 * (Not yet implemented.)
+		 */
 		JMenu mnView = new JMenu("View");
 		mnView.setEnabled(false);
 		menuBar.add(mnView);
 		
+		/**
+		 * Pressing on this menuitem shows the edge weights.
+		 * (Note yet implemented.)
+		 */
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show edge weights");
 		mnView.add(mntmNewMenuItem_1);
 		
+		/**
+		 * Pressing on this menuitem hides the edge weights.
+		 * (Note yet implemented.)
+		 */
 		JMenuItem mntmShowHideLabel = new JMenuItem("hide edge weights");
 		mnView.add(mntmShowHideLabel);
 		
+		/**
+		 * Pressing this menu shows a help page.
+		 * (Not yet implemented.)
+		 */
 		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		
+		menuBar.add(mnHelp);		
 	}
 	
 	/**
 	 * Creates a frame for adding an edge via specifying.
+	 * It asks for startpoint and endpoint.
 	 */
 	public static void createAddLineFrame() {
 		JFrame frame = new JFrame();
@@ -518,7 +612,7 @@ public class GUI {
 	}
 	
 	/**
-	 * Creates a frame that appears after clicking on the "delete graph" 
+	 * Creates a frame that appears after clicking on "delete graph" 
 	 * and asks if the graph should really be deleted.
 	 */
 	public static void createDeleteGraphFrame() {
@@ -557,6 +651,10 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Creates a frame that appears after clicking on "dfs" 
+	 * and asks for a startvertex.
+	 */
 	public static void createDfsStartpointFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
@@ -636,18 +734,14 @@ public class GUI {
 	 * Visualizes an algorithm.
 	 */
 	public void visualizeAlgorithm() {
-		//System.out.println("in visualize");
-		//System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
 
 		drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
-		System.out.println("number of operations: " + operations.size());
 		i = 0;
 		timer = new Timer(1000, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(!(i<operations.size())) {
 					timer.stop();
 					return;
@@ -720,17 +814,10 @@ public class GUI {
 	 */
 	public void visualizeAlgorithmBuild() {
 		createHelpGraphFrame();
-		System.out.println("in visualize");
-		System.out.println("number of operations = "+operations.size());
 		Graphics g = this.drawPanel.getGraphics();
 		Graphics auxiliaryG = this.auxiliaryDrawPanel.getGraphics();
 		auxiliaryGraph = new UndirectedGraph();
-		//auxiliaryDrawPanel.changeGraph(resultGraph, "undirected");
-		//auxiliaryDrawPanel.drawCompleteGraph(auxiliaryG, auxiliaryDrawPanel.vertexColor, auxiliaryDrawPanel.edgeColor);
-
-		//drawPanel.drawCompleteGraph(g, drawPanel.vertexColor, drawPanel.edgeColor);
 		
-		//for(int i=0; i<operations.size(); i++) {
 		drawPanel.emptyDrawPanel(g);
 		i = 0;
 		frame.setEnabled(false);
@@ -738,7 +825,6 @@ public class GUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				if(!(i<operations.size())) {
 					timer.stop();
 					return;
@@ -795,7 +881,6 @@ public class GUI {
 						if(i<operations.size()-1 && !(operations.get(i+1).getOperationName().equals("aho add") && operations.get(i+1).getOperationType().equals("vertex"))) {
 							auxiliaryDrawPanel.drawCompleteGraph(auxiliaryG, auxiliaryDrawPanel.vertexColor, auxiliaryDrawPanel.edgeColor);
 						}	
-						//auxiliaryDrawPanel.drawVertex(vertexOperation.getVertexName(), Color.BLACK);
 						break;
 					default:
 						break;
@@ -812,7 +897,7 @@ public class GUI {
 	}
 	
 	/**
-	 * Creates a frame that shows the aho-graph for BUILD
+	 * Creates a frame that shows the aho-graph for BUILD.
 	 */
 	private static JFrame ahoframe;
 	public static void createHelpGraphFrame() {
@@ -822,7 +907,6 @@ public class GUI {
 		
 		auxiliaryDrawPanel = new DrawPanel(390, 365);
 		auxiliaryDrawPanel.setBorder(null);
-		//auxiliaryDrawPanel.setBorder(new LineBorder(new Color(0, 0, 0), 4));
 		auxiliaryDrawPanel.setLocation(0, 0);
 		auxiliaryDrawPanel.setSize(390, 365);
 		auxiliaryDrawPanel.setLayout(drawPanel.getLayout());
@@ -866,8 +950,6 @@ public class GUI {
 		        	String fileName = chooser.getSelectedFile().getPath();
 		           	try {
 					ReaderBUILD.read(fileName);
-					//leaves = readerBuild.getLeafset();
-					//triples = readerBuild.getTripleset();
 		           	} 
 		           	catch (IOException e1) {
 		           		lblStatus.setText(status.getStatus(16));
@@ -876,14 +958,10 @@ public class GUI {
 		           	leaves = ReaderBUILD.getLeafset();
 					triples = ReaderBUILD.getTripleset();
 		        }
-		        System.out.println("num of leaves= " + leaves.size());
-		        System.out.println("num of triples= " + triples.size());
-		        //createHelpGraphFrame();
 		        rootedTree = build.build(triples, leaves, new Integer(-1));
 		        resultGraph = rootedTree.getFirst();
 
 		        operations = build.getChanges();
-		        System.out.println("fertig mit build");
 				drawPanel.setGraph(resultGraph, "undirected");
 				lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 			}
@@ -902,6 +980,5 @@ public class GUI {
 		frame.getContentPane().add(btnNo);
 		frame.setVisible(true);
 	}
-
 }
 
