@@ -1,11 +1,11 @@
-# SoftwarePraktikum
+http://www.codejava.net/ides/eclipse/how-to-generate-javadoc-in-eclipse
 
-Build wird jetzt visualisiert, aber der Aho Graph nicht. Und das dauert arsch lang....
-Beim Erzeugen des neuen Fensters ist (momentan auskommentiert) ein Test,
-überhaupt einen Graph auf dem neuen DrawPanel ( auxilaryDrawPanel) zu zeichnen,
-aber das funktioniert nicht.
+für documentation
 
-Das müssen wir beheben, bzw. Nikolai deswegen fragen.
+http://stacktips.com/reviews/objectaid-uml-class-diagrams-generation-plugin-for-eclipse
 
-Ich werde nur noch die Fehlermeldungen der Reader bearbeiten und die Kommentare
-aktulisieren (bei meinen Klassen).
+für classendiagramm Installation
+
+http://www.objectaid.com/class-diagram
+
+für classendiagramm
