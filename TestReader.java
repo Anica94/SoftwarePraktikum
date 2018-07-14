@@ -87,7 +87,7 @@ public class TestReader extends TestCase{
 		 * test wrong format
 		 * 	Rwrong.txt: contains blank line
 		 * 	Rwrong2.txt: random text
-		 * 	Rwrong3.txt: edge to not existing endpoint
+		 * 	Rwrong3.txt: edge to a not existing endpoint
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong.txt");
