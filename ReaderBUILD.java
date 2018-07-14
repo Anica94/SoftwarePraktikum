@@ -46,6 +46,9 @@ public class ReaderBUILD {
 		}else {
 			throw new IOException();
 		}
+		if (numberOfLeaves == 0) {
+			throw new IllegalArgumentException();
+		}
 		currentLine = bReader.readLine();
 		if (currentLine.matches("\\d+")) {
 			numberOfTriples = Integer.parseInt(currentLine);
@@ -59,7 +62,7 @@ public class ReaderBUILD {
 		for (int i = 0; i < numberOfLeaves; i++) {
 			currentLine = bReader.readLine();
 			if (currentLine.matches("\\d+")) {
-				leaves.add(Integer.parseInt(currentLine));
+				leaves.add(Integer.valueOf(currentLine));
 				sbL.append(currentLine);
 				if(i < numberOfLeaves-1) {
 					sbL.append(", ");
@@ -78,6 +81,9 @@ public class ReaderBUILD {
 			currentLine = bReader.readLine();
 			if (currentLine.matches("\\d+\\s\\d+\\s\\d+")){
 				currentLineSplit = currentLine.split("\\s");
+				if(!(leaves.contains(Integer.valueOf(currentLineSplit[0])) || leaves.contains(Integer.valueOf(currentLineSplit[1])) || leaves.contains(Integer.valueOf(currentLineSplit[2])))){
+					throw new IllegalArgumentException();
+				}
 				tripleLeftside = new Pair<Integer, Integer>(Integer.valueOf(currentLineSplit[0]), Integer.valueOf(currentLineSplit[1]));
 				triple = new Pair<Pair<Integer,Integer>, Integer>(tripleLeftside, Integer.valueOf(currentLineSplit[2]));
 				triples.add(triple);
