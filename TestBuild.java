@@ -6,34 +6,40 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * 
+ * Test for the class Build.
  * 
  * @author Sonja
- *
  */
 public class TestBuild extends TestCase{
-
+	
+	/**
+	 * Class to be tested.
+	 */
 	private Build build = new Build();
-	private ReaderBUILD reader = new ReaderBUILD();
-	private boolean success;
-	private ArrayList<Integer> leaves;
-	private ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples;
+	/**
+	 * Containers for the tree to be tested.
+	 */
 	private Pair<UndirectedGraph, Integer> rootedTree;
 	private UndirectedGraph tree;
 	private Integer root;
-	private ArrayList<Operation> changes;
-	private ArrayList<Operation> expectedChanges = new ArrayList<>();
-	private UndirectedGraph expectedTree = new UndirectedGraph();
 	private ArrayList<Integer> vertices;
 	private TreeMap<Integer, Integer> currentEdge;
 	private Integer currentEndVertex;
+	private ArrayList<Operation> changes;
 	private VertexOperation currentChangeV;
-	private VertexOperation currentExpectedV;
 	private EdgeOperation currentChangeE;
+	/**
+	 * Containers for testing.
+	 */
+	private ReaderBUILD reader = new ReaderBUILD();
+	private ArrayList<Integer> leaves;
+	private ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples;
+	private UndirectedGraph expectedTree = new UndirectedGraph();
+	private ArrayList<Operation> expectedChanges = new ArrayList<>();
+	private VertexOperation currentExpectedV;
 	private EdgeOperation currentExpectedE;
-	
-	
-	
+	private boolean success;
+		
 	@Test
 	public void testEmptyConstructor() {
 		success = build.getChanges().isEmpty();
@@ -57,6 +63,41 @@ public class TestBuild extends TestCase{
 		rootedTree = build.build(triples, leaves, new Integer(-1));
         tree = rootedTree.getFirst();
         root = rootedTree.getSecond();
+        /*
+         * 	produce expected tree
+         */
+        expectedTree.addVertex(new Integer(1));
+        expectedTree.addVertex(new Integer(2));
+        expectedTree.addVertex(new Integer(3));
+        expectedTree.addVertex(new Integer(4));
+		expectedTree.addEdge(new Integer(1), new Integer(4));
+		expectedTree.addEdge(new Integer(2), new Integer(4));
+		expectedTree.addEdge(new Integer(3), new Integer(4));
+        /*
+		 * 	check vertices
+		 */
+        vertices = tree.getVertices();
+		success = vertices.size() == expectedTree.getVertices().size();
+		assertTrue("build.build(triples, leaves, new Integer(-1)) saves the wrong number of vertices.", success);
+		for(Integer i : vertices) {
+			success = expectedTree.getVertices().contains(i);
+			assertTrue("build.build(triples, leaves, new Integer(-1)) saves a wrong vertex.", success);
+		}
+		/*
+		 * 	check edges
+		 */
+		while(tree.containsEdges()) {
+			for(Integer i : vertices) {
+				currentEdge = tree.getStartpoints().get(i);
+				while(!currentEdge.isEmpty()) {
+					currentEndVertex = currentEdge.firstKey();
+					success = expectedTree.containsEdge(i, currentEndVertex);
+					assertTrue("build.build(triples, leaves, new Integer(-1)) saves a wrong edge.", success);
+					expectedTree.deleteEdge(i, currentEndVertex);
+					tree.deleteEdge(i, currentEndVertex);
+				}
+			}
+		}        
         /*
          * 	produce expected changes
          */
@@ -133,12 +174,15 @@ public class TestBuild extends TestCase{
 		 */
 		try {
 			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Binconsistent.txt");
-		} catch (IOException e2) {
+		} catch (IOException e1) {
 			// is tested at TestReaderBUILD
 		}
 		leaves = reader.getLeafset();
 		triples = reader.getTripleset();
 		rootedTree = build.build(triples, leaves, new Integer(-1));
+		/*
+		 *  check tree
+		 */
         tree = rootedTree.getFirst();
         root = rootedTree.getSecond();
         assertNull("build.build(triples, leaves, new Integer(-1)) did not return null as root for an inconsistent tripleset.", root);
@@ -193,7 +237,7 @@ public class TestBuild extends TestCase{
 		 */
 		try {
 			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\BconsistentAllTriples.txt");
-		} catch (IOException e3) {
+		} catch (IOException e1) {
 			// is tested at TestReaderBUILD
 		}
 		leaves = reader.getLeafset();
