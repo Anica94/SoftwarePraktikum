@@ -1,0 +1,8 @@
+# of leaves
+# of triples
+each line one number as name of a leaf, e.g. leaves '1', '5' and '78':
+1
+5
+78
+each line one triple ((x,y),z) as 'number of x space number of y space number of z', e.g.:
+1 78 5

@@ -1,0 +1,10 @@
+'d' or 'u' for directed or undirected graph
+# of vertices
+# of edges
+each line one number as name of a vertex, e.g. vertices '1', '5' and '78':
+1
+5
+78
+each line one edge as either 'startvertexname space endvertexname' or 'startvertexname space endvertexname space edge weight', e.g.:
+1 5 6
+78 1
