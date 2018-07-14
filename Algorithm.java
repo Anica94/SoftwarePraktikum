@@ -30,3 +30,4 @@ public interface Algorithm {
 	 */
 	public Graph getResult(Graph graph);
 }
+
