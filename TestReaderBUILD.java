@@ -61,11 +61,18 @@ public class TestReaderBUILD extends TestCase{
 			assertTrue("IOException was thrown.", true);
 		}
 		try {
-			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong2.txt");
+			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBwrong.txt");
+		} catch (IllegalArgumentException e) {
+			assertTrue("IllegalArgumentException was thrown.", true);
+		} catch (IOException e) {
+			assertFalse("IOException was thrown but not expected.", false);
+		}
+		try {
+			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBwrong2.txt");
 		} catch (IOException e) {
 			assertTrue("IOException was thrown.", true);
 		}try {
-			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\Rwrong3.txt");
+			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBwrong3.txt");
 		} catch (IOException e) {
 			assertTrue("IOException was thrown.", true);
 		}
@@ -74,12 +81,11 @@ public class TestReaderBUILD extends TestCase{
 		 */
 		try {
 			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBemptyLeafset.txt");
+		} catch (IllegalArgumentException e1) {
+			assertTrue("IllegalArgumentException was thrown.", true);
 		} catch (IOException e) {
 			assertFalse("IOException was thrown but not expected.", false);
 		}
-		leaves = reader.getLeafset();
-		success = leaves.size() == 0;
-		assertTrue("reader.read(textfile) creates no empty leafset although it was stated empty.", success);
 		/*
 		 * test empty tripleset
 		 */
