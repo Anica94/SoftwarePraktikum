@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Build {
 
-	// TODO #instanz von find conCom
+
 	private ConnectedComponents conComps;
 	private Integer highestVertex;
 	/**
@@ -38,10 +38,9 @@ public class Build {
 	 * @throws NullPointerException if the tripleset or the leafset is <code> null</code>.
 	 */
 	public Pair<UndirectedGraph, Integer> build(ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples, ArrayList<Integer> leaves, Integer root) {
-		if (triples == null || leaves == null) { // auch wenn die leer? oder dann trotzdem laufenlassen und Ergebnis wird (hoffentlich) null?
+		if(triples == null || leaves == null) {
     		throw new NullPointerException();
     	}
-		
 		/*
 		 * variables for the Aho graph
 		 */
@@ -130,7 +129,7 @@ public class Build {
 			 * the tripleset is consitent
 			 */
 			if ( !trees.contains(null)) {
-				//////// unbedingt Ã¼berprÃ¼fen!!!!!!!!!!!
+				//////// unbedingt ÃƒÂ¼berprÃƒÂ¼fen!!!!!!!!!!!
 				/*
 				 * compute new root
 				 */
