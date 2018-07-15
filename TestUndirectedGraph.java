@@ -4,10 +4,9 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * Test for the class UndirectedGraph
+ * Test for the class UndirectedGraph.
  * 
  * @author Anica
- *
  */
 
 public class TestUndirectedGraph extends TestCase {	
@@ -16,6 +15,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the empty constructor
 	 */
+	@Test
 	public void testEmptyConstructor() {
 		graph = new UndirectedGraph();
 		assertNotNull("Graph should != null after call to constructor.", graph);
@@ -29,6 +29,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method getHighestVertexName()
 	 */
+	@Test
 	public void testGetHighestVertexName() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -49,6 +50,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method typeOfGraph()
 	 */
+	@Test
 	public void testTypeOfGraph() {
 		graph = new UndirectedGraph();
 		assertEquals("The type of graph should be \"undirected\"","undirected", graph.typeOfGraph());
@@ -57,6 +59,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method addVertex()
 	 */
+	@Test
 	public void testAddVertex() {
 		graph = new UndirectedGraph();
 		Integer vertex = graph.addVertex();
@@ -71,7 +74,8 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method addVertex(Integer)
 	 */
-	public void testAddVertex_withName() {
+	@Test
+	public void testAddVertexWithName() {
 		graph = new UndirectedGraph();
 		boolean success = graph.addVertex(2);
 		assertTrue("The vertex should have been added.", success);
@@ -85,6 +89,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsVertex(Integer)
 	 */
+	@Test
 	public void testContainsVertex() {
 		graph = new UndirectedGraph();
 		boolean success = graph.containsVertex(1);
@@ -99,6 +104,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method deleteVertex(Integer)
 	 */
+	@Test
 	public void testDeleteVertex() {
 		graph = new UndirectedGraph();
 		boolean success = graph.deleteVertex(1);
@@ -113,6 +119,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method getVertices()
 	 */
+	@Test
 	public void testGetVertices() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -128,6 +135,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method isAdjacent(Integer, Integer)
 	 */
+	@Test
 	public void testIsAdjacentTo() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -149,6 +157,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method addEdge(Integer, Integer)
 	 */
+	@Test
 	public void testAddEdge() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -184,7 +193,8 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method addEdge(Integer, Integer, Integer)
 	 */
-	public void testAddEdge_withWeight() {
+	@Test
+	public void testAddEdgeWithWeight() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
 		graph.addVertex();
@@ -197,6 +207,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsEdge(Integer, Integer)
 	 */
+	@Test
 	public void testContainsEdge() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -227,6 +238,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsEdges()
 	 */
+	@Test
 	public void testContainsEdges() {
 		graph = new UndirectedGraph();
 		boolean success = graph.containsEdges();
@@ -243,6 +255,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method deleteEdge(Integer, Integer)
 	 */
+	@Test
 	public void testDeleteEdge() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -276,6 +289,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method getEdgeWeight(Integer, Integer)
 	 */
+	@Test
 	public void testGetEdgeWeight() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -311,6 +325,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method setEdgeWeight(Integer, Integer, Integer)
 	 */
+	@Test
 	public void testSetEdgeWeight() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
@@ -347,6 +362,7 @@ public class TestUndirectedGraph extends TestCase {
 	/**
 	 * Tests the method isEmpty()
 	 */
+	@Test
 	public void testIsEmpty() {
 		graph = new UndirectedGraph();
 		assertTrue("The graph should be empty.", graph.isEmpty());
