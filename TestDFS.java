@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.junit.Test;
@@ -9,8 +8,9 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
+ * Test for the algorithm DFS.
+ * 
  * @author Anica
- *
  */
 public class TestDFS extends TestCase {
 
@@ -81,6 +81,10 @@ public class TestDFS extends TestCase {
 			// is tested at TestReader
 		}
 		changes = dfs.execute(graph);
+		/*
+		 *  Create a list of expected changes 
+		 *  and test if it's the same as the list produced by the algorithm.
+		 */
 		expectedChanges = new ArrayList<>();
 		expectedChanges.add(new VertexOperation("consider", 1));
 		expectedChanges.add(new VertexOperation("choose", 1));
@@ -121,6 +125,10 @@ public class TestDFS extends TestCase {
 			// is tested at TestReader
 		}
 		changes = dfs.execute(graph);
+		/*
+		 *  Create a list of expected changes 
+		 *  and test if it's the same as the list produced by the algorithm.
+		 */
 		expectedChanges = new ArrayList<>();
 		expectedChanges.add(new VertexOperation("consider", 1));
 		expectedChanges.add(new VertexOperation("choose", 1));
@@ -151,7 +159,10 @@ public class TestDFS extends TestCase {
 			// is tested at TestReader
 		}
 		changes = dfs.execute(graph);
-		// same expected arrylist as before
+		/*
+		 * Same expected arraylist as before.
+		 * Test if it's the same as the list produced by the algorithm.
+		 */
 		assertTrue("dfs.execute(graph) makes the wrong number of changes", changes.size()==expectedChanges.size());
 		
 		for(int i=0; i<changes.size(); i++) {
@@ -174,6 +185,10 @@ public class TestDFS extends TestCase {
 	public void testExecute2() {
 		graph = new UndirectedGraph();
 		graph.addVertex();
+		/*
+		 * It should throw an illegal argument exception if a startvertex is chosen,
+		 * which is not contained in the graph.
+		 */		
 		try {
 			dfs.execute(graph, 2);
 			fail("expected IllegalArgumentException");
@@ -188,7 +203,9 @@ public class TestDFS extends TestCase {
 	public void testGetResult() {
 		/*
 		 * Test graph with one component
-		 * (the result should be the same as the input)
+		 * (the result should be the same as the input).
+		 * Is tested by removing all edges and vertices in the input graph from the result,
+		 * that should work for all of them and at the end the result should be empty.
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\DFSCircle.txt");
@@ -228,7 +245,8 @@ public class TestDFS extends TestCase {
 		assertTrue("There are more vertices (and maybe edges) in the result than should be there",success);
 		
 		/*
-		 * Test graph with two components (a circle with three vertices and an edge)
+		 * Test graph with two components (a circle with three vertices and an edge).
+		 * (The result should only contain the circle.)
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\DFS2Components.txt");
@@ -257,7 +275,8 @@ public class TestDFS extends TestCase {
 	 */
 	public void testGetVerticesOfConnectedComponent() {
 		/*
-		 * Test graph with two components (a circle with three vertices and an edge)
+		 * Test graph with two components (a circle with three vertices and an edge).
+		 * (The list should contain the vertices 1, 2, 3.)
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\DFS2Components.txt");
