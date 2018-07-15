@@ -9,16 +9,28 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
+ * Test for the algorithm MaximalMatching.
+ * 
  * @author Anica
- *
  */
 public class TestMaximalMatching extends TestCase {
 	
+	/**
+	 * Class to be tested.
+	 */
+	private MaximalMatching mm = new MaximalMatching();
+	
+	/**
+	 * Containers for the graph to be tested.
+	 */
 	private Graph graph;
 	private Graph result;
-	private MaximalMatching mm = new MaximalMatching();
 	private Reader reader = new Reader();
 	private ArrayList<Operation> changes = new ArrayList<>();
+	
+	/**
+	 * Containers for testing.
+	 */
 	private ArrayList<Operation> expectedChanges = new ArrayList<>();
 	private EdgeOperation currentChange, currentExpected;
 
@@ -70,6 +82,10 @@ public class TestMaximalMatching extends TestCase {
 			// is tested at TestReader
 		}
 		changes = mm.execute(graph);
+		/*
+		 *  Create a list of expected changes 
+		 *  and test if it's the same as the list produced by the algorithm.
+		 */
 		expectedChanges.add(new EdgeOperation("consider", 1, 2));
 		expectedChanges.add(new EdgeOperation("choose", 1, 2));
 		expectedChanges.add(new EdgeOperation("consider", 3, 4));
@@ -100,7 +116,8 @@ public class TestMaximalMatching extends TestCase {
 	 */
 	public void testGetResult() {
 		/*
-		 * Test if the result is really a matching
+		 * Test if the result is really a matching.
+		 * (No two edges should have a common vertex.)
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\MMStarCircle.txt");
@@ -123,7 +140,8 @@ public class TestMaximalMatching extends TestCase {
 		}
 		
 		/*
-		 * Test if the resulting matching is really maximal
+		 * Test if the resulting matching is really maximal.
+		 * (There should be no edges in E\M that are not incident to any edge in M.)
 		 */
 		for(int i=0; i<vertices.size(); i++) {
 			currentVerex = vertices.get(i);
