@@ -18,7 +18,7 @@ public class ReaderBUILD {
 	private static BufferedReader bReader;
 	
 	/**
-	 * Container for the leaf- and tripleset to be read.
+	 * Containers for the leaf- and tripleset to be read.
 	 */
 	private static int numberOfLeaves;
 	private static int numberOfTriples;
@@ -27,7 +27,7 @@ public class ReaderBUILD {
 	private static Pair<Integer, Integer> tripleLeftside;
 	private static Pair<Pair<Integer, Integer>, Integer> triple;
 	/**
-	 * Container for printing.
+	 * Containers for printing.
 	 */
 	private static StringBuilder sbL = new StringBuilder();
 	private static StringBuilder sbR = new StringBuilder();
