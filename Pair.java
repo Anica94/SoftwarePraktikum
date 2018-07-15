@@ -1,16 +1,25 @@
 
 /**
+ * This class produces a pair.
  * 
  * @author Anica
  *
- * @param <A>
- * @param <B>
+ * @param <A> type of the first element of the pair.
+ * @param <B> type of the second element of the pair.
  */
 
 	public class Pair<A, B> {
+		/**
+		 * Containers for the elements of the pair.
+		 */
 	    private A first;
 	    private B second;
 
+	    /**
+	     * Constructor of the class, produces a pair containing the elements <first> and <second>
+	     * @param first
+	     * @param second
+	     */
 	    public Pair(A first, B second) {
 	        super();
 	        this.first = first;
@@ -23,39 +32,35 @@
 
 	        return (hashFirst + hashSecond) * hashSecond + hashFirst;
 	    }
-/*
-	    public boolean equals(Object other) {
-	        if (other instanceof Pair) {
-	            Pair otherPair = (Pair) other;
-	            return 
-	            ((  this.first == otherPair.first ||
-	                ( this.first != null && otherPair.first != null &&
-	                  this.first.equals(otherPair.first))) &&
-	             (  this.second == otherPair.second ||
-	                ( this.second != null && otherPair.second != null &&
-	                  this.second.equals(otherPair.second))) );
-	        }
 
-	        return false;
-	    }
-*/
-	    public String toString()
-	    { 
-	           return "(" + first + ", " + second + ")"; 
-	    }
-
+	    /**
+	     * Getter for the first element of the pair.
+	     * @return first element of the pair.
+	     */
 	    public A getFirst() {
 	        return first;
 	    }
 
+	    /**
+	     * Setter for the first element of the pair.
+	     * @param first element of the pair.
+	     */
 	    public void setFirst(A first) {
 	        this.first = first;
 	    }
 
+	    /**
+	     * Getter for the second element of the pair.
+	     * @return second element of the pair.
+	     */
 	    public B getSecond() {
 	        return second;
 	    }
 
+	    /**
+	     * Setter for the second element of the pair.
+	     * @param second element of the pair.
+	     */
 	    public void setSecond(B second) {
 	        this.second = second;
 	    }
