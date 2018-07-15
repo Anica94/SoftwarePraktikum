@@ -144,11 +144,10 @@ public class GUI {
 		btnVisualizeAlg.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(resultGraph == null) {
-					return;
-				}
 				if(getStatusNumber()==6) {
-					visualizeAlgorithmBuild();
+					if(resultGraph != null) {
+						visualizeAlgorithmBuild();
+					}
 				}
 				else {
 					visualizeAlgorithm();
@@ -166,12 +165,11 @@ public class GUI {
 		btnShowResult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(resultGraph == null) {
-					return;
-				}
 				if(getStatusNumber()==6) {
-					Graphics g = drawPanel.getGraphics();
-					drawPanel.drawCompleteGraph(g, Color.BLUE, Color.BLACK);
+					if(resultGraph != null) {
+						Graphics g = drawPanel.getGraphics();
+						drawPanel.drawCompleteGraph(g, Color.BLUE, Color.BLACK);
+					}
 				}
 				else {
 					showResult();
@@ -961,7 +959,7 @@ public class GUI {
 
 		        operations = build.getChanges();
 		        if(resultGraph == null) {
-		        	lblStatus.setText(status.getStatus(18));
+		        	lblStatus.setText(status.getStatus(6)+ " The tripleset "+ ReaderBUILD.getTriplesetPrint() + " for " + ReaderBUILD.getLeafsetPrint() + " is inconsistent.");
 		        	return;
 		        }
 				drawPanel.setGraph(resultGraph, "undirected");
