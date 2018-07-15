@@ -239,8 +239,5 @@ public interface Graph {
      * found in the graph or if start- and endpoint are the same.
 	 * @throws NullPointerException if any of the specified vertices or the new weight is <code> null</code>.
 	 */
-	void setEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeightNew);
-	
-	Graph copyGraph();
-	
+	void setEdgeWeight(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeightNew);	
 }
