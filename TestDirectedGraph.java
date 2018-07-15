@@ -4,10 +4,9 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
- * Test for the class DirectedGraph
+ * Test for the class DirectedGraph.
  * 
  * @author Anica
- *
  */
 
 public class TestDirectedGraph extends TestCase {	
@@ -16,6 +15,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the empty constructor
 	 */
+	@Test
 	public void testEmptyConstructor() {
 		graph = new DirectedGraph();
 		assertNotNull("Graph should != null after call to constructor.", graph);
@@ -30,6 +30,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method getHighestVertexName()
 	 */
+	@Test
 	public void testGetHighestVertexName() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -50,6 +51,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method typeOfGraph()
 	 */
+	@Test
 	public void testTypeOfGraph() {
 		graph = new DirectedGraph();
 		assertEquals("The type of graph should be \"directed\"","directed", graph.typeOfGraph());
@@ -58,6 +60,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method addVertex()
 	 */
+	@Test
 	public void testAddVertex() {
 		graph = new DirectedGraph();
 		Integer vertex = graph.addVertex();
@@ -73,7 +76,8 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method addVertex(Integer)
 	 */
-	public void testAddVertex_withName() {
+	@Test
+	public void testAddVertexWithName() {
 		graph = new DirectedGraph();
 		boolean success = graph.addVertex(2);
 		assertTrue("The vertex should have been added.", success);
@@ -89,6 +93,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsVertex(Integer)
 	 */
+	@Test
 	public void testContainsVertex() {
 		graph = new DirectedGraph();
 		boolean success = graph.containsVertex(1);
@@ -103,6 +108,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method deleteVertex(Integer)
 	 */
+	@Test
 	public void testDeleteVertex() {
 		graph = new DirectedGraph();
 		boolean success = graph.deleteVertex(1);
@@ -119,6 +125,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method getVertices()
 	 */
+	@Test
 	public void testGetVertices() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -134,6 +141,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method isAdjacent(Integer, Integer)
 	 */
+	@Test
 	public void testIsAdjacentTo() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -157,6 +165,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method addEdge(Integer, Integer)
 	 */
+	@Test
 	public void testAddEdge() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -193,7 +202,8 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method addEdge(Integer, Integer, Integer)
 	 */
-	public void testAddEdge_withWeight() {
+	@Test
+	public void testAddEdgeWithWeight() {
 		graph = new DirectedGraph();
 		graph.addVertex();
 		graph.addVertex();
@@ -206,6 +216,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsEdge(Integer, Integer)
 	 */
+	@Test
 	public void testContainsEdge() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -236,6 +247,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method containsEdges()
 	 */
+	@Test
 	public void testContainsEdges() {
 		graph = new DirectedGraph();
 		boolean success = graph.containsEdges();
@@ -252,6 +264,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method deleteEdge(Integer, Integer)
 	 */
+	@Test
 	public void testDeleteEdge() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -289,6 +302,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method getEdgeWeight(Integer, Integer)
 	 */
+	@Test
 	public void testGetEdgeWeight() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -326,6 +340,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method setEdgeWeight(Integer, Integer, Integer)
 	 */
+	@Test
 	public void testSetEdgeWeight() {
 		graph = new DirectedGraph();
 		graph.addVertex();
@@ -364,6 +379,7 @@ public class TestDirectedGraph extends TestCase {
 	/**
 	 * Tests the method isEmpty()
 	 */
+	@Test
 	public void testIsEmpty() {
 		graph = new DirectedGraph();
 		assertTrue("The graph should be empty.", graph.isEmpty());
