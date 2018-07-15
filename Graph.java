@@ -4,7 +4,7 @@ import java.util.TreeMap;
 
 
 /**
- * Interface of a general Graph <tt>G=<V, E></tt> that contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
+ * Interface of a general Graph <tt>G=(V, E)</tt> that contains a set <tt>V</tt> of vertices and a set <tt>E</tt>
  * of edges. Each edge e=<v, u> in E connects v to u.
  * In this case the vertices are only named by numbers and the edges are specified by their start- and endpoints.
  * 
