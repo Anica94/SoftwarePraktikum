@@ -37,7 +37,7 @@ public class Reader {
 	 * 1
 	 * 5
 	 * 78
-	 * in each line one edge as either '<startvertexname> space <endvertexname>' or '<startvertexname> space <endvertexname> space <edge weight>', e.g.:
+	 * in each line one edge as either 'startvertexname space endvertexname' or 'startvertexname space endvertexname space edge weight', e.g.:
 	 * 1 5 6
 	 * 78 1
 	 * 
