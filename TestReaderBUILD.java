@@ -65,7 +65,7 @@ public class TestReaderBUILD extends TestCase{
 		 * test empty file
 		 */	
 		try {
-			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RemptyFile.txt");
+			reader.read("C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles\\Test\\RBemptyFile.txt");
 			fail("expected IOException");
 		} catch (IOException e) {
 			// ignore, this exception is expected
