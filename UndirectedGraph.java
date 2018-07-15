@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import java.util.NoSuchElementException;
 
 /**
- * The graph being implemented is undirected meaning that <v,u> in E does mean that <u,v> in E. 
+ * The graph being implemented is undirected meaning that (v,u) in E does mean that (u,v) in E. 
  *  
  * @author Sonja
  */
