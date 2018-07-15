@@ -144,6 +144,9 @@ public class GUI {
 		btnVisualizeAlg.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(resultGraph == null) {
+					return;
+				}
 				if(getStatusNumber()==6) {
 					visualizeAlgorithmBuild();
 				}
@@ -163,6 +166,9 @@ public class GUI {
 		btnShowResult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(resultGraph == null) {
+					return;
+				}
 				if(getStatusNumber()==6) {
 					Graphics g = drawPanel.getGraphics();
 					drawPanel.drawCompleteGraph(g, Color.BLUE, Color.BLACK);
@@ -955,7 +961,7 @@ public class GUI {
 
 		        operations = build.getChanges();
 		        if(resultGraph == null) {
-		        	lblStatus.setText("The tripleset is inconsistent.");
+		        	lblStatus.setText(status.getStatus(18));
 		        	return;
 		        }
 				drawPanel.setGraph(resultGraph, "undirected");
