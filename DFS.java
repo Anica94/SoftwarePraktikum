@@ -4,6 +4,8 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 /**
+ * This algorithm computes the depth first search (DFS) 
+ * for finding a connected component of an undirected graph.
  * 
  * @author Anica
  *
@@ -14,6 +16,9 @@ public class DFS implements Algorithm {
 	 */
 	private Graph result;
 	
+	/**
+	 * Container for the vertices of the connected component containing the startvertex.
+	 */
 	private ArrayList<Integer> verticesConnectedComponent;
 	
 	/**
@@ -23,6 +28,9 @@ public class DFS implements Algorithm {
 		result = null;
 	}
 
+	/**
+	 * Runs DFS with a dafault startvertex (the first vertex in the list of vertices).
+	 */
 	@Override
 	public ArrayList<Operation> execute(Graph graph) {
 		if (graph == null) {
@@ -38,6 +46,14 @@ public class DFS implements Algorithm {
 		return execute(graph, startvertex);
 	}
 	
+	/**
+	 * Runs the DFS for a specified startvertex.
+	 * @param graph
+	 * @param startvertex
+	 * @return list of operations
+	 * 
+	 * @throws IllegalArgumentException if the startvertex is not contained in the graph. 
+	 */
 	public ArrayList<Operation> execute(Graph graph, Integer startvertex) {
 		if (graph == null) {
     		throw new NullPointerException();
@@ -50,12 +66,18 @@ public class DFS implements Algorithm {
 			throw new IllegalArgumentException();
 		}
 		
+		/*
+		 * produce arraylist of operations that will be done by the algorithm
+		 * produce containers of variables to use later
+		 */	
 		ArrayList<Operation> changes = new ArrayList<Operation>();
-		ArrayList<Integer> vertices = graph.getVertices();
 		Integer v, u;
 		verticesConnectedComponent = new ArrayList<>();
 		TreeMap<Integer, Integer> startAdjacent;
 		Set<Integer> set;
+		/*
+		 * produce an empty graph that will contain the result
+		 */
 		if(graph.typeOfGraph().equals("undirected")) {
 			result = new UndirectedGraph();
 		}
@@ -63,6 +85,18 @@ public class DFS implements Algorithm {
 			result = new DirectedGraph();
 		}
 
+		/*
+		 * run the dfs:
+		 * 	add the startvertex to the stack
+		 * 	while stack is not empty
+		 * 		pop vertex v from stack
+		 * 		if v is not already contained in the list of vertices of the con. comp.
+		 * 			add v to the list and to the resulting graph
+		 * 			memorize this step as an operation
+		 * 			add all adjacent vertices u of v to the stack and edges <v,u> to the resulting graph
+		 * 				(if there is an edge <u,v> in the graph)
+		 * return the list of operations
+		 */
 		Stack<Integer> stack = new Stack<>();
 		stack.push(startvertex);
 		while(!stack.isEmpty()) {
@@ -93,14 +127,23 @@ public class DFS implements Algorithm {
 		return result;
 	}
 	
+	/**
+	 * Returns the result for running DFS with a given startvertex.
+	 * @param graph
+	 * @param startvertex
+	 * @return result
+	 */
 	public Graph getResult(Graph graph, Integer startvertex) {
 		this.execute(graph, startvertex);
 		return result;
 	}
 	
+	/**
+	 * Getter for the list of vertices of the connected component containing the startvertex.
+	 * @return list of vertices of the connected component containing the startvertex.
+	 */
 	public ArrayList<Integer> getVerticesOfConnectedComponent(){
 		return verticesConnectedComponent;
 	}
-
 }
 
