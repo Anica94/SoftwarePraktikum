@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import java.util.NoSuchElementException;
 
 /**
- * The graph being implemented is directed meaning that <v,u> in E does not necessarily mean that <u,v> in E.
+ * The graph being implemented is directed meaning that (v,u) in E does not necessarily mean that (u,v) in E.
  * Now, the hashmap startpoints, inherited from UndirectedGraph, maintains all outgoing edges.
  * 
  * @author Sonja
