@@ -8,19 +8,31 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 /**
+ * Test for the algorithm ConnectedComponent
  * 
  * @author Anica
- *
  */
 public class TestConnectedComponents extends TestCase{
 
+	/**
+	 * Class to be tested.
+	 */
+	private ConnectedComponents conComp = new ConnectedComponents();
+	
+	/**
+	 * Containers for the graph to be tested.
+	 */
 	private Graph graph;	
 	private Graph result;
-	private ConnectedComponents conComp = new ConnectedComponents();
 	private Reader reader = new Reader();
 	private ArrayList<Operation> changes = new ArrayList<>();
+	private VertexOperation currentChange;
+	
+	/**
+	 * Containers for testing.
+	 */
 	private ArrayList<Operation> expectedChanges = new ArrayList<>();
-	private VertexOperation currentChange, currentExpected;
+	private VertexOperation currentExpected;
 	
 	/**
 	 * Tests the method execute(Graph)
@@ -29,7 +41,7 @@ public class TestConnectedComponents extends TestCase{
 	public void testExecute() {
 		
 		/*
-		 * Test null
+		 * Test null.
 		 */	
 		try {
 			conComp.execute(graph);
@@ -39,7 +51,7 @@ public class TestConnectedComponents extends TestCase{
 		}
 		
 		/*
-		 * Test empty graph
+		 * Test empty graph.
 		 */
 		graph = new UndirectedGraph();
 		try {
@@ -50,7 +62,7 @@ public class TestConnectedComponents extends TestCase{
 		}
 		
 		/*
-		 * Test graph with three components
+		 * Test graph with three components.
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\CC.txt");
@@ -59,6 +71,10 @@ public class TestConnectedComponents extends TestCase{
 		}
 		changes = conComp.execute(graph);
 		boolean success;
+		/*
+		 *  Create a list of expected changes 
+		 *  and test if it's the same as the list produced by the algorithm.
+		 */
 		expectedChanges = new ArrayList<>();
 		expectedChanges.add(new VertexOperation("consider", 1));
 		expectedChanges.add(new VertexOperation("choose", 1));
@@ -94,7 +110,9 @@ public class TestConnectedComponents extends TestCase{
 	public void testGetResult() {
 		/*
 		 * Test graph with three components
-		 * (the result graph should be the same as the input graph)
+		 * (the result graph should be the same as the input graph).
+		 * Is tested by removing all edges and vertices in the input graph from the result,
+		 * that should work for all of them and at the end the result should be empty.
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\CC.txt");
@@ -140,7 +158,7 @@ public class TestConnectedComponents extends TestCase{
 	@Test
 	public void testGetConnectedComponents() {
 		/*
-		 * Test graph with three components
+		 * Test graph with three components.
 		 */
 		try {
 			graph = reader.read("C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles\\Test\\CC.txt");
