@@ -36,6 +36,7 @@ public class Build {
 	 * 
 	 * @param triples the tripleset for which a tree shall be computed.
 	 * @param leaves the leafset for which a tree shall be computed.
+	 * @param root name of the current existing root, '-1' for the first (i.e. not recursive) call of build.
 	 * 
 	 * @return pair of the resulting tree and its root or of two null objects.
 	 * 
