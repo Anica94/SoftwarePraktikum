@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import java.util.NoSuchElementException;
 
 /**
- * The graph being implemented is undirected meaning that <v,> in E does mean that <u,v> in E. 
+ * The graph being implemented is undirected meaning that <v,u> in E does mean that <u,v> in E. 
  *  
  * @author Sonja
  */
@@ -300,15 +300,6 @@ public class UndirectedGraph implements Graph {
 		TreeMap<Integer, Integer> endAdjacent = startpoints.get(vertexNameEnd);
 		endAdjacent.put(vertexNameStart, edgeWeightNew);
 		startpoints.put(vertexNameEnd, endAdjacent);
-	}
-	
-	@Override
-	public Graph copyGraph() {
-		Graph copyGraph = new UndirectedGraph();
-		
-		
-		
-		return copyGraph;
 	}
 
 	@Override
