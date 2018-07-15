@@ -1,12 +1,4 @@
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-
-/**
- * 
- * 
- * @author Anica
- */
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,32 +9,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.text.html.HTMLDocument.Iterator;
+
+/**
+ * This is a drawpanel. It is used to draw and display a graph.
+ * 
+ * @author Anica
+ */
 
 public class DrawPanel extends JPanel {
+	/**
+	 * Containers for the width and height of the drawpanel.
+	 */
+	private int width, height;
+	
+	/**
+	 * Containers for the graph.
+	 */
 	public Graph graph;
 	private String typeOfGraph;
 	private ArrayList<Integer> vertices;
 	private Integer vertex;
-	private int x, y, x2, y2;
+	
+	/**
+	 * Containers for the vertex coordinates.
+	 */
 	private HashMap<Integer, Pair<Integer, Integer> > vertexCoordinates;
 	private Pair<Integer, Integer> coordinates;
 	private Pair<Integer, Integer> coordinates2;
+	private int x, y, x2, y2;
+	/**
+	 * Containers for the mouse coordinates
+	 */
+	private int mouseX, mouseY;
+	
 	private Integer newVertex;
 	private Integer startpoint;
 	private Circle c;
 	private int status;
 	public Color vertexColor;
 	public Color edgeColor;
-	private int width, height;
 	
-	private int mouseX, mouseY;
-	private JLabel lblMouseCoords;
-	
+	/**
+	 * Constructor of the class. It creates a drawpanel with width <tt>width</tt> and height <tt>height</tt>.
+	 * @param width width of the created drawpanel.
+	 * @param height height of the created drawpanel.
+	 */
 	public DrawPanel(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -69,40 +81,38 @@ public class DrawPanel extends JPanel {
 				repaint();
 			}
 
+			/*
+			 * The mouse coordinates are always saved whenever the mouse is moved.
+			 */
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				mouseX = e.getX();
 				mouseY = e.getY();
-				//lblMouseCoords.setText("coords: (" + mouseX + ", " + mouseY + ")");
-				//lblMouseCoords.repaint();
 			}
 			
 		});		
 		
-		//lblMouseCoords = new JLabel("TEST");
-		//this.add(lblMouseCoords, BorderLayout.NORTH);
-		
 		this.addMouseListener(new MouseAdapter() {
-        //    private Color background;
 
+			/**
+			 * Defines what happens when the mouse is pressed in the drawpanel at a certain status.
+			 */
             @Override
             public void mousePressed(MouseEvent e) {
             	status = GUI.getStatusNumber();
             	switch (status) {
-            	/*
-            	 * add vertex
+            	/**
+            	 * While the status is "add vertex", pressing the mouse adds a vertex to the graph 
+            	 * with current mouse coordinates and draws it.
             	 */
 				case 7:
-					//System.out.println("case addVertex");
 					newVertex = graph.addVertex();
-					//System.out.println("newVertex = "+ newVertex);
-					//System.out.println("number of vertices " + graph.getVertices().size());
             		coordinates = new Pair<Integer, Integer>(mouseX, mouseY);
             		vertexCoordinates.put(newVertex, coordinates);
-            		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 					break;
-				/*
-            	 * add edge by drawing
+				/**
+            	 * While the status is "add edge" , pressing the mouse on two vertices (one after the other)
+            	 * adds an edge between these vertices to the graph and draws it.
             	 */
 				case 8:
 					vertex = findVertex(mouseX, mouseY);
@@ -118,8 +128,9 @@ public class DrawPanel extends JPanel {
 	            		}
 					}
             		break;
-        		/*
-        		 * delete vertex
+        		/**
+        		 * While the status is "delete vertex", pressing the mouse deletes the vertex
+        		 * at this coordinates (and incident edges) from the graph.
         		 */
 				case 10:
 					vertex = findVertex(mouseX, mouseY);
@@ -127,8 +138,9 @@ public class DrawPanel extends JPanel {
 						graph.deleteVertex(vertex);
 					}
             		break;
-        		/*
-        		 * delete edge
+        		/**
+        		 * While the status is "delete edge" , pressing the mouse on two vertices (one after the other)
+            	 * deletes the edge between these vertices from the graph.
         		 */
 				case 11: 
 					vertex = findVertex(mouseX, mouseY);
@@ -142,8 +154,9 @@ public class DrawPanel extends JPanel {
 	            		}
 					}
             		break;
-        		/*
-        		 * move
+        		/**
+        		 * While the status is "move", pressing the mouse on a vertex safes the vertex at this 
+        		 * coordinates and moves it while dragging the mouse.
         		 */
 				case 12:
 					x = mouseX;
@@ -154,10 +167,6 @@ public class DrawPanel extends JPanel {
 					break;
 				}            	
             	repaint();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
             }
         });
 	}
@@ -171,13 +180,12 @@ public class DrawPanel extends JPanel {
 	 * @param y2 y-coordinate of the second point.
 	 */
 	public double distance(int x1, int y1, int x2, int y2){
-		//double distance = Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2), 2));
 		double distance = Math.hypot((x1-x2), (y1-y2));
 		return distance;
 	}
 	
 	/**
-	 * Finds a vertex at given coordinates.
+	 * Finds a vertex near given coordinates.
 	 * 
 	 * @param x1 x-coordinate 
 	 * @param y2 y-coordinate 
@@ -214,7 +222,7 @@ public class DrawPanel extends JPanel {
 	}
 
 	/**
-	 * Changes the actual graph (if a graph is read from a file or deleted).
+	 * Changes the actual graph (if a graph is read from a file or deleted) and repaints it.
 	 * 
 	 * @param graph the new graph.
 	 * @param typeOfGraph the type of the new graph.
@@ -222,14 +230,10 @@ public class DrawPanel extends JPanel {
 	public void changeGraph(Graph graph, String typeOfGraph) {
 		this.graph = graph;
 		this.typeOfGraph = typeOfGraph;
-		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		vertexCoordinates.clear();
-		//System.out.println("number of vertices " + this.graph.getVertices().size());
-		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		if(!graph.getVertices().isEmpty() && vertexCoordinates.isEmpty()) {
 			createDefaultCoordinates();
 		}
-		//System.out.println("vertexCoordniates.size() = " + vertexCoordinates.size());
 		repaint();
 	}
 	/**
@@ -251,7 +255,7 @@ public class DrawPanel extends JPanel {
 	}
 	
 	/**
-	 * Creates default coordinates for a graph which is read from a file.
+	 * Creates default coordinates for a graph which is not drawn.
 	 */
 	public void createDefaultCoordinates() {
 		vertices = graph.getVertices();
@@ -274,25 +278,10 @@ public class DrawPanel extends JPanel {
 	public void changeCoordinates(Integer vertex, int x, int y) {
 		coordinates = new Pair<Integer, Integer>(x, y); 
 		vertexCoordinates.replace(vertex, coordinates);
-	}
-/*	
-	private void drawPoint(Integer vertexName, int x, int y) {
-        // Neues Grafik-Objekt aus dem altem Erzeugen und darauf dann die
-        // Grafik-Funktionen nutzen.
-		
-		int r = 10;
-        Graphics g = this.getGraphics();
-        //g.fillOval(x, y, 3, 3);
-        g.setColor(Color.BLUE);
-		g.fillOval(x-r, y-r, r*2, r*2);
-		g.setColor(Color.WHITE);
-		g.drawString(String.valueOf(vertexName), x-3, y+3);
-		repaint();
-    }
-*/	
+	}	
 	
 	/**
-	 * Draws the complete graph.
+	 * Draws the complete graph with given vertex- and edge colors.
 	 * 
 	 * @param g graphical object
 	 * @param vertexColor color in which the vertices should be drawn.
@@ -328,7 +317,7 @@ public class DrawPanel extends JPanel {
 	 * Draws the specified vertex in the specified color.
 	 * 
 	 * @param vertexName name of the vertex that should be drawn.
-	 * @param color
+	 * @param color color in which the vertex should be drawn.
 	 */
 	public void drawVertex(Integer vertexName, Color color) {
 		Graphics g = this.getGraphics();	
@@ -345,7 +334,7 @@ public class DrawPanel extends JPanel {
 	 * 
 	 * @param vertexNameStart start-vertex of the edge to be drawn.
 	 * @param vertexNameEnd end-vertex of the edge to be drawn.
-	 * @param color
+	 * @param color color in which the line should be drawn.
 	 */
 	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Color color) {
 		Graphics g = this.getGraphics();
@@ -369,6 +358,15 @@ public class DrawPanel extends JPanel {
 		}
 	}
 		
+	/**
+	 * Draws the specified edge with edge weight in the specified color.
+	 * (Not yet used.)
+	 * 
+	 * @param vertexNameStart start-vertex of the edge to be drawn.
+	 * @param vertexNameEnd end-vertex of the edge to be drawn.
+	 * @param edgeWeight weight of the edge to be drawn.
+	 * @param color color in which the line should be drawn.
+	 */
 	public void drawEdge(Integer vertexNameStart, Integer vertexNameEnd, Integer edgeWeight, Color color) {
 		Graphics g = this.getGraphics();
 		Pair<Integer, Integer> coordinates1;
@@ -386,7 +384,7 @@ public class DrawPanel extends JPanel {
 	}
 	
 	/**
-	 * Empties the drawpanel
+	 * Clears the drawpanel.
 	 * 
 	 * @param g graphical object
 	 */
@@ -394,6 +392,10 @@ public class DrawPanel extends JPanel {
 		super.paintComponent(g);
 	}
 	
+	/**
+	 * Paintcomponent of the drawpanel.
+	 * Clears the drawpanel and draws the current graph.
+	 */
 	@Override
     public void paintComponent (Graphics g) {
 		super.paintComponent(g);
