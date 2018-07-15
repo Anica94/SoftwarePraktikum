@@ -29,10 +29,12 @@ import java.awt.Color;
 import javax.swing.border.LineBorder;
 
 /**
- * 
+ * This is the GUI of the software "AlgraviS".
+ * It provides tools for drawing a graph, reading a graph from a textfile, editing a graph 
+ * (add more vertices and edges, delete vertices and edges, move vertices) and running different algorithms
+ * (DFS, find connected components, maximal matching, BUILD) and visualizing them stepwise.
  * 
  * @author Anica, Sonja
- *
  */
 
 public class GUI {
@@ -209,16 +211,6 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(2));
 				startAlgorithm();	
-				/*
-				dfs = new DFS();
-				try {
-					operations = dfs.execute(graph);
-					resultGraph = dfs.getResult(graph);
-				} catch (Exception e1) {
-					lblStatus.setText(status.getStatus(17));
-					return;
-				}
-				*/
 				createDfsStartpointFrame();
 				btnShowResult.setVisible(false);
 				btnVisualizeAlg.setVisible(true);
@@ -229,7 +221,6 @@ public class GUI {
 		 * Pressing this menuitem starts the finding connected components.
 		 */
 		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
-		//mntmFindConnectedComponents.setEnabled(false);
 		mnAlgorithm.add(mntmFindConnectedComponents);
 		mntmFindConnectedComponents.addActionListener(new ActionListener() {
 			@Override
@@ -654,6 +645,7 @@ public class GUI {
 	/**
 	 * Creates a frame that appears after clicking on "dfs" 
 	 * and asks for a startvertex.
+	 * Runs dfs for that startvertex if it is contained in the graph.
 	 */
 	public static void createDfsStartpointFrame() {
 		JFrame frame = new JFrame();
@@ -680,7 +672,7 @@ public class GUI {
 				dfs = new DFS();
 				try {
 					operations = dfs.execute(graph, startpoint);
-					resultGraph = dfs.getResult(graph);
+					resultGraph = dfs.getResult(graph, startpoint);
 				} catch (Exception e1) {
 					lblStatus.setText(status.getStatus(17));
 					return;
@@ -950,18 +942,22 @@ public class GUI {
 		        	String fileName = chooser.getSelectedFile().getPath();
 		           	try {
 					ReaderBUILD.read(fileName);
+					leaves = ReaderBUILD.getLeafset();
+					triples = ReaderBUILD.getTripleset();
 		           	} 
-		           	catch (IOException e1) {
+		           	catch (Exception e1) {
 		           		lblStatus.setText(status.getStatus(16));
 		           		return;
-		           	}   
-		           	leaves = ReaderBUILD.getLeafset();
-					triples = ReaderBUILD.getTripleset();
+		           	}
 		        }
 		        rootedTree = build.build(triples, leaves, new Integer(-1));
 		        resultGraph = rootedTree.getFirst();
 
 		        operations = build.getChanges();
+		        if(resultGraph == null) {
+		        	lblStatus.setText("The tripleset is inconsistent.");
+		        	return;
+		        }
 				drawPanel.setGraph(resultGraph, "undirected");
 				lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 			}
