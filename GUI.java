@@ -469,6 +469,10 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(13));
+				drawPanel.vertexColor = Color.BLUE;
+				drawPanel.edgeColor = Color.BLACK;
+				btnShowResult.setVisible(false);
+		        btnVisualizeAlg.setVisible(false);
 				/*
 				 * produce open dialog
 				 * read file
@@ -491,8 +495,6 @@ public class GUI {
 					lblStatus.setText(status.getStatus(16));
 		           	}   
 		        }
-		        btnShowResult.setVisible(false);
-		        btnVisualizeAlg.setVisible(false);
 			}
 		});
 		
@@ -674,6 +676,7 @@ public class GUI {
 				try {
 					operations = dfs.execute(graph, startpoint);
 					resultGraph = dfs.getResult(graph, startpoint);
+					lblStatus.setText(status.getStatus(2));
 				} catch (Exception e1) {
 					lblStatus.setText(status.getStatus(17));
 					return;
