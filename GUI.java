@@ -558,6 +558,7 @@ public class GUI {
 		 * (Not yet implemented.)
 		 */
 		JMenu mnHelp = new JMenu("Help");
+		mnHelp.setEnabled(false);
 		menuBar.add(mnHelp);		
 	}
 	
