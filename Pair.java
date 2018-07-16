@@ -16,9 +16,9 @@
 	    private B second;
 
 	    /**
-	     * Constructor of the class, produces a pair containing the elements <first> and <second>
-	     * @param first
-	     * @param second
+	     * Constructor of the class, produces a pair containing the elements first and second
+	     * @param first first element of the pair
+	     * @param second second element of the pair
 	     */
 	    public Pair(A first, B second) {
 	        super();
