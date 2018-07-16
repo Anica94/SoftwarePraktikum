@@ -48,9 +48,9 @@ public class DFS implements Algorithm {
 	
 	/**
 	 * Runs the DFS for a specified startvertex.
-	 * @param graph
-	 * @param startvertex
-	 * @return list of operations
+	 * @param graph graph on which DFS shall be executed.
+	 * @param startvertex vertex at which the DFS shall start.
+	 * @return list of operations made by the algorithm.
 	 * 
 	 * @throws IllegalArgumentException if the startvertex is not contained in the graph. 
 	 */
@@ -129,9 +129,10 @@ public class DFS implements Algorithm {
 	
 	/**
 	 * Returns the result for running DFS with a given startvertex.
-	 * @param graph
-	 * @param startvertex
-	 * @return result
+	 * Executes DFS with specifies startvertex and returns a graph that contains the result.
+	 * @param graph graph for which the result of the DFS should be returned.
+	 * @param startvertex vertex at which the DFS shall start.
+	 * @return graph that returns the result.
 	 */
 	public Graph getResult(Graph graph, Integer startvertex) {
 		this.execute(graph, startvertex);
