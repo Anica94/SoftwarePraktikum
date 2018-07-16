@@ -16,12 +16,12 @@ public class Circle {
 	private int x, y, r;
 	
 	/**
-	 * Constructor of the class which creates a new circle with name <tt>name<tt>, radius <tt>r<tt>,
-	 * x-coordinate <tt>x<tt> and y-coordinate <tt>y<tt>.
-	 * @param name
-	 * @param r
-	 * @param x
-	 * @param y
+	 * Constructor of the class which creates a new circle with a specified name, radius,
+	 * x-coordinate and y-coordinate.
+	 * @param name name of the vertex
+	 * @param r radius
+	 * @param x x-coordinate
+	 * @param y y-coordinate
 	 */
 	public Circle(Integer name, int r, int x, int y) {
 		this.name = name;
