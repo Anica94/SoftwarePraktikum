@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import javax.swing.JPanel;
 
 /**
- * This is a drawpanel. It is used to draw and display a graph.
+ * This is a drawpanel. It is used for drawing, editing and displaying a graph.
  * 
  * @author Anica
  */
@@ -178,6 +178,8 @@ public class DrawPanel extends JPanel {
 	 * @param y1 y-coordinate of the first point.
 	 * @param x2 x-coordinate of the second point.
 	 * @param y2 y-coordinate of the second point.
+	 * 
+	 * @return distance of the vertices with specified coordinates.
 	 */
 	public double distance(int x1, int y1, int x2, int y2){
 		double distance = Math.hypot((x1-x2), (y1-y2));
@@ -188,7 +190,9 @@ public class DrawPanel extends JPanel {
 	 * Finds a vertex near given coordinates.
 	 * 
 	 * @param x1 x-coordinate 
-	 * @param y2 y-coordinate 
+	 * @param y1 y-coordinate 
+	 * 
+	 * @return name of the vertex at the specified coordinates if one exists; otherwise -1.
 	 */
 	public Integer findVertex(int x1, int y1) {
 		Integer v = -1;
