@@ -30,7 +30,7 @@ import javax.swing.border.LineBorder;
 
 /**
  * This is the GUI of the software "AlgraviS".
- * It provides tools for drawing a graph, reading a graph from a textfile, editing a graph 
+ * It provides tools for drawing a graph, reading a graph from a text file, editing a graph 
  * (add more vertices and edges, delete vertices and edges, move vertices) and running different algorithms
  * (DFS, find connected components, maximal matching, BUILD) and visualizing them stepwise.
  * 
@@ -174,7 +174,7 @@ public class GUI {
 		});
 	
 		/**
-		 * Produces the menubar of the gui.
+		 * Produces the menu bar of the GUI.
 		 */
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color(135, 206, 250));
@@ -187,7 +187,7 @@ public class GUI {
 		menuBar.add(mnAlgorithm);
 		
 		/**
-		 * Pressing this menuitem starts the bfs.
+		 * Pressing this menu item starts the BFS.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmBreadthFirstSearch = new JMenuItem("Breadth-First Search");
@@ -201,7 +201,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the dfs.
+		 * Pressing this menu item starts the DFS.
 		 */
 		JMenuItem mntmDepthfirstsearch = new JMenuItem("Depth-First Search");
 		//mntmDepthfirstsearch.setEnabled(false);
@@ -218,7 +218,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the finding connected components.
+		 * Pressing this menu item starts the finding connected components.
 		 */
 		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
 		mnAlgorithm.add(mntmFindConnectedComponents);
@@ -241,7 +241,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the topological sort.
+		 * Pressing this menu item starts the topological sort.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmTopologicalSort = new JMenuItem("Topological Sort");
@@ -255,7 +255,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the minimum-spanning-tree-algorithm.
+		 * Pressing this menu item starts the minimum-spanning-tree-algorithm.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmMinimumSpanningTree = new JMenuItem("Minimum Spanning Tree");
@@ -269,7 +269,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the maximal-matching-algorithm.
+		 * Pressing this menu item starts the maximal-matching-algorithm.
 		 */
 		JMenuItem mntmMaximalMatching = new JMenuItem("Maximal Matching");
 		mnAlgorithm.add(mntmMaximalMatching);
@@ -293,7 +293,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem starts the BUILD-Algorithm.
+		 * Pressing this menu item starts the BUILD-Algorithm.
 		 */
 		JMenuItem mntmBuild = new JMenuItem("BUILD");
 		mnAlgorithm.add(mntmBuild);
@@ -308,19 +308,19 @@ public class GUI {
 		});
 		
 		/**
-		 * This menu contains menuitems for editing the graph.
+		 * This menu contains menu items for editing the graph.
 		 */
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
 		/**
-		 * This menu contains menuitems for adding something to the graph.
+		 * This menu contains menu items for adding something to the graph.
 		 */
 		JMenu mnAdd = new JMenu("add");
 		mnEdit.add(mnAdd);
 		
 		/**
-		 * After pressing this menuitem vertices can be added by clicking in the drawpanel.
+		 * After pressing this menu item vertices can be added by clicking in the DrawPanel.
 		 */
 		JMenuItem mntmVertexdraw = new JMenuItem("vertex");
 		mnAdd.add(mntmVertexdraw);
@@ -335,7 +335,7 @@ public class GUI {
 		});
 		
 		/**
-		 * After pressing this menuitem edges can be added by clicking on two vertices.
+		 * After pressing this menu item edges can be added by clicking on two vertices.
 		 */
 		JMenuItem mntmEdgedraw = new JMenuItem("edge (draw)");
 		mnAdd.add(mntmEdgedraw);
@@ -350,7 +350,7 @@ public class GUI {
 		});
 		
 		/**
-		 * After pressing this menuitem an edge can be added by choosing vertex-names.
+		 * After pressing this menu item an edge can be added by choosing vertex-names.
 		 */
 		JMenuItem mntmEdgespecify = new JMenuItem("edge (specify)");
 		mnAdd.add(mntmEdgespecify);
@@ -366,13 +366,13 @@ public class GUI {
 		});
 		
 		/**
-		 * This menu contains menuitems for deleting something of the graph.
+		 * This menu contains menu items for deleting something of the graph.
 		 */
 		JMenu mnDelete = new JMenu("delete");
 		mnEdit.add(mnDelete);
 		
 		/**
-		 * After pressing this menuitem vertices can be deleted by clicking on a vertex.
+		 * After pressing this menu item vertices can be deleted by clicking on a vertex.
 		 */
 		JMenuItem mntmDeleteVertex = new JMenuItem("delete vertex");
 		mnDelete.add(mntmDeleteVertex);
@@ -387,7 +387,7 @@ public class GUI {
 		});
 		
 		/**
-		 * After pressing this menuitem edges can be deleted by clicking on two vertices.
+		 * After pressing this menu item edges can be deleted by clicking on two vertices.
 		 */
 		JMenuItem mntmDeleteEdge = new JMenuItem("delete edge");
 		mnDelete.add(mntmDeleteEdge);
@@ -402,7 +402,7 @@ public class GUI {
 		});
 		
 		/**
-		 * After pressing this menuitem a window opens that asks if the graph should really be deleted..
+		 * After pressing this menu item a window opens that asks if the graph should really be deleted..
 		 */
 		JMenuItem mntmDeleteGraph = new JMenuItem("delete graph");
 		mnDelete.add(mntmDeleteGraph);
@@ -418,7 +418,7 @@ public class GUI {
 		});
 		
 		/**
-		 * After pressing this menuitem vertices can be moved by clicking on vertices and dragging.
+		 * After pressing this menu item vertices can be moved by clicking on vertices and dragging.
 		 */
 		JMenuItem mntmMove = new JMenuItem("move");
 		mnEdit.add(mntmMove);
@@ -433,7 +433,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing this menuitem reverses the last operation.
+		 * Pressing this menu item reverses the last operation.
 		 */
 		JMenuItem mntmUndo = new JMenuItem("undo");
 		mntmUndo.setEnabled(false);
@@ -441,19 +441,19 @@ public class GUI {
 		mnEdit.add(mntmUndo);
 		
 		/**
-		 * This menu contains menuitems for dealing with files.
+		 * This menu contains menu items for dealing with files.
 		 */
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
 		/**
-		 * This menu contains menuitems for opening files.
+		 * This menu contains menu items for opening files.
 		 */
 		JMenu mnOpen = new JMenu("open");
 		mnFile.add(mnOpen);
 		
 		/**
-		 * Pressing on this menuitem opens a new textfile for adding a graph as textfile.
+		 * Pressing on this menu item opens a new text file for adding a graph as text file.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmNew = new JMenuItem("new");
@@ -461,7 +461,7 @@ public class GUI {
 		mnOpen.add(mntmNew);
 		
 		/**
-		 * Pressing this menuitem opens a window for choosing a file that should be read.
+		 * Pressing this menu item opens a window for choosing a file that should be read.
 		 */
 		JMenuItem mntmFile = new JMenuItem("file");
 		mnOpen.add(mntmFile);
@@ -497,7 +497,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing on this menuitem safes the current graph as textfile.
+		 * Pressing on this menu item safes the current graph as text file.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmSaveas = new JMenuItem("save (as)");
@@ -524,7 +524,7 @@ public class GUI {
 		});
 		
 		/**
-		 * Pressing on this menuitem opens the textfile containing the current graph.
+		 * Pressing on this menu item opens the text file containing the current graph.
 		 * (Not yet implemented.)
 		 */
 		JMenuItem mntmShow = new JMenuItem("show");
@@ -532,7 +532,7 @@ public class GUI {
 		mnFile.add(mntmShow);
 		
 		/**
-		 * This menu contains menuitems for showing or hiding edge weights.
+		 * This menu contains menu items for showing or hiding edge weights.
 		 * (Not yet implemented.)
 		 */
 		JMenu mnView = new JMenu("View");
@@ -540,14 +540,14 @@ public class GUI {
 		menuBar.add(mnView);
 		
 		/**
-		 * Pressing on this menuitem shows the edge weights.
+		 * Pressing on this menu item shows the edge weights.
 		 * (Note yet implemented.)
 		 */
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("show edge weights");
 		mnView.add(mntmNewMenuItem_1);
 		
 		/**
-		 * Pressing on this menuitem hides the edge weights.
+		 * Pressing on this menu item hides the edge weights.
 		 * (Note yet implemented.)
 		 */
 		JMenuItem mntmShowHideLabel = new JMenuItem("hide edge weights");
@@ -643,9 +643,9 @@ public class GUI {
 	}
 	
 	/**
-	 * Creates a frame that appears after clicking on "dfs" 
+	 * Creates a frame that appears after clicking on "Depth-First Search" 
 	 * and asks for a startvertex.
-	 * Runs dfs for that startvertex if it is contained in the graph.
+	 * Runs DFS for that startvertex if it is contained in the graph.
 	 */
 	public static void createDfsStartpointFrame() {
 		JFrame frame = new JFrame();
@@ -689,9 +689,9 @@ public class GUI {
 	}
 	
 	/**
-	 * Getter for the statusnumber.
+	 * Getter for the status number.
 	 * 
-	 * @return statusnumber
+	 * @return status number
 	 */
 	public static int getStatusNumber() {
 		return status.getStatusNumber();
@@ -889,7 +889,7 @@ public class GUI {
 	}
 	
 	/**
-	 * Creates a frame that shows the aho-graph for BUILD.
+	 * Creates a frame that shows the Aho-graph for BUILD.
 	 */
 	private static JFrame ahoframe;
 	public static void createHelpGraphFrame() {
