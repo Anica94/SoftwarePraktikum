@@ -40,7 +40,7 @@ import javax.swing.border.LineBorder;
 public class GUI {
 
 	/**
-	 * Containers for the gui.
+	 * Containers for the GUI.
 	 */
 	private JFrame frame;
 	private static JLabel lblStatus;
