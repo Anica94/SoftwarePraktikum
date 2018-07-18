@@ -485,7 +485,7 @@ public class GUI {
 				 * read file
 				 * produce and draw graph
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        chooser.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -520,7 +520,7 @@ public class GUI {
 				 * produce save dialog
 				 * write file
 				 */
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        if(chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION)
 		        {
@@ -950,7 +950,7 @@ public class GUI {
 				build = new Build();
 				ArrayList<Integer> leaves = null;
 				ArrayList<Pair<Pair<Integer, Integer>, Integer>> triples = null;
-				String directoryName = "C:\\Users\\Anica\\eclipse-workspace\\Graph_ST_AH\\src\\Textfiles";
+				String directoryName = "C:\\Users\\Sonja\\eclipse-workspace\\SoftwarePraktikum\\src\\Textfiles";
 		        JFileChooser chooser = new JFileChooser(directoryName);
 		        JComponent.setDefaultLocale(Locale.ENGLISH); 
 		        chooser.setLocale(Locale.ENGLISH);
@@ -972,12 +972,14 @@ public class GUI {
 		        resultGraph = rootedTree.getFirst();
 
 		        operations = build.getChanges();
-		        if(resultGraph == null) {
-		        	lblStatus.setText(status.getStatus(6) + " The tripleset " + ReaderBUILD.getTriplesetPrint() + " for " + ReaderBUILD.getLeafsetPrint() + " is inconsistent.");
-		        	return;
-		        }
 		        btnVisualizeAlg.setVisible(true);
 				btnShowResult.setVisible(true);
+		        if(resultGraph == null) {
+		        	btnVisualizeAlg.setVisible(false);
+					btnShowResult.setVisible(false);
+		        	lblStatus.setText(status.getStatus(6) + " The given tripleset is inconsistent. " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
+		        	return;
+		        }
 				drawPanel.setGraph(resultGraph, "undirected");
 				lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 			}
