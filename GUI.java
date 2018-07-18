@@ -31,7 +31,7 @@ import javax.swing.border.LineBorder;
 /**
  * This is the GUI of the software "AlgraviS".
  * It provides tools for drawing a graph, reading a graph from a text file, editing a graph 
- * (add more vertices and edges, delete vertices and edges, move vertices) and running different algorithms
+ * (add vertices and edges, delete vertices and edges, move vertices) and running different algorithms
  * (DFS, find connected components, maximal matching, BUILD) and visualizing them stepwise.
  * 
  * @author Anica, Sonja
@@ -44,6 +44,8 @@ public class GUI {
 	 */
 	private JFrame frame;
 	private static JLabel lblStatus;
+	private JButton btnVisualizeAlg;
+	private JButton btnShowResult;
 	private static DrawPanel drawPanel;
 	private static DrawPanel auxiliaryDrawPanel;
 	
@@ -137,17 +139,21 @@ public class GUI {
 		/**
 		 * Pressing this button starts the visualization of the current algorithm.
 		 */
-		JButton btnVisualizeAlg = new JButton("visualize Alg");
-		btnVisualizeAlg.setBounds(0, 0, 104, 23);
+		btnVisualizeAlg = new JButton("visualize algorithm");
+		btnVisualizeAlg.setBounds(0, 0, 140, 23);
 		frame.getContentPane().add(btnVisualizeAlg);
 		btnVisualizeAlg.setVisible(false);
 		btnVisualizeAlg.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				if(getStatusNumber()==6) {
 					visualizeAlgorithmBuild();
 				}
 				else {
+					if(resultGraph==null) {
+						return;
+					}
 					visualizeAlgorithm();
 				}	
 			}
@@ -156,13 +162,16 @@ public class GUI {
 		/**
 		 * Pressing this button shows the result of the current algorithm.
 		 */
-		JButton btnShowResult = new JButton("show result");
-		btnShowResult.setBounds(105, 0, 104, 23);
+		btnShowResult = new JButton("show result");
+		btnShowResult.setBounds(141, 0, 104, 23);
 		frame.getContentPane().add(btnShowResult);
 		btnShowResult.setVisible(false);
 		btnShowResult.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(resultGraph==null) {
+					return;
+				}
 				if(getStatusNumber()==6) {
 					Graphics g = drawPanel.getGraphics();
 					drawPanel.drawCompleteGraph(g, Color.BLUE, Color.BLACK);
@@ -220,7 +229,7 @@ public class GUI {
 		/**
 		 * Pressing this menu item starts the finding connected components.
 		 */
-		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find connected components");
+		JMenuItem mntmFindConnectedComponents = new JMenuItem("Find Connected Components");
 		mnAlgorithm.add(mntmFindConnectedComponents);
 		mntmFindConnectedComponents.addActionListener(new ActionListener() {
 			@Override
@@ -302,8 +311,6 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				lblStatus.setText(status.getStatus(6));
 				createStartBuildFrame();
-				btnShowResult.setVisible(true);
-				btnVisualizeAlg.setVisible(true);
 			}
 		});
 		
@@ -592,7 +599,12 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				int cid1 = Integer.parseInt(txtC1.getText());
 				int cid2 = Integer.parseInt(txtC2.getText());
-				drawPanel.addEdge(cid1, cid2);
+				try {
+					drawPanel.addEdge(cid1, cid2);
+				} catch (Exception e1) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
 				frame.dispose();
 			}
 		});
@@ -647,14 +659,15 @@ public class GUI {
 	
 	/**
 	 * Creates a frame that appears after clicking on "Depth-First Search" 
-	 * and asks for a startvertex.
-	 * Runs DFS for that startvertex if it is contained in the graph.
+	 * and asks for a start vertex.
+	 * Runs DFS for that start vertex if it is contained in the graph.
 	 */
 	public static void createDfsStartpointFrame() {
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new FlowLayout());
-		frame.setBounds(100, 150, 200, 75);
+		frame.setBounds(100, 150, 200, 100);
 		
+		JLabel lblText = new JLabel("Please enter a start vertex");
 		JTextField txtC1 = new JTextField(1);
 		
 		JButton btnCancel = new JButton("cancel");
@@ -685,6 +698,7 @@ public class GUI {
 			}
 		});
 		
+		frame.getContentPane().add(lblText);
 		frame.getContentPane().add(txtC1);
 		frame.getContentPane().add(btnCancel);
 		frame.getContentPane().add(btnApply);
@@ -959,9 +973,11 @@ public class GUI {
 
 		        operations = build.getChanges();
 		        if(resultGraph == null) {
-		        	lblStatus.setText("The tripleset is inconsistent.");
+		        	lblStatus.setText(status.getStatus(6) + " The tripleset " + ReaderBUILD.getTriplesetPrint() + " for " + ReaderBUILD.getLeafsetPrint() + " is inconsistent.");
 		        	return;
 		        }
+		        btnVisualizeAlg.setVisible(true);
+				btnShowResult.setVisible(true);
 				drawPanel.setGraph(resultGraph, "undirected");
 				lblStatus.setText(status.getStatus(6) + " for " + ReaderBUILD.getLeafsetPrint() + ", " + ReaderBUILD.getTriplesetPrint());
 			}
