@@ -65,12 +65,13 @@ public class Build {
 		for (int i = 0; i < leaves.size(); i++) {
 			currentRoot = leaves.get(i);
 			if (root <= currentRoot) {
-				root = currentRoot+1;
+				root = currentRoot;
 			}
 		}
 		if(root<highestVertex) {
 			root=highestVertex+1;
 		}
+		
 		else {
 			highestVertex=root;
 		}
@@ -98,6 +99,7 @@ public class Build {
 		 */
 		else if (numberOfComponents == 1 & leaves.size() > 1) {
 			rootedTree = new Pair(null, null);
+			changes.clear();
 			return rootedTree;
 		}
 		else {
@@ -106,13 +108,28 @@ public class Build {
 			 */
 			for (int i = 0; i < numberOfComponents; i++) {
 				newLeaves = connectedComponents.get(i);
+				root = root + newLeaves.size() -1;
 				newTriples = this.computeNewTriples(triples, newLeaves);
 				trees.add(build(newTriples, newLeaves, root));
 			}
 			/*
+			 * the tripleset is not consistent -> return null
+			 */
+			boolean inconsistent = false;
+			for(int i = 0; i < trees.size(); i++) {
+				if(trees.get(i).getFirst() == null) {
+					inconsistent = true;
+				}
+				
+			}
+			if(inconsistent) {
+				changes.clear();
+				rootedTree = new Pair(null, null);
+			}
+			/*
 			 * the tripleset is consistent
 			 */
-			if ( !trees.contains(null)) {
+			else {
 				/*
 				 * compute new root
 				 */
@@ -120,7 +137,6 @@ public class Build {
 					currentRoot = trees.get(i).getSecond();
 					if (root <= currentRoot) {
 						root = currentRoot+1;
-						
 					}
 				}
 				if(highestVertex<root) {
@@ -140,12 +156,7 @@ public class Build {
 				}
 			rootedTree = new Pair(tree, root);
 			}
-			/*
-			 * the tripleset is not consistent -> return null
-			 */
-			else {
-				rootedTree = new Pair(null, null);
-			}
+			System.out.println("root= "+root);
 			return rootedTree;
 		}
 	}
