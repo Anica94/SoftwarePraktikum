@@ -597,6 +597,11 @@ public class GUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(!txtC1.getText().matches("\\d+") || !txtC2.getText().matches("\\d+")) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				lblStatus.setText(status.getStatus(9));
 				int cid1 = Integer.parseInt(txtC1.getText());
 				int cid2 = Integer.parseInt(txtC2.getText());
 				try {
@@ -684,6 +689,11 @@ public class GUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(!txtC1.getText().matches("\\d+")) {
+					lblStatus.setText(status.getStatus(17));
+					return;
+				}
+				lblStatus.setText(status.getStatus(2));
 				Integer startpoint = Integer.parseInt(txtC1.getText());
 				dfs = new DFS();
 				try {
