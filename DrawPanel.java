@@ -1,3 +1,4 @@
+package AlgraviS;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -181,7 +182,7 @@ public class DrawPanel extends JPanel {
 	 * 
 	 * @return distance of the vertices with specified coordinates.
 	 */
-	public double distance(int x1, int y1, int x2, int y2){
+	private double distance(int x1, int y1, int x2, int y2){
 		double distance = Math.hypot((x1-x2), (y1-y2));
 		return distance;
 	}
@@ -194,7 +195,7 @@ public class DrawPanel extends JPanel {
 	 * 
 	 * @return name of the vertex at the specified coordinates if one exists; otherwise -1.
 	 */
-	public Integer findVertex(int x1, int y1) {
+	private Integer findVertex(int x1, int y1) {
 		Integer v = -1;
 		double distance;
 		double shortestDistance = 100;
@@ -261,7 +262,7 @@ public class DrawPanel extends JPanel {
 	/**
 	 * Creates default coordinates for a graph which is not drawn.
 	 */
-	public void createDefaultCoordinates() {
+	private void createDefaultCoordinates() {
 		vertices = graph.getVertices();
 		for(int i=0; i<vertices.size(); i++) {
 			vertex = vertices.get(i);
@@ -279,7 +280,7 @@ public class DrawPanel extends JPanel {
 	 * @param x new x-coordinate of the vertex.
 	 * @param y new y-coordinate of the vertex.
 	 */
-	public void changeCoordinates(Integer vertex, int x, int y) {
+	private void changeCoordinates(Integer vertex, int x, int y) {
 		coordinates = new Pair<Integer, Integer>(x, y); 
 		vertexCoordinates.replace(vertex, coordinates);
 	}	
@@ -401,7 +402,7 @@ public class DrawPanel extends JPanel {
 	 * Clears the drawpanel and draws the current graph.
 	 */
 	@Override
-    public void paintComponent (Graphics g) {
+    protected void paintComponent (Graphics g) {
 		super.paintComponent(g);
 		
 		drawCompleteGraph(g, vertexColor, edgeColor);
