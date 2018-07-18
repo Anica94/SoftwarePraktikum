@@ -130,6 +130,10 @@ public class ReaderBUILD {
 				throw new IOException();
 			}
 		}
+		currentLine = bReader.readLine();
+		if (currentLine != null) {
+			throw new IOException();
+		}
 		sbR.append("}");
 		bReader.close();
 	}
